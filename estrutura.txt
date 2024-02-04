@@ -1,0 +1,17 @@
+Paginas
+    * main
+        - visualização em tiles de total de gastos, total de entradas gerais, total de entradas pessoais e Restante
+        - visualização de tiles de gastos pessoais e do geral
+        - visualização em tiles das categorias de cada banco
+        - cadastro e edição de bancos
+        - cadastro de gastos
+
+    * categorias
+        * destino (geral, tiago, luana)
+        * tipo (geral, transportes, alimentação)
+        - editar, inativar e deletar gasto
+        - ter somatório de gasto dessa categorias
+ 
+    * configuração
+        - escolher mes e ano
+        - CRUD entradas
