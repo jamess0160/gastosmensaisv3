@@ -1,1 +1,5 @@
-export const ExpenseTypesUseCases = {} 
+import { getAll } from './getAll'
+
+export const ExpenseTypesUseCases = {
+    getAll,
+} 

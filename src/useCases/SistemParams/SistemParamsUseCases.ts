@@ -1,1 +1,5 @@
-export const SistemParamsUseCases = {} 
+import { getParam } from './getParam'
+
+export const SistemParamsUseCases = {
+    getParam,
+} 

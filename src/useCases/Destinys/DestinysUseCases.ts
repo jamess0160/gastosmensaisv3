@@ -1,1 +1,5 @@
-export const DestinysUseCases = {} 
+import { getAll } from './getAll'
+
+export const DestinysUseCases = {
+    getAll,
+} 
