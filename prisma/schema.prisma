@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model banks {
+  IdBank   Int    @id @default(autoincrement())
+  Name     String @db.VarChar(255)
+  IconPath String @db.VarChar(255)
+}
+
+model baseexpenses {
+  IdBaseExpense Int       @id @default(autoincrement())
+  Description   String    @db.VarChar(255)
+  Price         Float     @db.Float
+  EntryDate     DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny     Int
+  IdBank        Int
+  IdExpenseType Int
+
+  @@index([IdBank], map: "IdBank")
+  @@index([IdDestiny], map: "IdDestiny")
+  @@index([IdExpenseType], map: "IdExpenseType")
+}
+
+model cashinflows {
+  IdCashInflow Int       @id @default(autoincrement())
+  Description  String    @db.VarChar(255)
+  Value        Float     @db.Float
+  EfectiveDate DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny    Int
+
+  @@index([IdDestiny], map: "IdDestiny")
+}
+
+model defaultexpenses {
+  IdDefaultExpense Int       @id @default(autoincrement())
+  ExpenseDate      DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdBaseExpense    Int
+
+  @@index([IdBaseExpense], map: "IdBaseExpense")
+}
+
+model destinys {
+  IdDestiny Int    @id @default(autoincrement())
+  Name      String @db.VarChar(255)
+}
+
+model expensetypes {
+  IdExpenseType Int     @id @default(autoincrement())
+  Description   String? @db.VarChar(255)
+}
+
+model fixedexpenses {
+  IdFixedExpense Int       @id @default(autoincrement())
+  Price          Float?    @db.Float
+  StartDate      DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  EndDate        DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdBaseExpense  Int
+
+  @@index([IdBaseExpense], map: "IdBaseExpense")
+}
+
+model installmentexpenses {
+  IdInstallmentExpense Int    @id @default(autoincrement())
+  Price                Float? @db.Float
+  CurrentInstallment   Int
+  MaxInstallment       Int
+  IdBaseExpense        Int
+
+  @@index([IdBaseExpense], map: "IdBaseExpense")
+}
+
+model sistemparams {
+  IdSistemParam Int    @id @default(autoincrement())
+  Key           String @db.VarChar(255)
+  Value         String @db.VarChar(255)
+}
