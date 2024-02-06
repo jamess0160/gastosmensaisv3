@@ -1,16 +1,10 @@
-import { getMonthlyBanksResume } from './getMonthlyBanksResume'
-import { getMonthlyPersonalResume } from './getMonthlyPersonalResume'
-import { getMonthlyBankCategory } from './getMonthlyBankCategory'
-import { getMonthlyPersonalCategory } from './getMonthlyPersonalCategory'
+import { getByBaseExpense } from './getByBaseExpense'
 import { create } from './create'
 import { update } from './update'
 import { remove } from './remove'
 
 export const InstallmentExpensesUseCases = {
-    getMonthlyBanksResume,
-    getMonthlyPersonalResume,
-    getMonthlyBankCategory,
-    getMonthlyPersonalCategory,
+    getByBaseExpense,
     create,
     update,
     remove,
