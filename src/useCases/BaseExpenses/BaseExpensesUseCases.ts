@@ -1,16 +1,18 @@
 import { getMonthlyBanksResume } from './getMonthlyBanksResume'
-import { getMonthlyPersonalResume } from './getMonthlyPersonalResume'
+import { getMonthlyDestinyResume } from './getMonthlyDestinyResume'
 import { getMonthlyBankCategory } from './getMonthlyBankCategory'
-import { getMonthlyPersonalCategory } from './getMonthlyPersonalCategory'
+import { getMonthlyDestinyCategory } from './getMonthlyDestinyCategory'
+import { generateFullBaseExpenseChild } from './generateFullBaseExpenseChild'
 import { create } from './create'
 import { update } from './update'
 import { remove } from './remove'
 
 export const BaseExpensesUseCases = {
     getMonthlyBanksResume,
-    getMonthlyPersonalResume,
+    getMonthlyDestinyResume,
     getMonthlyBankCategory,
-    getMonthlyPersonalCategory,
+    getMonthlyDestinyCategory,
+    generateFullBaseExpenseChild,
     create,
     update,
     remove,
