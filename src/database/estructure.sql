@@ -6,7 +6,8 @@ USE GastosMensaisV3;
 
 CREATE TABLE `Destinys` (
     `IdDestiny` INT PRIMARY KEY AUTO_INCREMENT,
-    `Name` VARCHAR(255) NOT NULL
+    `Name` VARCHAR(255) NOT NULL,
+    `SplitJointExpense` BIT DEFAULT 0
 );
 
 CREATE TABLE `CashInflows` (
@@ -14,7 +15,7 @@ CREATE TABLE `CashInflows` (
     `Description` VARCHAR(255) NOT NULL,
     `Value` FLOAT NOT NULL,
     `EfectiveDate` DATETIME DEFAULT (CURRENT_DATE),
-    `IdDestiny` INT NOT NULL,
+    `IdDestiny` INT,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`)
 );
 
@@ -53,7 +54,7 @@ CREATE TABLE `DefaultExpenses` (
     `IdDefaultExpense` INT PRIMARY KEY AUTO_INCREMENT,
     `ExpenseDate` DATETIME DEFAULT (CURRENT_DATE),
     `IdBaseExpense` INT NOT NULL,
-    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`)
+    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
 
 CREATE TABLE `FixedExpenses` (
@@ -62,7 +63,7 @@ CREATE TABLE `FixedExpenses` (
     `StartDate` DATETIME DEFAULT (CURRENT_DATE),
     `EndDate` DATETIME DEFAULT (CURRENT_DATE),
     `IdBaseExpense` INT NOT NULL,
-    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`)
+    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
 
 CREATE TABLE `InstallmentExpenses` (
@@ -71,5 +72,5 @@ CREATE TABLE `InstallmentExpenses` (
     `CurrentInstallment` INT NOT NULL,
     `MaxInstallment` INT NOT NULL,
     `IdBaseExpense` INT NOT NULL,
-    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`)
+    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );

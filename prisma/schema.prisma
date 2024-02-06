@@ -32,7 +32,7 @@ model cashinflows {
   Description  String    @db.VarChar(255)
   Value        Float     @db.Float
   EfectiveDate DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny    Int
+  IdDestiny    Int?
 
   @@index([IdDestiny], map: "IdDestiny")
 }
@@ -46,8 +46,9 @@ model defaultexpenses {
 }
 
 model destinys {
-  IdDestiny Int    @id @default(autoincrement())
-  Name      String @db.VarChar(255)
+  IdDestiny         Int      @id @default(autoincrement())
+  Name              String   @db.VarChar(255)
+  SplitJointExpense Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
 }
 
 model fixedexpenses {

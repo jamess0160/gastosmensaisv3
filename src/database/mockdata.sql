@@ -1,11 +1,11 @@
 -- Active: 1706977966627@@127.0.0.1@3306@gastosmensaisv3
 INSERT INTO
-    `Destinys` (`Name`)
+    `Destinys` (`Name`, `SplitJointExpense`)
 VALUES
-    ('Tiago'),
-    ('Luana'),
-    ('Geral'),
-    ('Conjunto');
+    ('Tiago', 1),
+    ('Luana', 1),
+    ('Geral', 0),
+    ('Conjunto', 0);
 
 INSERT INTO
     `CashInflows` (`Description`, `IdDestiny`, `Value`)
@@ -25,6 +25,7 @@ INSERT INTO
     `SistemParams` (`Key`, `Value`)
 VALUES
     ('ValorMaximoGeral', '1400'),
+    ('IdDestinoGeral', '3'),
     ('IdDestinoConjunto', '4');
 
 INSERT INTO
