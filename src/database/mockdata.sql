@@ -28,7 +28,7 @@ VALUES
     ('IdDestinoConjunto', '4');
 
 INSERT INTO
-    `ExpenseTypes` (`Description`)
+    `ExpenseCategories` (`Description`)
 VALUES
     ('Geral'),
     ('Transporte'),
@@ -39,7 +39,7 @@ INSERT INTO
         `Description`,
         `IdBank`,
         `IdDestiny`,
-        `IdExpenseType`,
+        `IdExpenseCategory`,
         `Price`
     )
 VALUES

@@ -14,17 +14,17 @@ model banks {
 }
 
 model baseexpenses {
-  IdBaseExpense Int       @id @default(autoincrement())
-  Description   String    @db.VarChar(255)
-  Price         Float     @db.Float
-  EntryDate     DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny     Int
-  IdBank        Int
-  IdExpenseType Int
+  IdBaseExpense     Int       @id @default(autoincrement())
+  Description       String    @db.VarChar(255)
+  Price             Float     @db.Float
+  EntryDate         DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny         Int
+  IdBank            Int
+  IdExpenseCategory Int
 
   @@index([IdBank], map: "IdBank")
   @@index([IdDestiny], map: "IdDestiny")
-  @@index([IdExpenseType], map: "IdExpenseType")
+  @@index([IdExpenseCategory], map: "IdExpenseCategory")
 }
 
 model cashinflows {
@@ -50,11 +50,6 @@ model destinys {
   Name      String @db.VarChar(255)
 }
 
-model expensetypes {
-  IdExpenseType Int     @id @default(autoincrement())
-  Description   String? @db.VarChar(255)
-}
-
 model fixedexpenses {
   IdFixedExpense Int       @id @default(autoincrement())
   Price          Float?    @db.Float
@@ -76,7 +71,13 @@ model installmentexpenses {
 }
 
 model sistemparams {
-  IdSistemParam Int    @id @default(autoincrement())
-  Key           String @db.VarChar(255)
-  Value         String @db.VarChar(255)
+  IdSistemParam Int       @id @default(autoincrement())
+  Key           String    @db.VarChar(255)
+  Value         String    @db.VarChar(255)
+  EfectiveDate  DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+}
+
+model expensecategories {
+  IdExpenseCategory Int     @id @default(autoincrement())
+  Description       String? @db.VarChar(255)
 }

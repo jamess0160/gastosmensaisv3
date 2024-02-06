@@ -27,11 +27,12 @@ CREATE TABLE `Banks` (
 CREATE TABLE `SistemParams` (
     `IdSistemParam` INT PRIMARY KEY AUTO_INCREMENT,
     `Key` VARCHAR(255) NOT NULL,
-    `Value` VARCHAR(255) NOT NULL
+    `Value` VARCHAR(255) NOT NULL,
+    `EfectiveDate` DATETIME DEFAULT (CURRENT_DATE)
 );
 
-CREATE TABLE `ExpenseTypes` (
-    `IdExpenseType` INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE `ExpenseCategories` (
+    `IdExpenseCategory` INT PRIMARY KEY AUTO_INCREMENT,
     Description VARCHAR(255)
 );
 
@@ -42,10 +43,10 @@ CREATE TABLE `BaseExpenses` (
     `EntryDate` DATETIME DEFAULT (CURRENT_DATE),
     `IdDestiny` INT NOT NULL,
     `IdBank` INT NOT NULL,
-    `IdExpenseType` INT NOT NULL,
+    `IdExpenseCategory` INT NOT NULL,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`),
     FOREIGN KEY (`IdBank`) REFERENCES `Banks`(`IdBank`),
-    FOREIGN KEY (`IdExpenseType`) REFERENCES `ExpenseTypes`(`IdExpenseType`)
+    FOREIGN KEY (`IdExpenseCategory`) REFERENCES `ExpenseCategories`(`IdExpenseCategory`)
 );
 
 CREATE TABLE `DefaultExpenses` (
