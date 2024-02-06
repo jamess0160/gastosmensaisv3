@@ -1,11 +1,11 @@
-import { getAllByMonth } from './getAllByMonth'
+import { getAllByMY } from './getAllByMY'
 import { clone } from './clone'
 import { create } from './create'
 import { update } from './update'
 import { remove } from './remove'
 
 export const CashInflowsUseCases = {
-    getAllByMonth,
+    getAllByMY,
     clone,
     create,
     update,

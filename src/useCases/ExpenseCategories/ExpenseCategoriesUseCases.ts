@@ -1,5 +1,5 @@
 import { getAll } from './getAll'
 
-export const ExpenseTypesUseCases = {
+export const ExpenseCategoriesUseCases = {
     getAll,
 } 
