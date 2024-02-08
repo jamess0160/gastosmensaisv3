@@ -34,7 +34,7 @@ CREATE TABLE `SistemParams` (
 
 CREATE TABLE `ExpenseCategories` (
     `IdExpenseCategory` INT PRIMARY KEY AUTO_INCREMENT,
-    Description VARCHAR(255)
+    Description VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE `BaseExpenses` (

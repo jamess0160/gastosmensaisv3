@@ -79,6 +79,6 @@ model sistemparams {
 }
 
 model expensecategories {
-  IdExpenseCategory Int     @id @default(autoincrement())
-  Description       String? @db.VarChar(255)
+  IdExpenseCategory Int    @id @default(autoincrement())
+  Description       String @db.VarChar(255)
 }
