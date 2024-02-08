@@ -1,0 +1,7 @@
+.ResumeContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 4rem 0 4rem 0;
+}
