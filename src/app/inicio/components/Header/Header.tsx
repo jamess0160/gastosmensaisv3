@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import DataAtual from "./dataAtual";
+import DataAtual from "./DataAtual";
 import { Settings } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";

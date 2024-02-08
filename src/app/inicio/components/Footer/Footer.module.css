@@ -1,0 +1,10 @@
+.Footer {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.Button {
+    border-radius: 100%;
+    outline: 1px solid white;
+}

@@ -5,6 +5,7 @@ import BankResume from "./components/BankResume/BankResume";
 import { UtilsUseCases } from "@/useCases/Utils/UtilsUseCases";
 import DestinyResumeContainer from "./components/DestinyResume/DestinyResumeContainer";
 import ResumeContainer from "./components/ResumeContainer/ResumeContainer";
+import Footer from "./components/Footer/Footer";
 
 export default async function Page() {
     const month = 1
@@ -21,6 +22,7 @@ export default async function Page() {
             <ResumeContainer month={month} year={year} />
             <DestinyResumeContainer DestinysResume={destinysResume} />
             {banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
+            <Footer />
         </Container>
     )
 }
