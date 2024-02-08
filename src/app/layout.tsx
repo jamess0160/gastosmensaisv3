@@ -22,11 +22,15 @@ export default function RootLayout({ children }: RootLayoutParams) {
 	return (
 		<html lang="en">
 			<body className={font.className}>
-				<AppRouterCacheProvider options={{ enableCssLayer: true }}>
-					<ThemeProvider theme={theme}>
-						{children}
-					</ThemeProvider>
-				</AppRouterCacheProvider>
+				<div className="imageBackground">
+					<div className="colorBackground">
+						<AppRouterCacheProvider options={{ enableCssLayer: true }}>
+							<ThemeProvider theme={theme}>
+								{children}
+							</ThemeProvider>
+						</AppRouterCacheProvider>
+					</div>
+				</div>
 			</body>
 		</html>
 	);
