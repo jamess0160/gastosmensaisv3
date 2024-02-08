@@ -13,6 +13,8 @@ export async function getMonthlyDestinyResume(month: number, year: number) {
         params: SistemParamsUseCases.getAll(UtilsUseCases.monthAndYearToMoment(month, year).toDate()),
     })
 
+    destinys = destinys.filter((item) => item.IdDestiny !== parseInt(params.IdDestinoConjunto))
+
     let jointExpenses = await calculateJointExpenses(month, year, parseInt(params.IdDestinoConjunto), destinys)
 
     return Promise.all(destinys.map<Promise<DestinyResume>>(async (item) => {
@@ -34,7 +36,7 @@ export async function getMonthlyDestinyResume(month: number, year: number) {
         }
 
         return {
-            DestinyName: item.Name,
+            DestinyData: item,
             RemainingBudget: destinyBudget - totalExpenses
         }
     }))
@@ -74,7 +76,7 @@ function calculateDestinyBudget(cashInflows: cashinflows[], destiny: destinys, t
     return commonCash + destinyCash
 }
 
-interface DestinyResume {
-    DestinyName: string
+export interface DestinyResume {
+    DestinyData: destinys
     RemainingBudget: number
 }

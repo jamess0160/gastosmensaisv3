@@ -1,0 +1,25 @@
+.bankContainer {
+    width: 100%;
+    min-height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.bankName {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bank {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+}
