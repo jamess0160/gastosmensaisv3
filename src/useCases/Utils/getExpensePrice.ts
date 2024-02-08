@@ -1,4 +1,4 @@
-import { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/getMonthlyBankCategory";
+import { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild";
 
 export function getExpensePrice(expense: FullBaseExpenseChild) {
     if (isDefault(expense)) {
@@ -17,13 +17,13 @@ export function getExpensePrice(expense: FullBaseExpenseChild) {
 }
 
 function isDefault(expense: any): expense is DefaultExpenseChild {
-    return expense.child.IdDefaultExpense
+    return expense?.child?.IdDefaultExpense
 }
 
 function isFixed(expense: any): expense is FixedExpenseChild {
-    return expense.child.IdFixedExpense
+    return expense?.child?.IdFixedExpense
 }
 
 function isInstallment(expense: any): expense is InstallmentExpenseChild {
-    return expense.child.IdInstallmentExpense
+    return expense?.child?.IdInstallmentExpense
 }
