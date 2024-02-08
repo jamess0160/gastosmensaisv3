@@ -1,0 +1,8 @@
+body {
+    background-color: #313338;
+    color: white;
+}
+
+.debug {
+    outline: 1px solid red;
+}
