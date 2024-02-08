@@ -8,9 +8,9 @@ datasource db {
 }
 
 model banks {
-  IdBank   Int    @id @default(autoincrement())
-  Name     String @db.VarChar(255)
-  IconPath String @db.VarChar(255)
+  IdBank   Int     @id @default(autoincrement())
+  Name     String  @db.VarChar(255)
+  IconPath String? @db.VarChar(255)
 }
 
 model baseexpenses {
@@ -48,6 +48,7 @@ model defaultexpenses {
 model destinys {
   IdDestiny         Int      @id @default(autoincrement())
   Name              String   @db.VarChar(255)
+  Color             String?  @db.VarChar(255)
   SplitJointExpense Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
 }
 

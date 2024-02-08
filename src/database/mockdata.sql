@@ -1,31 +1,31 @@
 -- Active: 1706977966627@@127.0.0.1@3306@gastosmensaisv3
 INSERT INTO
-    `Destinys` (`Name`, `SplitJointExpense`)
+    `Destinys` (`Name`, `SplitJointExpense`, `Color`)
 VALUES
-    ('Tiago', 1),
-    ('Luana', 1),
-    ('Geral', 0),
-    ('Conjunto', 0);
+    ('Luana', 1, '#463956'),
+    ('Geral', 0, '#6d5f66'),
+    ('Tiago', 1, '#3e697d'),
+    ('Conjunto', 0, null);
 
 INSERT INTO
-    `CashInflows` (`Description`, `IdDestiny`, `Value`)
+    `CashInflows` (`Description`, `Value`)
 VALUES
-    ('Salário Tiago', 4, 3600),
-    ('Salário Luana', 4, 1200);
+    ('Salário Tiago', 3600),
+    ('Salário Luana', 1200);
 
 INSERT INTO
     `Banks` (`Name`, `IconPath`)
 VALUES
-    ('Pix / Debito', 'TESTE'),
-    ('Nubank Tiago', 'TESTE'),
-    ('Nubank Luana', 'TESTE'),
-    ('Inter', 'TESTE');
+    ('Pix / Debito', '/bankIcons/pix.svg'),
+    ('Nubank Tiago', '/bankIcons/nubank.svg'),
+    ('Nubank Luana', '/bankIcons/nubank.svg'),
+    ('Inter', '/bankIcons/inter.svg');
 
 INSERT INTO
     `SistemParams` (`Key`, `Value`)
 VALUES
     ('ValorMaximoGeral', '1400'),
-    ('IdDestinoGeral', '3'),
+    ('IdDestinoGeral', '2'),
     ('IdDestinoConjunto', '4');
 
 INSERT INTO
@@ -44,9 +44,9 @@ INSERT INTO
         `Price`
     )
 VALUES
-    ('Teste Default', 1, 1, 1, 20),
-    ('Teste Fixed', 1, 1, 1, 30),
-    ('Teste Installment', 1, 1, 1, 40);
+    ('Teste Default', 1, 3, 1, 20),
+    ('Teste Fixed', 1, 3, 1, 30),
+    ('Teste Installment', 1, 3, 1, 40);
 
 INSERT INTO
     `DefaultExpenses` (`IdBaseExpense`)

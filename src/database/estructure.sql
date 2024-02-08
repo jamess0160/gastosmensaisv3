@@ -7,6 +7,7 @@ USE GastosMensaisV3;
 CREATE TABLE `Destinys` (
     `IdDestiny` INT PRIMARY KEY AUTO_INCREMENT,
     `Name` VARCHAR(255) NOT NULL,
+    `Color` VARCHAR(255),
     `SplitJointExpense` BIT DEFAULT 0
 );
 
@@ -22,7 +23,7 @@ CREATE TABLE `CashInflows` (
 CREATE TABLE `Banks` (
     `IdBank` INT PRIMARY KEY AUTO_INCREMENT,
     `Name` VARCHAR(255) NOT NULL,
-    `IconPath` VARCHAR(255) NOT NULL
+    `IconPath` VARCHAR(255)
 );
 
 CREATE TABLE `SistemParams` (
