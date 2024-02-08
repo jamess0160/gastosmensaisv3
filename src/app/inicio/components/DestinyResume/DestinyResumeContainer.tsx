@@ -9,7 +9,9 @@ interface DestinyResumeContainerParams {
 export default function DestinyResumeContainer({ DestinysResume }: DestinyResumeContainerParams) {
     return (
         <div className={styles.DestinyResumeContainer}>
-            {DestinysResume.map((item, index) => <ResumeItem Name={item.DestinyData.Name} Value={item.RemainingBudget} color={item.DestinyData.Color || undefined} href="" key={index} />)}
+            {DestinysResume.map((item, index) => {
+                return <ResumeItem Name={item.DestinyData.Name} Value={item.RemainingBudget} color={item.DestinyData.Color || undefined} href="" key={index} />
+            })}
         </div>
     )
 }

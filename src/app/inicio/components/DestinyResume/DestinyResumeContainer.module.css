@@ -3,4 +3,6 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 4rem;
+    flex-wrap: wrap;
+    row-gap: 1rem;
 }
