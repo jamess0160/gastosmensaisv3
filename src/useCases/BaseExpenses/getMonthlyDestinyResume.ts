@@ -47,7 +47,7 @@ function getDestinyExpenses(month: number, year: number, IdDestiny: number) {
         where: {
             EntryDate: {
                 gte: UtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                lte: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                lt: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
             },
             IdDestiny: IdDestiny,
         }

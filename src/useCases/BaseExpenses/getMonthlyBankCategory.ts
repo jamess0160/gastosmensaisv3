@@ -13,7 +13,7 @@ function getExpenseData(month: number, year: number, IdBank: number, IdExpenseCa
         where: {
             EntryDate: {
                 gte: UtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                lte: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                lt: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
             },
             IdBank: IdBank,
             IdExpenseCategory: IdExpenseCategory,
