@@ -1,6 +1,5 @@
-'use client';
+import { redirect } from "next/navigation";
 
 export default function Page() {
-    location.href = "/inicio"
-    return
+    redirect("/inicio")
 }
