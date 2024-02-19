@@ -1,10 +1,16 @@
 import { IconButton } from "@mui/material";
-import DataAtual from "./DataAtual";
 import { Settings } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
 
-export default function Header() {
+const monthsArray = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+
+interface HeaderProps {
+    month: number
+    year: number
+}
+
+export default function Header({ month, year }: HeaderProps) {
     return (
         <div className={styles.header}>
             <Link href={"/config"}>
@@ -12,7 +18,9 @@ export default function Header() {
                     <Settings fontSize="large" />
                 </IconButton>
             </Link>
-            <DataAtual />
+            <div style={{ fontSize: "2rem" }}>
+                {`${monthsArray[month]}, ${year}`}
+            </div>
         </div>
     )
 }
