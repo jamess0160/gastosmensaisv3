@@ -1,4 +1,6 @@
 import { prisma } from '@/database/prisma'
+import { sistemparams } from '@prisma/client'
+import { UtilsUseCases } from '../Utils/UtilsUseCases'
 
 const oSistemParams = {
     ValorMaximoGeral: "ValorMaximoGeral",
@@ -10,17 +12,25 @@ type SistemParams = keyof typeof oSistemParams
 
 export type getParamReturn = Awaited<ReturnType<typeof getAll>>
 
-export async function getAll(EfectiveDate: Date) {
-    let params = await prisma.sistemparams.findMany({
-        where: {
-            EfectiveDate: {
-                gte: EfectiveDate
-            }
-        },
-        orderBy: {
-            IdSistemParam: "desc"
-        }
-    })
+export async function getAll(month: number, year: number) {
+    let EfectiveDate = UtilsUseCases.monthAndYearToMoment(month, year).toDate()
+    let params = await prisma.$queryRaw<sistemparams[]>`
+                SELECT
+                    *
+                FROM
+                    SistemParams
+                WHERE
+                    IdSistemParam IN (
+                        SELECT
+                            MAX(IdSistemParam)
+                        FROM
+                            SistemParams
+                        WHERE
+                            EfectiveDate <= ${EfectiveDate}
+                        GROUP BY
+                            \`Key\`
+                    )
+        `
 
     let keys = Object.keys(oSistemParams) as SistemParams[]
 
