@@ -1,5 +1,1 @@
-import { getAll } from './getAll'
-
-export const DestinysUseCases = {
-    getAll,
-} 
+export * as DestinysUseCases from './export';

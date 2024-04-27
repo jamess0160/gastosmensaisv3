@@ -2,15 +2,15 @@ import { prisma } from '@/database/prisma'
 import { CashInflowsUseCases } from '../CashInflows/CashInflowsUseCases'
 import { DestinysUseCases } from '../Destinys/DestinysUseCases'
 import { UtilsUseCases } from '../Utils/UtilsUseCases'
-import { SistemParamsUseCases } from '../SistemParams/SistemParamsUseCases'
 import { cashinflows, destinys } from '@prisma/client'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
+import { SistemParamsUseCases } from '../SistemParams/SistemParamsUseCases'
 
 export async function getMonthlyDestinyResume(month: number, year: number) {
     let { cashInflows, destinys, params } = await UtilsUseCases.resolvePromiseObj({
         cashInflows: CashInflowsUseCases.getAllByMY(month, year),
         destinys: DestinysUseCases.getAll(),
-        params: SistemParamsUseCases.getAll(UtilsUseCases.monthAndYearToMoment(month, year).toDate()),
+        params: SistemParamsUseCases.getAll(month, year),
     })
 
     destinys = destinys.filter((item) => item.IdDestiny !== parseInt(params.IdDestinoConjunto))
