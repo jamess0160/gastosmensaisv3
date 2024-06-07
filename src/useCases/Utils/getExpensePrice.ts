@@ -1,29 +1,34 @@
+import { BaseSection } from "@/base";
 import { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild";
+import { UtilsUseCases } from "./UtilsUseCases";
 
-export function getExpensePrice(expense: FullBaseExpenseChild) {
-    if (isDefault(expense)) {
+export class GetExpensePrice extends BaseSection<UtilsUseCases>{
+
+    run(expense: FullBaseExpenseChild) {
+        if (this.isDefault(expense)) {
+            return expense.Price
+        }
+
+        if (this.isFixed(expense)) {
+            return expense.child.Price || expense.Price
+        }
+
+        if (this.isInstallment(expense)) {
+            return expense.child.Price || expense.Price
+        }
+
         return expense.Price
     }
 
-    if (isFixed(expense)) {
-        return expense.child.Price || expense.Price
+    private isDefault(expense: any): expense is DefaultExpenseChild {
+        return expense?.child?.IdDefaultExpense
     }
 
-    if (isInstallment(expense)) {
-        return expense.child.Price || expense.Price
+    private isFixed(expense: any): expense is FixedExpenseChild {
+        return expense?.child?.IdFixedExpense
     }
 
-    return expense.Price
-}
-
-function isDefault(expense: any): expense is DefaultExpenseChild {
-    return expense?.child?.IdDefaultExpense
-}
-
-function isFixed(expense: any): expense is FixedExpenseChild {
-    return expense?.child?.IdFixedExpense
-}
-
-function isInstallment(expense: any): expense is InstallmentExpenseChild {
-    return expense?.child?.IdInstallmentExpense
+    private isInstallment(expense: any): expense is InstallmentExpenseChild {
+        return expense?.child?.IdInstallmentExpense
+    }
 }

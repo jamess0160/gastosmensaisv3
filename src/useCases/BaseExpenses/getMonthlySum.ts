@@ -1,22 +1,26 @@
 import { prisma } from '@/database/prisma'
-import { UtilsUseCases } from '../Utils/UtilsUseCases'
+import { utilsUseCases } from '../Utils/UtilsUseCases'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
+import { BaseSection } from '../../base'
 
-export async function getMonthlySum(month: number, year: number) {
-    let data = await getMonthlyData(month, year)
+export class GetMonthlySum extends BaseSection<BaseExpensesUseCases>{
 
-    let fullData = await BaseExpensesUseCases.generateFullBaseExpenseChild(data)
+    async run(month: number, year: number) {
+        let data = await this.getMonthlyData(month, year)
 
-    return fullData.reduce((old, item) => old + UtilsUseCases.getExpensePrice(item), 0)
-}
+        let fullData = await this.instance.GenerateFullBaseExpenseChild.run(data)
 
-function getMonthlyData(month: number, year: number) {
-    return prisma.baseexpenses.findMany({
-        where: {
-            EntryDate: {
-                gte: UtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                lt: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+        return fullData.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0)
+    }
+
+    getMonthlyData(month: number, year: number) {
+        return prisma.baseexpenses.findMany({
+            where: {
+                EntryDate: {
+                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                }
             }
-        }
-    })
+        })
+    }
 }

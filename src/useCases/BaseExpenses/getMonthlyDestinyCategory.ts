@@ -1,22 +1,26 @@
 import { prisma } from '@/database/prisma'
-import { UtilsUseCases } from '../Utils/UtilsUseCases'
+import { utilsUseCases } from '../Utils/UtilsUseCases'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
+import { BaseSection } from '../../base'
 
-export async function getMonthlyDestinyCategory(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
-    let destinyExpenses = await getDestinyExpenses(month, year, IdDestiny, IdExpenseCategory)
+export class GetMonthlyDestinyCategory extends BaseSection<BaseExpensesUseCases>{
 
-    return BaseExpensesUseCases.generateFullBaseExpenseChild(destinyExpenses)
-}
+    async run(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
+        let destinyExpenses = await this.getDestinyExpenses(month, year, IdDestiny, IdExpenseCategory)
 
-function getDestinyExpenses(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
-    return prisma.baseexpenses.findMany({
-        where: {
-            EntryDate: {
-                gte: UtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                lt: UtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
-            },
-            IdDestiny: IdDestiny,
-            IdExpenseCategory: IdExpenseCategory,
-        }
-    })
+        return this.instance.GenerateFullBaseExpenseChild.run(destinyExpenses)
+    }
+
+    private getDestinyExpenses(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
+        return prisma.baseexpenses.findMany({
+            where: {
+                EntryDate: {
+                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                },
+                IdDestiny: IdDestiny,
+                IdExpenseCategory: IdExpenseCategory,
+            }
+        })
+    }
 }

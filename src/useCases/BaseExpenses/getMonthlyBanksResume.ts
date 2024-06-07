@@ -1,35 +1,42 @@
-import { BanksUseCases } from '../Banks/BanksUseCases'
 import { banks, expensecategories } from '@prisma/client'
-import { BaseExpensesUseCases } from './BaseExpensesUseCases'
-import { UtilsUseCases } from '../Utils/UtilsUseCases'
 import { FullBaseExpenseChild } from './generateFullBaseExpenseChild'
-import { ExpenseCategoriesUseCases } from '../ExpenseCategories/ExpenseCategoriesUseCases'
+import { BaseSection } from '../../base'
+import { BaseExpensesUseCases } from './BaseExpensesUseCases'
+import { banksUseCases } from '../Banks/BanksUseCases'
+import { expenseCategoriesUseCases } from '../ExpenseCategories/ExpenseCategoriesUseCases'
+import { utilsUseCases } from '../Utils/UtilsUseCases'
 
-export async function getMonthlyBanksResume(month: number, year: number) {
-    let banks = await BanksUseCases.getAll()
-    let categories = await ExpenseCategoriesUseCases.getAll()
+export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
 
-    return Promise.all(banks.map<Promise<BankResume>>((item) => generateBanksResume(month, year, categories, item)))
-}
+    async run(month: number, year: number) {
+        let banks = await banksUseCases.getAll()
+        let categories = await expenseCategoriesUseCases.getAll()
 
-async function generateBanksResume(month: number, year: number, category: expensecategories[], bank: banks): Promise<BankResume> {
-    let bankExpenses = await BaseExpensesUseCases.getMonthlyBankCategory(month, year, bank.IdBank)
+        return Promise.all(banks.map<Promise<BankResume>>((item) => this.generateBanksResume(month, year, categories, item)))
+    }
 
-    return {
-        BankData: bank,
-        TotalExpensesSum: bankExpenses.reduce((old, item) => old + UtilsUseCases.getExpensePrice(item), 0),
-        Categories: category.map((item) => generateBankResumeDestiny(bankExpenses, item)),
+    private async generateBanksResume(month: number, year: number, category: expensecategories[], bank: banks): Promise<BankResume> {
+        let bankExpenses = await this.instance.GetMonthlyBankCategory.run(month, year, bank.IdBank)
+
+        return {
+            BankData: bank,
+            TotalExpensesSum: bankExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0),
+            Categories: category.map((item) => this.generateBankResumeDestiny(bankExpenses, item)),
+        }
+    }
+
+    private generateBankResumeDestiny(bankExpenses: FullBaseExpenseChild[], category: expensecategories): BankResumeCategories {
+        let destinyExpenses = bankExpenses.filter((subItem) => subItem.IdExpenseCategory === category.IdExpenseCategory)
+
+        return {
+            CategoryName: category.Description,
+            ExpensesSum: destinyExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0)
+        }
     }
 }
 
-function generateBankResumeDestiny(bankExpenses: FullBaseExpenseChild[], category: expensecategories): BankResumeCategories {
-    let destinyExpenses = bankExpenses.filter((subItem) => subItem.IdExpenseCategory === category.IdExpenseCategory)
 
-    return {
-        CategoryName: category.Description,
-        ExpensesSum: destinyExpenses.reduce((old, item) => old + UtilsUseCases.getExpensePrice(item), 0)
-    }
-}
+//#region Interfaces / Types 
 
 export interface BankResume {
     BankData: banks
@@ -41,3 +48,5 @@ export interface BankResumeCategories {
     CategoryName: string
     ExpensesSum: number
 }
+
+//#endregion
