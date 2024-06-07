@@ -8,3 +8,120 @@
     border-radius: 100%;
     outline: 1px solid white;
 }
+
+div:has(>.dialog) {
+    background-color: #1e1f22;
+    border-radius: 15px;
+}
+
+.dialog {
+    width: 30rem;
+    height: fit-content;
+    max-width: 80dvw;
+    max-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem 0 1.5rem 0;
+}
+
+.form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.campo {
+    position: relative;
+    width: 80%;
+    height: 2rem;
+    margin-bottom: 1rem;
+    color: #D9D9D9;
+}
+
+.campo.checkParent {
+    margin-bottom: 2rem;
+}
+
+.campo>legend {
+    position: absolute;
+    left: 1rem;
+    top: -0.75rem;
+    background-color: #1E1F22;
+}
+
+.campo>input,
+.campo>select {
+    width: calc(100% - 1rem);
+    height: 100%;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    outline: 0;
+    background: transparent;
+    padding-left: 1rem;
+    font-size: 12px;
+    font-family: 'Lexend', sans-serif;
+    color: #D9D9D9;
+}
+
+.campo>input:focus,
+.campo>select:focus {
+    border: 1px solid #646464;
+}
+
+.campo>select {
+    width: 100%;
+}
+
+.campo option {
+    color: #D9D9D9;
+    background-color: #1E1F22;
+}
+
+.checkGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.checkGroup>div {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.dialog ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.botoes {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.botao {
+    width: 25%;
+    border-radius: 8px;
+    padding: 0.25rem;
+    border: 0;
+}
+
+.cancelar {
+    background-color: transparent;
+    border: 1px solid #D6D6D6;
+    color: #D9D9D9;
+}
+
+.cadastrar {
+    background-color: #D6D6D6;
+    color: black;
+}
