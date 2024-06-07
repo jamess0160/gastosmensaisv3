@@ -1,18 +1,13 @@
-import { UtilsUseCases } from "@/useCases/Utils/UtilsUseCases";
+import { utilsUseCases } from "@/useCases/Utils/UtilsUseCases";
 import ResumeItem from "../ResumeItem/ResumeItem";
-import { BaseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import styles from './ResumeContainer.module.css'
-import { CashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
-
-interface ResumeContainerProps {
-    month: number
-    year: number
-}
+import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
+import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 
 export default async function ResumeContainer(props: ResumeContainerProps) {
-    let { monthlyExpenseSum, monthlyInflow } = await UtilsUseCases.resolvePromiseObj({
-        monthlyExpenseSum: BaseExpensesUseCases.getMonthlySum(props.month, props.year),
-        monthlyInflow: CashInflowsUseCases.getAllByMY(props.month, props.year)
+    let { monthlyExpenseSum, monthlyInflow } = await utilsUseCases.resolvePromiseObj({
+        monthlyExpenseSum: baseExpensesUseCases.GetMonthlySum.run(props.month, props.year),
+        monthlyInflow: cashInflowsUseCases.getAllByMY(props.month, props.year)
     })
 
     let monthlyInflowSum = monthlyInflow.reduce((old, item) => old + item.Value, 0)
@@ -25,3 +20,12 @@ export default async function ResumeContainer(props: ResumeContainerProps) {
         </div>
     )
 }
+
+//#region Interfaces / Types 
+
+interface ResumeContainerProps {
+    month: number
+    year: number
+}
+
+//#endregion
