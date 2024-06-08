@@ -1,5 +1,5 @@
 import { prisma } from '@/database/prisma'
-import { UtilsUseCases, utilsUseCases } from '../Utils/UtilsUseCases'
+import { utilsUseCases } from '../Utils/UtilsUseCases'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from '../../base'
 

@@ -26,7 +26,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
     private async calculateJointExpenses(month: number, year: number, IdDestinoConjunto: number, destinys: destinys[]) {
         let jointExpenses = await this.getDestinyExpenses(month, year, IdDestinoConjunto)
         let fullJointExpenses = await this.instance.GenerateFullBaseExpenseChild.run(jointExpenses)
-        let totalJointExpenses = fullJointExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0)
+        let totalJointExpenses = fullJointExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
 
         let whoSplitJointExpense = destinys.filter((item) => item.SplitJointExpense)
 
@@ -45,7 +45,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(destinyExpenses)
 
-        let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0)
+        let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
 
         if (item.SplitJointExpense) {
             totalExpenses += jointExpenses
@@ -68,7 +68,6 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
             }
         })
     }
-
 
     private calculateDestinyBudget(cashInflows: cashinflows[], destiny: destinys, totalDestinys: number) {
         let commonCash = cashInflows.reduce((old, item) => {

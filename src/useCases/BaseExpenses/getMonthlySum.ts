@@ -10,7 +10,7 @@ export class GetMonthlySum extends BaseSection<BaseExpensesUseCases>{
 
         let fullData = await this.instance.GenerateFullBaseExpenseChild.run(data)
 
-        return fullData.reduce((old, item) => old + utilsUseCases.GetExpensePrice.run(item), 0)
+        return fullData.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
     }
 
     getMonthlyData(month: number, year: number) {
