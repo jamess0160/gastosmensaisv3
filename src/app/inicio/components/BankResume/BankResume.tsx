@@ -16,7 +16,13 @@ export default function BankResume({ bank }: BankProps) {
                 <div>{bank.BankData.Name}</div>
             </div>
             <div className={styles.bank}>
-                {bank.Categories.map((item, index) => <BankItem Name={item.CategoryName} Value={item.ExpensesSum} href="" key={index} />)}
+                
+                {bank.Categories.map((item, index) => {
+                    let category = item.IdExpenseCategory !== 1 ? `#Category${item.IdExpenseCategory}` : ""
+
+                    return <BankItem Name={item.CategoryName} Value={item.ExpensesSum} href={`/categorias/banco/${bank.BankData.IdBank}${category}`} key={index} />
+                })}
+
                 <BankItem Name="Total de gastos" Value={bank.TotalExpensesSum} href="" />
             </div>
         </div>
