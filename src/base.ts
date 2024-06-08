@@ -10,7 +10,7 @@ export abstract class BaseSection<T>{
 }
 
 export abstract class BaseUseCase {
-    public readonly prisma: UtilTypes.PrismaTransaction
+    protected readonly prisma: UtilTypes.PrismaTransaction
 
     constructor(tx?: UtilTypes.PrismaTransaction) {
         this.prisma = tx || prisma
