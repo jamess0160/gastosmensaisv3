@@ -2,8 +2,7 @@ import { IconButton } from "@mui/material";
 import { Settings } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
-
-const monthsArray = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+import { utilsUseCases } from "@/useCases/Utils/UtilsUseCases";
 
 interface HeaderProps {
     month: number
@@ -18,9 +17,9 @@ export default function Header({ month, year }: HeaderProps) {
                     <Settings fontSize="large" />
                 </IconButton>
             </Link>
-            <div style={{ fontSize: "2rem" }}>
-                {`${monthsArray[month]}, ${year}`}
-            </div>
+            <h1 className="m-0">
+                {`${utilsUseCases.months[month]}, ${year}`}
+            </h1>
         </div>
     )
 }

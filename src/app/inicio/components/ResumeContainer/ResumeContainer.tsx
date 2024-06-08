@@ -5,6 +5,7 @@ import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCas
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 
 export default async function ResumeContainer(props: ResumeContainerProps) {
+
     let { monthlyExpenseSum, monthlyInflow } = await utilsUseCases.resolvePromiseObj({
         monthlyExpenseSum: baseExpensesUseCases.GetMonthlySum.run(props.month, props.year),
         monthlyInflow: cashInflowsUseCases.getAllByMY(props.month, props.year)
