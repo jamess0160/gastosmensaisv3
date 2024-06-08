@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import { Lexend } from "next/font/google";
+import BotaoVoltar from "./components/BotaoVoltar";
 
 const font = Lexend({
 	weight: ['300', '400', '500', '700'],
@@ -19,16 +20,18 @@ export const metadata: Metadata = {
 type RootLayoutParams = Readonly<{ children: React.ReactNode; }>
 
 export default function RootLayout({ children }: RootLayoutParams) {
+
 	return (
-		<html lang="en">
+		<html lang="pt-br">
 			<body className={font.className}>
 				<div className="imageBackground">
 					<div className="colorBackground">
-						<AppRouterCacheProvider options={{ enableCssLayer: true }}>
-							<ThemeProvider theme={theme}>
+						<ThemeProvider theme={theme}>
+							<BotaoVoltar />
+							<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 								{children}
-							</ThemeProvider>
-						</AppRouterCacheProvider>
+							</AppRouterCacheProvider>
+						</ThemeProvider>
 					</div>
 				</div>
 			</body>
