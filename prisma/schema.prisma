@@ -21,6 +21,7 @@ model baseexpenses {
   IdDestiny         Int
   IdBank            Int
   IdExpenseCategory Int
+  Active            Boolean?  @default(true)
 
   @@index([IdBank], map: "IdBank")
   @@index([IdDestiny], map: "IdDestiny")

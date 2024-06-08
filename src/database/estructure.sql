@@ -46,6 +46,7 @@ CREATE TABLE `BaseExpenses` (
     `IdDestiny` INT NOT NULL,
     `IdBank` INT NOT NULL,
     `IdExpenseCategory` INT NOT NULL,
+    `Active` BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`),
     FOREIGN KEY (`IdBank`) REFERENCES `Banks`(`IdBank`),
     FOREIGN KEY (`IdExpenseCategory`) REFERENCES `ExpenseCategories`(`IdExpenseCategory`)
@@ -75,3 +76,8 @@ CREATE TABLE `InstallmentExpenses` (
     `IdBaseExpense` INT NOT NULL,
     FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
+
+ALTER TABLE
+    `BaseExpenses`
+ADD
+    `Active` BOOLEAN DEFAULT TRUE;
