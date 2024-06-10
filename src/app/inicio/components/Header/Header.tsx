@@ -2,7 +2,7 @@ import { IconButton } from "@mui/material";
 import { Settings } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
-import { utilsUseCases } from "@/useCases/Utils/UtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 
 interface HeaderProps {
     month: number
@@ -18,7 +18,7 @@ export default function Header({ month, year }: HeaderProps) {
                 </IconButton>
             </Link>
             <h1 className="m-0">
-                {`${utilsUseCases.months[month]}, ${year}`}
+                {`${clientUtilsUseCases.months[month]}, ${year}`}
             </h1>
         </div>
     )

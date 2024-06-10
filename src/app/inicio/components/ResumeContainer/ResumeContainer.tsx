@@ -1,4 +1,4 @@
-import { utilsUseCases } from "@/useCases/Utils/UtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 import ResumeItem from "../ResumeItem/ResumeItem";
 import styles from './ResumeContainer.module.css'
 import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
@@ -6,7 +6,7 @@ import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases"
 
 export default async function ResumeContainer(props: ResumeContainerProps) {
 
-    let { monthlyExpenseSum, monthlyInflow } = await utilsUseCases.resolvePromiseObj({
+    let { monthlyExpenseSum, monthlyInflow } = await clientUtilsUseCases.resolvePromiseObj({
         monthlyExpenseSum: baseExpensesUseCases.GetMonthlySum.run(props.month, props.year),
         monthlyInflow: cashInflowsUseCases.getAllByMY(props.month, props.year)
     })
