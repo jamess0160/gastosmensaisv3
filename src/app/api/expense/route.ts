@@ -1,17 +1,19 @@
 import { UtilTypes } from "@/database/UtilTypes";
 import { prisma } from "@/database/prisma";
-import { BaseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
+import { BaseExpensesUseCases, baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import { DefaultExpensesUseCases } from "@/useCases/DefaultExpenses/DefaultExpensesUseCases";
 import { FixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUseCases";
 import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { baseexpenses } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+
+
+//#region Create Expense 
 
 export async function POST(request: NextRequest) {
     let createExpenseData = await request.json() as UtilTypes.CreateExpense
 
-    let result = await prisma.$transaction(async (tx) => {
+    return NextResponse.json(await prisma.$transaction(async (tx) => {
         let baseExpense = await createBaseExpense(tx, createExpenseData)
 
         if (createExpenseData.Type === "Default") {
@@ -25,13 +27,8 @@ export async function POST(request: NextRequest) {
         if (createExpenseData.Type === "Installment") {
             return NextResponse.json(await createInstallmentExpense(tx, baseExpense, createExpenseData))
         }
-    })
-
-    revalidatePath("/inicio")
-
-    return NextResponse.json(result)
+    }))
 }
-
 
 function createBaseExpense(tx: UtilTypes.PrismaTransaction, createExpenseData: UtilTypes.CreateExpense) {
     return new BaseExpensesUseCases(tx).create({
@@ -64,4 +61,19 @@ function createInstallmentExpense(tx: UtilTypes.PrismaTransaction, baseExpense: 
         CurrentInstallment: parseInt(createExpenseData.CurrentInstallment),
         MaxInstallment: parseInt(createExpenseData.MaxInstallment),
     })
+}
+
+//#endregion
+
+export async function DELETE(request: NextRequest) {
+    let { searchParams } = new URL(request.url)
+    let IdBaseExpense = searchParams.get('IdBaseExpense')
+
+    if (!IdBaseExpense) {
+        return NextResponse.json({ msg: "IdBaseExpense não encontrado na query!" }, { status: 406 })
+    }
+
+    let result = await baseExpensesUseCases.delete(parseInt(IdBaseExpense))
+
+    return NextResponse.json(result)
 }
