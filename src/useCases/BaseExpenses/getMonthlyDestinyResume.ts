@@ -17,7 +17,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         destinys = destinys.filter((item) => item.IdDestiny !== parseInt(params.IdDestinoConjunto))
 
-        let jointExpenses = await this.calculateJointExpenses(month, year, parseInt(params.IdDestinoConjunto), destinys)
+        let jointExpenses = params.IdDestinoConjunto ? await this.calculateJointExpenses(month, year, parseInt(params.IdDestinoConjunto), destinys) : 0
 
         return Promise.all(destinys.map<Promise<DestinyResume>>((item) => this.generateDestinyResume(item, cashInflows, destinys.length, params, month, year, jointExpenses)))
     }
