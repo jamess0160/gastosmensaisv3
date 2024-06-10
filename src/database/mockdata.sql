@@ -54,9 +54,9 @@ VALUES
     (1);
 
 INSERT INTO
-    `FixedExpenses` (`IdBaseExpense`, `EndDate`)
+    `FixedExpenses` (`IdBaseExpense`)
 VALUES
-    (2, DATE_ADD(CURRENT_DATE(), INTERVAL 1 MONTH));
+    (2);
 
 INSERT INTO
     `InstallmentExpenses` (

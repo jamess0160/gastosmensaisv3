@@ -8,14 +8,14 @@ CREATE TABLE `Destinys` (
     `IdDestiny` INT PRIMARY KEY AUTO_INCREMENT,
     `Name` VARCHAR(255) NOT NULL,
     `Color` VARCHAR(255),
-    `SplitJointExpense` BIT DEFAULT 0
+    `SplitJointExpense` BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE `CashInflows` (
     `IdCashInflow` INT PRIMARY KEY AUTO_INCREMENT,
     `Description` VARCHAR(255) NOT NULL,
     `Value` FLOAT NOT NULL,
-    `EfectiveDate` DATETIME DEFAULT (CURRENT_DATE),
+    `EfectiveDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
     `IdDestiny` INT,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`)
 );
@@ -30,7 +30,7 @@ CREATE TABLE `SistemParams` (
     `IdSistemParam` INT PRIMARY KEY AUTO_INCREMENT,
     `Key` VARCHAR(255) NOT NULL,
     `Value` VARCHAR(255) NOT NULL,
-    `EfectiveDate` DATE DEFAULT (CURRENT_DATE)
+    `EfectiveDate` DATE NOT NULL DEFAULT (CURRENT_DATE)
 );
 
 CREATE TABLE `ExpenseCategories` (
@@ -42,11 +42,11 @@ CREATE TABLE `BaseExpenses` (
     `IdBaseExpense` INT PRIMARY KEY AUTO_INCREMENT,
     `Description` VARCHAR(255) NOT NULL,
     `Price` FLOAT NOT NULL,
-    `EntryDate` DATETIME DEFAULT (CURRENT_DATE),
+    `EntryDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
     `IdDestiny` INT NOT NULL,
     `IdBank` INT NOT NULL,
     `IdExpenseCategory` INT NOT NULL,
-    `Active` BOOLEAN DEFAULT TRUE,
+    `Active` BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`),
     FOREIGN KEY (`IdBank`) REFERENCES `Banks`(`IdBank`),
     FOREIGN KEY (`IdExpenseCategory`) REFERENCES `ExpenseCategories`(`IdExpenseCategory`)
@@ -54,7 +54,7 @@ CREATE TABLE `BaseExpenses` (
 
 CREATE TABLE `DefaultExpenses` (
     `IdDefaultExpense` INT PRIMARY KEY AUTO_INCREMENT,
-    `ExpenseDate` DATETIME DEFAULT (CURRENT_DATE),
+    `ExpenseDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
     `IdBaseExpense` INT NOT NULL UNIQUE,
     FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
@@ -62,8 +62,8 @@ CREATE TABLE `DefaultExpenses` (
 CREATE TABLE `FixedExpenses` (
     `IdFixedExpense` INT PRIMARY KEY AUTO_INCREMENT,
     `Price` FLOAT,
-    `StartDate` DATETIME DEFAULT (CURRENT_DATE),
-    `EndDate` DATETIME DEFAULT (CURRENT_DATE),
+    `StartDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
+    `EndDate` DATETIME,
     `IdBaseExpense` INT NOT NULL,
     FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
