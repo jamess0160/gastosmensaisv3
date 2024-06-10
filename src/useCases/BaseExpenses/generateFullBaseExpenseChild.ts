@@ -34,14 +34,16 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                     {
                         fixedexpenses: {
                             some: {
-                                EndDate: null
-                            }
-                        }
-                    },
-                    {
-                        fixedexpenses: {
-                            some: {
-                                EndDate: dateFilter
+                                OR: [
+                                    {
+                                        EndDate: null
+                                    },
+                                    {
+                                        EndDate: {
+                                            gte: dateFilter.gte
+                                        },
+                                    }
+                                ]
                             }
                         }
                     },
@@ -66,10 +68,14 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                                 EndDate: null
                             },
                             {
-                                StartDate: dateFilter
+                                StartDate: {
+                                    gte: dateFilter.gte
+                                }
                             },
                             {
-                                EndDate: dateFilter
+                                EndDate: {
+                                    lte: dateFilter.lt
+                                }
                             }
                         ]
                     }
