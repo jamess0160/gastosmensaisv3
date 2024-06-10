@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import { clientUtilsUseCases } from "./ClientUtilsUseCases"
 
 export class ServerUtilsUseCases {
 
@@ -7,6 +8,18 @@ export class ServerUtilsUseCases {
         let year = parseInt(cookies().get("year")?.value || new Date().getFullYear().toString())
 
         return { month, year }
+    }
+
+    compareDates(date: Date) {
+        let { month, year } = this.getMonthYear()
+
+        return date.getMonth() === month && date.getFullYear() === year
+    }
+
+    getCurrMoment() {
+        let { month, year } = this.getMonthYear()
+
+        return clientUtilsUseCases.monthAndYearToMoment(month, year)
     }
 }
 

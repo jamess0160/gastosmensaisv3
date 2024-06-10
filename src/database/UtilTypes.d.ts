@@ -3,6 +3,7 @@ import { prisma } from "./prisma"
 export namespace UtilTypes {
 
     export interface CreateExpense {
+        IdBaseExpense?: number
         EntryDate: string
         Description: string
         Type: "Default" | "Fixed" | "Installment"

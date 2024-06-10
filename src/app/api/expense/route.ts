@@ -1,4 +1,3 @@
-import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import { NextRequest, NextResponse } from "next/server";
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 
@@ -20,7 +19,5 @@ export async function DELETE(request: NextRequest) {
         return NextResponse.json({ msg: "IdBaseExpense não encontrado na query!" }, { status: 406 })
     }
 
-    let result = await baseExpensesUseCases.delete(parseInt(IdBaseExpense))
-
-    return NextResponse.json(result)
+    return NextResponse.json(await expensesUseCase.deleteExpense(parseInt(IdBaseExpense)))
 }

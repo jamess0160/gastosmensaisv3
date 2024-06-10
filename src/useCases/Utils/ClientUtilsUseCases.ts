@@ -41,7 +41,7 @@ export class ClientUtilsUseCases {
     }
 
     monthAndYearToMoment(month: number, year: number) {
-        return moment().startOf("month").set("month", month).set("year", year)
+        return moment().set("month", month).set("year", year).startOf("month")
     }
 
     parseLeftZero(value: number) {
@@ -50,6 +50,16 @@ export class ClientUtilsUseCases {
         }
 
         return "0" + value
+    }
+
+    formatClientDate(date: string) {
+        let momentDate = moment(date, "DD/MM/YYYY")
+
+        if (momentDate.isValid() === false) {
+            momentDate = moment(date, "YYYY-MM-DD")
+        }
+
+        return momentDate.toDate()
     }
 }
 

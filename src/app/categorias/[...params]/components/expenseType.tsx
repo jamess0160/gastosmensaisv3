@@ -1,14 +1,15 @@
 import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
-import { CategorieData } from "../page"
-import { utilsUseCases } from "@/useCases/Utils/UtilsUseCases"
+import { CategoryData } from "../page"
+import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
+import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
 
 //#region Functions 
 
 export default function ExpenseType(props: PageProps) {
 
-    let data = handleCategorieData(props.CategorieData.tableData)
+    let data = handleCategoryData(props.CategorieData.tableData)
 
-    let tableRows = data.map((item, index) => item ? <CategorieTableRow key={item.IdBaseExpense} item={item} /> : <EmptyRow key={index} />)
+    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={item.IdBaseExpense} item={item} ExpenseFormData={props.ExpenseFormData} /> : <EmptyRow key={index} />)
 
     return (
         <>
@@ -27,7 +28,7 @@ export default function ExpenseType(props: PageProps) {
 
 const minRowCount = 10
 
-function handleCategorieData(data: Array<CategorieTableData | false>) {
+function handleCategoryData(data: Array<CategoryTableData | false>) {
     if (data.length < minRowCount) {
         let count = minRowCount - data.length
         for (let i = 0; i < count; i++) {
@@ -45,39 +46,9 @@ function EmptyRow() {
             <TableCell className={classes}>1</TableCell>
             <TableCell className={classes}>1</TableCell>
             <TableCell className={classes}>1</TableCell>
+            <TableCell className={classes}>1</TableCell>
         </TableRow>
     )
-}
-
-function CategorieTableRow({ item }: { item: CategorieTableData }) {
-    return (
-        <TableRow>
-            <TableCell className="text-white">{getFirstCollumnData(item)}</TableCell>
-            <TableCell className="text-white">{item.Description}</TableCell>
-            <TableCell className="text-white">{`R$ ${utilsUseCases.GetExpensePrice(item).toFixed(2)}`}</TableCell>
-            {/* <TableCell className="text-white">{"item.carbs"}</TableCell>
-            <TableCell className="text-white">{"item.protein"}</TableCell> */}
-        </TableRow>
-    )
-}
-
-function getFirstCollumnData(expense: CategorieTableData) {
-
-    if (utilsUseCases.GetExpenseType.isDefault(expense)) {
-        return expense.child.ExpenseDate?.toLocaleDateString("pt-br")
-    }
-
-    if (utilsUseCases.GetExpenseType.isFixed(expense)) {
-        return "Fixo"
-    }
-
-    if (utilsUseCases.GetExpenseType.isInstallment(expense)) {
-        let current = utilsUseCases.parseLeftZero(expense.child.CurrentInstallment)
-        let max = utilsUseCases.parseLeftZero(expense.child.MaxInstallment)
-        return `${current}/${max}`
-    }
-
-    return expense.EntryDate?.toLocaleDateString("pt-br")
 }
 
 //#endregion
@@ -86,9 +57,10 @@ function getFirstCollumnData(expense: CategorieTableData) {
 
 interface PageProps {
     id: string
-    CategorieData: CategorieData
+    CategorieData: CategoryData
+    ExpenseFormData: FieldsData
 }
 
-type CategorieTableData = PageProps['CategorieData']['tableData'][0]
+export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
 
 //#endregion

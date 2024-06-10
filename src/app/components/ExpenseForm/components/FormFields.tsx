@@ -7,8 +7,10 @@ import { expenseFormEventsEvents } from "../events/events"
 
 //#region Functions 
 
-export default function FormFields({ register, setValue, fieldsData }: FormFieldsProps) {
-    let [checkboxState, setCheckboxState] = useState("")
+export default function FormFields({ register, setValue, fieldsData, editItem }: FormFieldsProps) {
+    let [checkboxState, setCheckboxState] = useState(editItem?.Type || "")
+
+    console.log({ checkboxState, editItem })
 
     function onCheckBoxChange(newValue: UtilTypes.CreateExpense['Type']) {
         setValue("Type", newValue)
@@ -93,6 +95,7 @@ interface FormFieldsProps {
     register: UseFormRegister<UtilTypes.CreateExpense>
     setValue: UseFormSetValue<UtilTypes.CreateExpense>
     fieldsData: FieldsData
+    editItem?: Partial<UtilTypes.CreateExpense>
 }
 
 //#endregion

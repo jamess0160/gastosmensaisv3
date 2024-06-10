@@ -18,7 +18,7 @@ export default function ExpenseForm(props: FormProps) {
             <div className={styles.dialog}>
                 <DialogTitle color={"white"}>Novo gasto</DialogTitle>
                 <form onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(props.setFormState, Boolean(props.editItem), data))} className={styles.form}>
-                    <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} />
+                    <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} editItem={props.editItem} />
                     <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
                 </form>
             </div>
