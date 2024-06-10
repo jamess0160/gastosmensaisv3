@@ -6,6 +6,9 @@ import { theme } from "./theme";
 import { Lexend } from "next/font/google";
 import BotaoVoltar from "./components/BotaoVoltar";
 
+import './socket'
+import '@/useCases/Socket/SocketUseCases'
+
 const font = Lexend({
 	weight: ['300', '400', '500', '700'],
 	subsets: ['latin'],
