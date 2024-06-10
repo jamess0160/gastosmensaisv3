@@ -10,6 +10,10 @@ export class ClientUtilsUseCases {
 
     GetExpensePrice(expense: FullBaseExpenseChild) {
 
+        if (!expense.Active) {
+            return 0
+        }
+
         if (this.GetExpenseType.isDefault(expense)) {
             return expense.Price
         }
