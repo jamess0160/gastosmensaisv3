@@ -1,4 +1,3 @@
-import { prisma } from '@/database/prisma'
 import { cashinflows, destinys } from '@prisma/client'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from "@/base/baseSection";
@@ -24,8 +23,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
     }
 
     private async calculateJointExpenses(month: number, year: number, IdDestinoConjunto: number, destinys: destinys[]) {
-        let jointExpenses = await this.getDestinyExpenses(month, year, IdDestinoConjunto)
-        let fullJointExpenses = await this.instance.GenerateFullBaseExpenseChild.run(jointExpenses)
+        let fullJointExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny: IdDestinoConjunto })
         let totalJointExpenses = fullJointExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
 
         let whoSplitJointExpense = destinys.filter((item) => item.SplitJointExpense)
@@ -41,9 +39,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
             destinyBudget = destinyBudget > parseFloat(params.ValorMaximoGeral) ? parseFloat(params.ValorMaximoGeral) : destinyBudget
         }
 
-        let destinyExpenses = await this.getDestinyExpenses(month, year, item.IdDestiny)
-
-        let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(destinyExpenses)
+        let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny: item.IdDestiny })
 
         let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
 
@@ -55,18 +51,6 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
             DestinyData: item,
             RemainingBudget: destinyBudget - totalExpenses
         }
-    }
-
-    private getDestinyExpenses(month: number, year: number, IdDestiny: number) {
-        return prisma.baseexpenses.findMany({
-            where: {
-                EntryDate: {
-                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
-                },
-                IdDestiny: IdDestiny,
-            }
-        })
     }
 
     private calculateDestinyBudget(cashInflows: cashinflows[], destiny: destinys, totalDestinys: number) {

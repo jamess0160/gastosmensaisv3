@@ -16,9 +16,7 @@ export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
     }
 
     private async generateBanksResume(month: number, year: number, category: expensecategories[], bank: banks): Promise<BankResume> {
-        let bankExpenses = await this.instance.GetMonthlyBankCategory.run(month, year, bank.IdBank)
-
-        bankExpenses = bankExpenses.filter((item) => item.Active === true)
+        let bankExpenses = await this.instance.GetMonthlyBankCategory(month, year, bank.IdBank)
 
         return {
             BankData: bank,

@@ -1,41 +1,99 @@
 import { baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
-import { defaultExpensesUseCases } from "../DefaultExpenses/DefaultExpensesUseCases"
-import { fixedExpensesUseCases } from "../FixedExpenses/FixedExpensesUseCases"
-import { installmentExpensesUseCases } from "../InstallmentExpenses/InstallmentExpensesUseCases"
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 
-    async run(baseExpenses: baseexpenses[]) {
-        let IdBaseExpenses = baseExpenses.map((item) => item.IdBaseExpense)
+    async run(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions) {
 
-        if (IdBaseExpenses.length === 0) {
-            return []
-        }
-
-        let typesExpenses = await this.getTypesExpenses(IdBaseExpenses)
+        let baseExpenses = await this.getFullBaseExpense(month, year, options)
 
         return baseExpenses.map<FullBaseExpenseChild>((item) => {
-            let defaultExpense = typesExpenses.defaultExpenses.find((subItem) => subItem.IdBaseExpense === item.IdBaseExpense)
-            let fixedExpense = typesExpenses.fixedExpenses.find((subItem) => subItem.IdBaseExpense === item.IdBaseExpense)
-            let installmentExpense = typesExpenses.installmentExpenses.find((subItem) => subItem.IdBaseExpense === item.IdBaseExpense)
-
-            return Object.assign(item, { child: defaultExpense || fixedExpense || installmentExpense })
+            return Object.assign(item, {
+                child: item.defaultexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
+                defaultexpenses: undefined,
+                fixedexpenses: undefined,
+                installmentexpenses: undefined,
+            })
         })
     }
 
-    private getTypesExpenses(IdBaseExpenses: number[]) {
-        return clientUtilsUseCases.resolvePromiseObj({
-            defaultExpenses: defaultExpensesUseCases.getByBaseExpense(IdBaseExpenses),
-            fixedExpenses: fixedExpensesUseCases.getByBaseExpense(IdBaseExpenses),
-            installmentExpenses: installmentExpensesUseCases.getByBaseExpense(IdBaseExpenses),
+    private getFullBaseExpense(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
+        let dateFilter = {
+            gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
+            lte: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+        }
+
+        return this.instance.prisma.baseexpenses.findMany({
+            where: {
+                OR: [
+                    {
+                        EntryDate: dateFilter
+                    },
+                    {
+                        fixedexpenses: {
+                            some: {
+                                EndDate: null
+                            }
+                        }
+                    },
+                    {
+                        fixedexpenses: {
+                            some: {
+                                EndDate: dateFilter
+                            }
+                        }
+                    },
+                    {
+                        installmentexpenses: {
+                            some: {
+                                ExpectedDate: dateFilter
+                            }
+                        }
+                    }
+                ],
+                IdBank: options?.IdBank || undefined,
+                IdExpenseCategory: options?.IdExpenseCategory || undefined,
+                IdDestiny: options?.IdDestiny || undefined,
+            },
+            include: {
+                defaultexpenses: true,
+                fixedexpenses: {
+                    where: {
+                        OR: [
+                            {
+                                EndDate: null
+                            },
+                            {
+                                StartDate: dateFilter
+                            }
+                        ]
+                    }
+                },
+                installmentexpenses: {
+                    where: {
+                        ExpectedDate: dateFilter
+                    }
+                },
+            }
         })
     }
 }
 
 //#region Interfaces / Types 
+
+interface GenerateFullBaseExpenseChildOptions {
+    IdBank?: number
+    IdDestiny?: number
+    IdExpenseCategory?: number
+}
+
+interface FullBaseExpense extends baseexpenses {
+    defaultexpenses: defaultexpenses | null
+    fixedexpenses: fixedexpenses[]
+    installmentexpenses: installmentexpenses[]
+}
 
 export interface FullBaseExpenseChild extends baseexpenses {
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined

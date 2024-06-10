@@ -1,20 +1,33 @@
 import type { prisma } from "@/database/prisma"
 import { BaseUseCase } from "../../base/baseUseCase"
 import { GenerateFullBaseExpenseChild } from "./generateFullBaseExpenseChild"
-import { GetMonthlyBankCategory } from "./getMonthlyBankCategory"
 import { GetMonthlyBanksResume } from "./getMonthlyBanksResume"
-import { GetMonthlyDestinyCategory } from "./getMonthlyDestinyCategory"
 import { GetMonthlyDestinyResume } from "./getMonthlyDestinyResume"
-import { GetMonthlySum } from "./getMonthlySum"
+import { UtilTypes } from "@/database/UtilTypes"
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
 
 export class BaseExpensesUseCases extends BaseUseCase {
 
     readonly GenerateFullBaseExpenseChild = new GenerateFullBaseExpenseChild(this)
-    readonly GetMonthlyBankCategory = new GetMonthlyBankCategory(this)
     readonly GetMonthlyBanksResume = new GetMonthlyBanksResume(this)
-    readonly GetMonthlyDestinyCategory = new GetMonthlyDestinyCategory(this)
     readonly GetMonthlyDestinyResume = new GetMonthlyDestinyResume(this)
-    readonly GetMonthlySum = new GetMonthlySum(this)
+
+    getUnique(IdBaseExpense: number) {
+        return this.prisma.baseexpenses.findFirstOrThrow({ where: { IdBaseExpense } })
+    }
+
+    async GetMonthlySum(month: number, year: number) {
+        let baseExpenses = await this.GenerateFullBaseExpenseChild.run(month, year)
+        return baseExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
+    }
+
+    GetMonthlyBankCategory(month: number, year: number, IdBank: number, IdExpenseCategory?: number) {
+        return this.GenerateFullBaseExpenseChild.run(month, year, { IdBank, IdExpenseCategory })
+    }
+
+    GetMonthlyDestinyCategory(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
+        return this.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny, IdExpenseCategory })
+    }
 
     create(data: CreateBaseExpense) {
         return this.prisma.baseexpenses.create({ data })
@@ -31,6 +44,14 @@ export class BaseExpensesUseCases extends BaseUseCase {
         return this.prisma.baseexpenses.delete({
             where: { IdBaseExpense }
         })
+    }
+
+    deleteChilds(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number) {
+        return Promise.all([
+            tx.defaultexpenses.deleteMany({ where: { IdBaseExpense } }),
+            tx.fixedexpenses.deleteMany({ where: { IdBaseExpense } }),
+            tx.installmentexpenses.deleteMany({ where: { IdBaseExpense } }),
+        ])
     }
 }
 
