@@ -1,5 +1,5 @@
 import type { prisma } from "@/database/prisma"
-import { BaseUseCase } from "../../base"
+import { BaseUseCase } from "../../base/baseUseCase"
 import { GenerateFullBaseExpenseChild } from "./generateFullBaseExpenseChild"
 import { GetMonthlyBankCategory } from "./getMonthlyBankCategory"
 import { GetMonthlyBanksResume } from "./getMonthlyBanksResume"

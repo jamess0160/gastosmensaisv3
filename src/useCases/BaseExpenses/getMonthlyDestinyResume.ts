@@ -1,8 +1,8 @@
 import { prisma } from '@/database/prisma'
 import { cashinflows, destinys } from '@prisma/client'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
-import { BaseSection } from '../../base'
-import { utilsUseCases } from '../Utils/UtilsUseCases'
+import { BaseSection } from "@/base/baseSection";
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
 import { cashInflowsUseCases } from '../CashInflows/CashInflowsUseCases'
 import { destinysUseCases } from '../Destinys/DestinysUseCases'
 import { getParamReturn, sistemParamsUseCases } from '../SistemParams/SistemParamsUseCases'
@@ -10,7 +10,7 @@ import { getParamReturn, sistemParamsUseCases } from '../SistemParams/SistemPara
 export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
     async run(month: number, year: number) {
-        let { cashInflows, destinys, params } = await utilsUseCases.resolvePromiseObj({
+        let { cashInflows, destinys, params } = await clientUtilsUseCases.resolvePromiseObj({
             cashInflows: cashInflowsUseCases.getAllByMY(month, year),
             destinys: destinysUseCases.getAll(),
             params: sistemParamsUseCases.getAll(month, year),
@@ -26,7 +26,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
     private async calculateJointExpenses(month: number, year: number, IdDestinoConjunto: number, destinys: destinys[]) {
         let jointExpenses = await this.getDestinyExpenses(month, year, IdDestinoConjunto)
         let fullJointExpenses = await this.instance.GenerateFullBaseExpenseChild.run(jointExpenses)
-        let totalJointExpenses = fullJointExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
+        let totalJointExpenses = fullJointExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
 
         let whoSplitJointExpense = destinys.filter((item) => item.SplitJointExpense)
 
@@ -45,7 +45,7 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(destinyExpenses)
 
-        let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
+        let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
 
         if (item.SplitJointExpense) {
             totalExpenses += jointExpenses
@@ -61,8 +61,8 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
         return prisma.baseexpenses.findMany({
             where: {
                 EntryDate: {
-                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
                 },
                 IdDestiny: IdDestiny,
             }

@@ -1,5 +1,5 @@
-import { BaseUseCase } from "@/base";
-import { utilsUseCases } from "../Utils/UtilsUseCases";
+import { BaseUseCase } from "@/base/baseUseCase";
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 import type { prisma } from "@/database/prisma";
 
 export class CashInflowsUseCases extends BaseUseCase {
@@ -8,8 +8,8 @@ export class CashInflowsUseCases extends BaseUseCase {
         return this.prisma.cashinflows.findMany({
             where: {
                 EfectiveDate: {
-                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
                 }
             }
         })

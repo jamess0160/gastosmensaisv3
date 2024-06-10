@@ -1,5 +1,5 @@
 import type { prisma } from "@/database/prisma";
-import { BaseUseCase } from "../../base";
+import { BaseUseCase } from "../../base/baseUseCase";
 
 export class InstallmentExpensesUseCases extends BaseUseCase {
 

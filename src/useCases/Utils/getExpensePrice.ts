@@ -1,8 +1,8 @@
-import { BaseSection } from "@/base";
-import { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild";
-import { UtilsUseCases } from "./UtilsUseCases";
+import { ClientUtilsUseCases } from "./ClientUtilsUseCases";
+import type { DefaultExpenseChild, FixedExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild";
+import { BaseSection } from "@/base/baseSection";
 
-export class GetExpenseType extends BaseSection<UtilsUseCases>{
+export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{
 
     public isDefault(expense: any): expense is DefaultExpenseChild {
         return expense?.child?.IdDefaultExpense

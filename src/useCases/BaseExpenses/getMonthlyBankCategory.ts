@@ -1,7 +1,7 @@
 import { prisma } from '@/database/prisma'
-import { utilsUseCases } from '../Utils/UtilsUseCases'
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
-import { BaseSection } from '../../base'
+import { BaseSection } from "@/base/baseSection";
 
 export class GetMonthlyBankCategory extends BaseSection<BaseExpensesUseCases>{
 
@@ -15,11 +15,11 @@ export class GetMonthlyBankCategory extends BaseSection<BaseExpensesUseCases>{
         return prisma.baseexpenses.findMany({
             where: {
                 EntryDate: {
-                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
                 },
                 IdBank: IdBank,
-                IdExpenseCategory: IdExpenseCategory,
+                IdExpenseCategory: IdExpenseCategory
             }
         })
     }

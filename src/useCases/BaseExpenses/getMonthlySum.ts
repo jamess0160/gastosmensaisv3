@@ -1,7 +1,7 @@
 import { prisma } from '@/database/prisma'
-import { utilsUseCases } from '../Utils/UtilsUseCases'
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
-import { BaseSection } from '../../base'
+import { BaseSection } from "@/base/baseSection";
 
 export class GetMonthlySum extends BaseSection<BaseExpensesUseCases>{
 
@@ -10,15 +10,15 @@ export class GetMonthlySum extends BaseSection<BaseExpensesUseCases>{
 
         let fullData = await this.instance.GenerateFullBaseExpenseChild.run(data)
 
-        return fullData.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
+        return fullData.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
     }
 
     getMonthlyData(month: number, year: number) {
         return prisma.baseexpenses.findMany({
             where: {
                 EntryDate: {
-                    gte: utilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: utilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
+                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
                 }
             }
         })

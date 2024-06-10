@@ -1,6 +1,6 @@
-import { BaseUseCase } from "../../base";
+import { BaseUseCase } from "../../base/baseUseCase";
 import { sistemparams } from '@prisma/client'
-import { utilsUseCases } from "../Utils/UtilsUseCases";
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 
 export class SistemParamsUseCases extends BaseUseCase {
 
@@ -11,7 +11,7 @@ export class SistemParamsUseCases extends BaseUseCase {
     }
 
     async getAll(month: number, year: number) {
-        let EfectiveDate = utilsUseCases.monthAndYearToMoment(month, year).toDate()
+        let EfectiveDate = clientUtilsUseCases.monthAndYearToMoment(month, year).toDate()
 
         let params = await this.prisma.$queryRaw<sistemparams[]>`
                     SELECT

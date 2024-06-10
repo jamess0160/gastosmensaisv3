@@ -1,4 +1,4 @@
-import { BaseUseCase } from "@/base";
+import { BaseUseCase } from "@/base/baseUseCase";
 import { prisma } from "@/database/prisma";
 
 export class DestinysUseCases extends BaseUseCase {

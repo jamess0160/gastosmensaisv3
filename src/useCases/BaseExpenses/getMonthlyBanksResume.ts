@@ -1,10 +1,10 @@
 import { banks, expensecategories } from '@prisma/client'
 import { FullBaseExpenseChild } from './generateFullBaseExpenseChild'
-import { BaseSection } from '../../base'
+import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { banksUseCases } from '../Banks/BanksUseCases'
 import { expenseCategoriesUseCases } from '../ExpenseCategories/ExpenseCategoriesUseCases'
-import { utilsUseCases } from '../Utils/UtilsUseCases'
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
 
 export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
 
@@ -18,9 +18,11 @@ export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
     private async generateBanksResume(month: number, year: number, category: expensecategories[], bank: banks): Promise<BankResume> {
         let bankExpenses = await this.instance.GetMonthlyBankCategory.run(month, year, bank.IdBank)
 
+        bankExpenses = bankExpenses.filter((item) => item.Active === true)
+
         return {
             BankData: bank,
-            TotalExpensesSum: bankExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0),
+            TotalExpensesSum: bankExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0),
             Categories: category.map((item) => this.generateBankResumeDestiny(bankExpenses, item)),
         }
     }
@@ -31,7 +33,7 @@ export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
         return {
             IdExpenseCategory: category.IdExpenseCategory,
             CategoryName: category.Description,
-            ExpensesSum: destinyExpenses.reduce((old, item) => old + utilsUseCases.GetExpensePrice(item), 0)
+            ExpensesSum: destinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
         }
     }
 }

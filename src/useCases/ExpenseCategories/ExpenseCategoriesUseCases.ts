@@ -1,4 +1,4 @@
-import { BaseUseCase } from "@/base";
+import { BaseUseCase } from "@/base/baseUseCase";
 
 export class ExpenseCategoriesUseCases extends BaseUseCase {
     getAll() {

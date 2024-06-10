@@ -1,6 +1,6 @@
 import { baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } from "@prisma/client"
-import { BaseSection } from "../../base"
-import { utilsUseCases } from "../Utils/UtilsUseCases"
+import { BaseSection } from "@/base/baseSection";
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
 import { defaultExpensesUseCases } from "../DefaultExpenses/DefaultExpensesUseCases"
 import { fixedExpensesUseCases } from "../FixedExpenses/FixedExpensesUseCases"
 import { installmentExpensesUseCases } from "../InstallmentExpenses/InstallmentExpensesUseCases"
@@ -27,7 +27,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
     }
 
     private getTypesExpenses(IdBaseExpenses: number[]) {
-        return utilsUseCases.resolvePromiseObj({
+        return clientUtilsUseCases.resolvePromiseObj({
             defaultExpenses: defaultExpensesUseCases.getByBaseExpense(IdBaseExpenses),
             fixedExpenses: fixedExpensesUseCases.getByBaseExpense(IdBaseExpenses),
             installmentExpenses: installmentExpensesUseCases.getByBaseExpense(IdBaseExpenses),
