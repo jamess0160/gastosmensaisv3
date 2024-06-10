@@ -1,9 +1,8 @@
 import moment from "moment"
 import { GetExpenseType } from "./getExpensePrice"
-import { FullBaseExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild"
-import { cookies } from "next/headers"
+import type { FullBaseExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild"
 
-export class UtilsUseCases {
+export class ClientUtilsUseCases {
 
     readonly GetExpenseType = new GetExpenseType(this)
 
@@ -48,13 +47,6 @@ export class UtilsUseCases {
 
         return "0" + value
     }
-
-    getMonthYear() {
-        let month = parseInt(cookies().get("month")?.value || new Date().getMonth().toString())
-        let year = parseInt(cookies().get("year")?.value || new Date().getFullYear().toString())
-
-        return { month, year }
-    }
 }
 
-export const utilsUseCases = new UtilsUseCases()
+export const clientUtilsUseCases = new ClientUtilsUseCases()
