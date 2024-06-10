@@ -10,7 +10,7 @@ import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 import React from "react";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
-import AddExpense from "./components/addExpense/addExpense";
+import AddExpense from "./components/addExpense/AddExpense";
 
 export default async function Page() {
     let { month, year } = serverUtilsUseCases.getMonthYear()

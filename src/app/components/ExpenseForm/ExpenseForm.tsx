@@ -13,13 +13,11 @@ import { banks, destinys, expensecategories } from "@prisma/client";
 export default function ExpenseForm(props: FormProps) {
     let { register, handleSubmit, setValue } = useForm<UtilTypes.CreateExpense>({ defaultValues: props.editItem })
 
-    console.log("bool", Boolean(props.editItem))
-
     return (
         <Dialog open={props.formState}  >
             <div className={styles.dialog}>
                 <DialogTitle color={"white"}>Novo gasto</DialogTitle>
-                <form onSubmit={handleSubmit(expenseFormEventsEvents.onSubmit.bind(null, props.setFormState, Boolean(props.editItem)))} className={styles.form}>
+                <form onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(props.setFormState, Boolean(props.editItem), data))} className={styles.form}>
                     <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} />
                     <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
                 </form>
