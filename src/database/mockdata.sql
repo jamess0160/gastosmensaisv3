@@ -1,4 +1,4 @@
--- Active: 1706977966627@@127.0.0.1@3306@gastosmensaisv3
+-- Active: 1706977966627@@127.0.0.1@3306@gastos_mensais_v3
 INSERT INTO
     `Destinys` (`Name`, `SplitJointExpense`, `Color`)
 VALUES
@@ -56,14 +56,20 @@ VALUES
 INSERT INTO
     `FixedExpenses` (`IdBaseExpense`, `EndDate`)
 VALUES
-    (1, DATE_ADD(CURRENT_DATE(), INTERVAL 1 MONTH));
+    (2, DATE_ADD(CURRENT_DATE(), INTERVAL 1 MONTH));
 
 INSERT INTO
     `InstallmentExpenses` (
         `IdBaseExpense`,
         `CurrentInstallment`,
-        `MaxInstallment`
+        `MaxInstallment`,
+        `ExpectedDate`
     )
 VALUES
-    (1, 1, 2),
-    (1, 2, 2);
+    (3, 1, 2, CURRENT_DATE()),
+    (
+        3,
+        2,
+        2,
+        DATE_ADD(CURRENT_DATE(), INTERVAL 1 MONTH)
+    );

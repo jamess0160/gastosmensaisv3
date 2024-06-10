@@ -8,20 +8,27 @@ datasource db {
 }
 
 model banks {
-  IdBank   Int     @id @default(autoincrement())
-  Name     String  @db.VarChar(255)
-  IconPath String? @db.VarChar(255)
+  IdBank       Int            @id @default(autoincrement())
+  Name         String         @db.VarChar(255)
+  IconPath     String?        @db.VarChar(255)
+  baseexpenses baseexpenses[]
 }
 
 model baseexpenses {
-  IdBaseExpense     Int       @id @default(autoincrement())
-  Description       String    @db.VarChar(255)
-  Price             Float     @db.Float
-  EntryDate         DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny         Int
-  IdBank            Int
-  IdExpenseCategory Int
-  Active            Boolean?  @default(true)
+  IdBaseExpense       Int                   @id @default(autoincrement())
+  Description         String                @db.VarChar(255)
+  Price               Float                 @db.Float
+  EntryDate           DateTime?             @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny           Int
+  IdBank              Int
+  IdExpenseCategory   Int
+  Active              Boolean?              @default(true)
+  destinys            destinys              @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_1")
+  banks               banks                 @relation(fields: [IdBank], references: [IdBank], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_2")
+  expensecategories   expensecategories     @relation(fields: [IdExpenseCategory], references: [IdExpenseCategory], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_3")
+  defaultexpenses     defaultexpenses?
+  fixedexpenses       fixedexpenses[]
+  installmentexpenses installmentexpenses[]
 
   @@index([IdBank], map: "IdBank")
   @@index([IdDestiny], map: "IdDestiny")
@@ -34,41 +41,52 @@ model cashinflows {
   Value        Float     @db.Float
   EfectiveDate DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
   IdDestiny    Int?
+  destinys     destinys? @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_1")
 
   @@index([IdDestiny], map: "IdDestiny")
 }
 
 model defaultexpenses {
-  IdDefaultExpense Int       @id @default(autoincrement())
-  ExpenseDate      DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdBaseExpense    Int
-
-  @@index([IdBaseExpense], map: "IdBaseExpense")
+  IdDefaultExpense Int          @id @default(autoincrement())
+  ExpenseDate      DateTime?    @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdBaseExpense    Int          @unique(map: "IdBaseExpense")
+  baseexpenses     baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "defaultexpenses_ibfk_1")
 }
 
 model destinys {
-  IdDestiny         Int      @id @default(autoincrement())
-  Name              String   @db.VarChar(255)
-  Color             String?  @db.VarChar(255)
-  SplitJointExpense Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
+  IdDestiny         Int            @id @default(autoincrement())
+  Name              String         @db.VarChar(255)
+  Color             String?        @db.VarChar(255)
+  SplitJointExpense Boolean?       @default(dbgenerated("b'0'")) @db.Bit(1)
+  baseexpenses      baseexpenses[]
+  cashinflows       cashinflows[]
+}
+
+model expensecategories {
+  IdExpenseCategory Int            @id @default(autoincrement())
+  Description       String         @db.VarChar(255)
+  baseexpenses      baseexpenses[]
 }
 
 model fixedexpenses {
-  IdFixedExpense Int       @id @default(autoincrement())
-  Price          Float?    @db.Float
-  StartDate      DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  EndDate        DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdFixedExpense Int          @id @default(autoincrement())
+  Price          Float?       @db.Float
+  StartDate      DateTime?    @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  EndDate        DateTime?    @default(dbgenerated("(curdate())")) @db.DateTime(0)
   IdBaseExpense  Int
+  baseexpenses   baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "fixedexpenses_ibfk_1")
 
   @@index([IdBaseExpense], map: "IdBaseExpense")
 }
 
 model installmentexpenses {
-  IdInstallmentExpense Int    @id @default(autoincrement())
-  Price                Float? @db.Float
+  IdInstallmentExpense Int          @id @default(autoincrement())
+  Price                Float?       @db.Float
+  ExpectedDate         DateTime     @db.DateTime(0)
   CurrentInstallment   Int
   MaxInstallment       Int
   IdBaseExpense        Int
+  baseexpenses         baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "installmentexpenses_ibfk_1")
 
   @@index([IdBaseExpense], map: "IdBaseExpense")
 }
@@ -77,10 +95,5 @@ model sistemparams {
   IdSistemParam Int       @id @default(autoincrement())
   Key           String    @db.VarChar(255)
   Value         String    @db.VarChar(255)
-  EfectiveDate  DateTime? @default(dbgenerated("(curdate())")) @db.DateTime(0)
-}
-
-model expensecategories {
-  IdExpenseCategory Int    @id @default(autoincrement())
-  Description       String @db.VarChar(255)
+  EfectiveDate  DateTime? @default(dbgenerated("(curdate())")) @db.Date
 }
