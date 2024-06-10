@@ -22,7 +22,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
     private getFullBaseExpense(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
         let dateFilter = {
             gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-            lte: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+            lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
         }
 
         return this.instance.prisma.baseexpenses.findMany({
@@ -67,6 +67,9 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                             },
                             {
                                 StartDate: dateFilter
+                            },
+                            {
+                                EndDate: dateFilter
                             }
                         ]
                     }
