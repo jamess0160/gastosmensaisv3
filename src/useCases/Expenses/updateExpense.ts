@@ -8,6 +8,7 @@ import { InstallmentExpensesUseCases, installmentExpensesUseCases } from "@/useC
 import { UtilTypes } from "@/database/UtilTypes";
 import { baseexpenses } from '@prisma/client';
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
+import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases';
 
 export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -39,14 +40,14 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
             IdBank: parseInt(createExpenseData.IdBank),
             IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
-            Price: parseFloat(createExpenseData.Price),
-            EntryDate: createExpenseData.EntryDate ? clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate) : undefined,
+            Price: parseFloat(createExpenseData.Price.replace(",", ".")),
+            EntryDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
         })
     }
 
     private async updateDefaultExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
 
-        let [defaultExpense] = await defaultExpensesUseCases.getByBaseExpense([BaseExpense.IdBaseExpense])
+        let defaultExpense = await defaultExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
         if (!defaultExpense) {
             await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
@@ -54,36 +55,54 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         }
 
         return new DefaultExpensesUseCases(tx).update(defaultExpense.IdDefaultExpense, {
-            ExpenseDate: createExpenseData.EntryDate ? clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate) : undefined,
+            ExpenseDate: clientUtilsUseCases.formatClientDate(createExpenseData.ExpenseDate),
         })
     }
 
     private async updateFixedExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
 
-        let [fixedExpense] = await fixedExpensesUseCases.getByBaseExpense([BaseExpense.IdBaseExpense])
+        let fixedExpense = await fixedExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
         if (!fixedExpense) {
             await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
             return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 
-        return new FixedExpensesUseCases(tx).update(fixedExpense.IdFixedExpense, {
-            StartDate: createExpenseData.EntryDate ? clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate) : undefined,
+        if (serverUtilsUseCases.compareDates(BaseExpense.EntryDate)) {
+            return new FixedExpensesUseCases(tx).update(fixedExpense.IdFixedExpense, {
+                StartDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+                Price: parseFloat(createExpenseData.Price.replace(",", "."))
+            })
+        }
+
+        await new FixedExpensesUseCases(tx).update(fixedExpense.IdFixedExpense, {
+            EndDate: serverUtilsUseCases.getCurrMoment().subtract(1, "month").toDate()
         })
+
+        return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
     }
 
     private async updateInstallmentExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
 
-        let [installmentExpense] = await installmentExpensesUseCases.getByBaseExpense([BaseExpense.IdBaseExpense])
+        let installmentExpense = await installmentExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
         if (!installmentExpense) {
             await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
             return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 
-        return new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
-            CurrentInstallment: parseInt(createExpenseData.CurrentInstallment),
-            MaxInstallment: parseInt(createExpenseData.MaxInstallment),
+        if (serverUtilsUseCases.compareDates(BaseExpense.EntryDate)) {
+            return new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
+                CurrentInstallment: parseInt(createExpenseData.CurrentInstallment),
+                MaxInstallment: parseInt(createExpenseData.MaxInstallment),
+                Price: parseFloat(createExpenseData.Price.replace(",", "."))
+            })
+        }
+
+        await new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
+            ExpectedDate: serverUtilsUseCases.getCurrMoment().subtract(1, "month").toDate()
         })
+
+        return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
     }
 }

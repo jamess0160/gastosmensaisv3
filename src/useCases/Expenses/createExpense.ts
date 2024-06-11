@@ -7,6 +7,7 @@ import { FixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUse
 import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
 import moment from 'moment';
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -34,22 +35,23 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
             IdBank: parseInt(createExpenseData.IdBank),
             IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
-            Price: parseFloat(createExpenseData.Price),
-            EntryDate: createExpenseData.EntryDate || undefined,
+            Price: parseFloat(createExpenseData.Price.replace(",", ".")),
+            EntryDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
         })
     }
 
     createDefaultExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
         return new DefaultExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
-            ExpenseDate: createExpenseData.ExpenseDate || undefined,
+            ExpenseDate: clientUtilsUseCases.formatClientDate(createExpenseData.ExpenseDate),
         })
     }
 
     createFixedExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
         return new FixedExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
-            StartDate: createExpenseData.ExpenseDate || undefined,
+            StartDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+            Price: parseFloat(createExpenseData.Price.replace(",", ".")),
         })
     }
 
@@ -60,7 +62,8 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
             IdBaseExpense: IdBaseExpense,
             CurrentInstallment: CurrentInstallment,
             MaxInstallment: MaxInstallment,
-            ExpectedDate: moment().add((MaxInstallment - CurrentInstallment), "month").startOf("month").toDate()
+            ExpectedDate: moment().add((MaxInstallment - CurrentInstallment), "month").startOf("month").toDate(),
+            Price: parseFloat(createExpenseData.Price.replace(",", ".")),
         })
     }
 }
