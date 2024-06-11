@@ -1,5 +1,5 @@
 import { BankResume } from "@/useCases/BaseExpenses/getMonthlyBanksResume";
-import BankItem from "../ResumeItem/ResumeItem";
+import ResumeItem from "../ResumeItem/ResumeItem";
 import styles from './BankResume.module.css'
 
 interface BankProps {
@@ -20,10 +20,10 @@ export default function BankResume({ bank }: BankProps) {
                 {bank.Categories.map((item, index) => {
                     let category = item.IdExpenseCategory !== 1 ? `#Category${item.IdExpenseCategory}` : ""
 
-                    return <BankItem Name={item.CategoryName} Value={item.ExpensesSum} href={`/categorias/banco/${bank.BankData.IdBank}${category}`} key={index} />
+                    return <ResumeItem Name={item.CategoryName} Value={item.ExpensesSum} href={`/categorias/banco/${bank.BankData.IdBank}${category}`} key={index} />
                 })}
 
-                <BankItem Name="Total de gastos" Value={bank.TotalExpensesSum} href="" />
+                <ResumeItem Name="Total de gastos" Value={bank.TotalExpensesSum} href="" />
             </div>
         </div>
     )
