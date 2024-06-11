@@ -2,14 +2,15 @@ import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/mate
 import { CategoryData } from "../page"
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
 import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 
 //#region Functions 
 
 export default function ExpenseType(props: PageProps) {
 
-    let data = handleCategoryData(props.CategorieData.tableData)
+    let data = clientUtilsUseCases.handleTableData(props.CategorieData.tableData)
 
-    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={item.IdBaseExpense} item={item} ExpenseFormData={props.ExpenseFormData} /> : <EmptyRow key={index} />)
+    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={item.IdBaseExpense} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
 
     return (
         <>
@@ -24,19 +25,6 @@ export default function ExpenseType(props: PageProps) {
             <h1 className="w-fit m-auto mt-5 underline">R$ {props.CategorieData.total}</h1>
         </>
     )
-}
-
-const minRowCount = 10
-
-function handleCategoryData(data: Array<CategoryTableData | false>) {
-    if (data.length < minRowCount) {
-        let count = minRowCount - data.length
-        for (let i = 0; i < count; i++) {
-            data.push(false)
-        }
-    }
-
-    return data
 }
 
 function EmptyRow() {
@@ -59,6 +47,8 @@ interface PageProps {
     id: string
     CategorieData: CategoryData
     ExpenseFormData: FieldsData
+    month: number
+    year: number
 }
 
 export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
