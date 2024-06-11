@@ -1,41 +1,29 @@
-import { Container } from "@mui/material";
+'use client';
+
+import { CircularProgress, Container } from "@mui/material";
 import Header from "./components/Header/Header";
 import BankResume from "./components/BankResume/BankResume";
 import DestinyResumeContainer from "./components/DestinyResume/DestinyResumeContainer";
 import ResumeContainer from "./components/ResumeContainer/ResumeContainer";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
-import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
-import { banksUseCases } from "@/useCases/Banks/BanksUseCases";
-import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
-import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 import React from "react";
-import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
 import AddExpense from "./components/addExpense/AddExpense";
+import { usePooling } from "../utils/usePooling";
+import { UtilTypes } from "@/database/UtilTypes";
 
-export default async function Page() {
-    let { month, year } = serverUtilsUseCases.getMonthYear()
+export default function Page() {
+    let [data] = usePooling<UtilTypes.InicioPageData>("/api/pagesData/?pageRoute=inicio", 5)
 
-    let data = await clientUtilsUseCases.resolvePromiseObj({
-        banksResume: baseExpensesUseCases.GetMonthlyBanksResume.run(month, year),
-        destinysResume: baseExpensesUseCases.GetMonthlyDestinyResume.run(month, year),
-        Banks: banksUseCases.getAll(),
-        Destinys: destinysUseCases.getAll(),
-        ExpenseCategories: expenseCategoriesUseCases.getAll()
-    })
-
-    let ExpenseFormData = {
-        Banks: data.Banks,
-        Destinys: data.Destinys,
-        ExpenseCategories: data.ExpenseCategories
+    if (!data) {
+        return <CircularProgress />
     }
 
     return (
         <Container maxWidth="xl">
-            <Header month={month} year={year} />
-            <ResumeContainer month={month} year={year} />
-            <DestinyResumeContainer DestinysResume={data.destinysResume} />
-            {data.banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
-            <AddExpense ExpenseFormData={ExpenseFormData} />
+            <Header month={data.month} year={data.year} />
+            <ResumeContainer ResumeContainerData={data.Resumes.container} />
+            <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
+            {data.Resumes.banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
+            <AddExpense ExpenseFormData={data.ExpenseFormData} />
         </Container>
     )
 }
