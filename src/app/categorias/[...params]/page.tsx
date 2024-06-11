@@ -36,7 +36,7 @@ export default async function Page(props: PageProps) {
                 <h1 className="min-w-fit m-0 text-center underline" >{`${parsedType} - ${data.categoriesData.name}`}</h1>
             </div>
             <div className="pt-12">
-                {data.categoriesData.data.map((item, index) => <ExpenseType id={`Category${item.IdExpenseCategory.toString()}`} key={index} CategorieData={item} ExpenseFormData={ExpenseFormData} />)}
+                {data.categoriesData.data.map((item, index) => <ExpenseType id={`Category${item.IdExpenseCategory.toString()}`} key={index} CategorieData={item} ExpenseFormData={ExpenseFormData} month={month} year={year} />)}
             </div>
         </Container>
     )
@@ -93,7 +93,7 @@ function handleExpenseData(item: expensecategories, categoryData: FullBaseExpens
         IdExpenseCategory: item.IdExpenseCategory,
         name: item.Description,
         tableData: categoryData,
-        total: total
+        total: parseFloat(total.toFixed(2))
     }
 }
 

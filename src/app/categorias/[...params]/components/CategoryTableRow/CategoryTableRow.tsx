@@ -8,22 +8,23 @@ import { categoriasEvents } from "../../events/events"
 import { useState } from "react";
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
+import moment from "moment";
 
 //#region Functions 
 
-export default function CategoryTableRow({ item, ExpenseFormData }: TableRowProps) {
+export default function CategoryTableRow(props: TableRowProps) {
 
     return (
         <TableRow>
-            <TableCell className="text-white w-1/6" align="left"> {getFirstCollumnData(item)} </TableCell>
-            <TableCell className="text-white w-1/3" align="center"> {item.Description} </TableCell>
-            <TableCell className="text-white" align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(item).toFixed(2)}`} </TableCell>
+            <TableCell className="text-white w-1/6" align="left"> {getFirstCollumnData(props)} </TableCell>
+            <TableCell className="text-white w-1/3" align="center"> {props.item.Description} </TableCell>
+            <TableCell className="text-white" align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
             <TableCell className="text-white">
                 <div className="flex items-center justify-end">
 
-                    <ChangeActiveState item={item} />
-                    <EditItem item={item} ExpenseFormData={ExpenseFormData} />
-                    <DeleteItem item={item} />
+                    <ChangeActiveState item={props.item} />
+                    <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} />
+                    <DeleteItem item={props.item} />
 
                 </div>
             </TableCell>
@@ -31,23 +32,26 @@ export default function CategoryTableRow({ item, ExpenseFormData }: TableRowProp
     )
 }
 
-function getFirstCollumnData(expense: CategoryTableData) {
+function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
-    if (clientUtilsUseCases.GetExpenseType.isDefault(expense)) {
-        return expense.child.ExpenseDate?.toLocaleDateString("pt-br")
+    if (clientUtilsUseCases.GetExpenseType.isDefault(item)) {
+        return item.child.ExpenseDate?.toLocaleDateString("pt-br")
     }
 
-    if (clientUtilsUseCases.GetExpenseType.isFixed(expense)) {
+    if (clientUtilsUseCases.GetExpenseType.isFixed(item)) {
         return "Fixo"
     }
 
-    if (clientUtilsUseCases.GetExpenseType.isInstallment(expense)) {
-        let current = clientUtilsUseCases.parseLeftZero(expense.child.CurrentInstallment)
-        let max = clientUtilsUseCases.parseLeftZero(expense.child.MaxInstallment)
+    if (clientUtilsUseCases.GetExpenseType.isInstallment(item)) {
+
+        let monthsDiff = Math.floor(moment(item.child.ExpectedDate).diff(clientUtilsUseCases.monthAndYearToMoment(month, year), "month", true))
+
+        let current = clientUtilsUseCases.parseLeftZero(item.child.MaxInstallment - (monthsDiff))
+        let max = clientUtilsUseCases.parseLeftZero(item.child.MaxInstallment)
         return `${current}/${max}`
     }
 
-    return expense.EntryDate?.toLocaleDateString("pt-br")
+    return item.EntryDate?.toLocaleDateString("pt-br")
 }
 
 //#endregion
@@ -82,11 +86,15 @@ function DeleteItem({ item }: ComponentsProps) {
 
 //#region Interfaces / Types 
 
-type ComponentsProps = Omit<TableRowProps, "ExpenseFormData">
+interface ComponentsProps {
+    item: CategoryTableData
+}
 
 interface TableRowProps {
     item: CategoryTableData
     ExpenseFormData: FieldsData
+    month: number
+    year: number
 }
 
 //#endregion
