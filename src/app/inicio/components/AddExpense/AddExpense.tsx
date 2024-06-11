@@ -11,7 +11,7 @@ export default function AddExpense({ ExpenseFormData }: ComponentProps) {
     return (
         <div className="fixed bottom-4 right-4">
             <ExpenseForm fieldsData={ExpenseFormData} formState={openForm} setFormState={setOpenForm} />
-            <IconButton className="rounded-full outline outline-1 outline-white" color="primary" onClick={() => setOpenForm(!openForm)} >
+            <IconButton className="rounded-full outline outline-1 outline-white" color="primary" onClick={() => setOpenForm(true)} >
                 <Add fontSize="large" />
             </IconButton>
         </div>

@@ -23,7 +23,7 @@ export async function openConfirmDialog(msg: string): Promise<boolean> {
 
 function ConfirmDialog(props: ConfirmDialogProps) {
 
-    let buttonClass = "w-1/3 rounded-lg p-1"
+    let buttonClass = "w-fit rounded-lg p-2 px-4"
 
     return (
         <Dialog open={true}>
