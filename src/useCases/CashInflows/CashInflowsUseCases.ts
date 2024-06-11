@@ -61,7 +61,7 @@ export const cashInflowsUseCases = new CashInflowsUseCases()
 
 export type CreateCashInFlow = Parameters<typeof prisma.cashinflows.create>[0]['data']
 
-type CreateManyCashInFlow = Parameters<typeof prisma.cashinflows.createMany>[0]['data']
+type CreateManyCashInFlow = NonNullable<Parameters<typeof prisma.cashinflows.createMany>[0]>['data']
 
 type UpdateCashInFlow = Parameters<typeof prisma.cashinflows.update>[0]['data']
 

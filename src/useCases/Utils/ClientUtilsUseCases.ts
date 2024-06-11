@@ -54,7 +54,7 @@ export class ClientUtilsUseCases {
 
     formatClientDate(date?: string) {
         if (!date) return
-        
+
         let momentDate = moment(date, "DD/MM/YYYY")
 
         if (momentDate.isValid() === false) {
@@ -80,6 +80,14 @@ export class ClientUtilsUseCases {
 
     sumProp<T extends any>(data: T[], prop: keyof T) {
         return data.reduce((old, item) => old + (item[prop] as number), 0)
+    }
+
+    sleep(seconds: number) {
+        return new Promise<void>((resolve) => {
+            setTimeout(() => {
+                resolve()
+            }, moment.duration(seconds, "seconds").asMilliseconds());
+        })
     }
 }
 

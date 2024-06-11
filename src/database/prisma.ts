@@ -1,4 +1,3 @@
-import { socketUseCases } from '@/useCases/Socket/SocketUseCases'
 import { PrismaClient } from '@prisma/client'
 
 declare global {
@@ -6,22 +5,7 @@ declare global {
 }
 
 function prismaClientSingleton() {
-    return new PrismaClient().$extends({
-        query: {
-            $allModels: {
-                $allOperations: async (data) => {
-                    let result = await data.query(data.args)
-
-                    if (data.operation.includes("find") === false) {
-                        socketUseCases.emmitReloadRequest("/inicio")
-                        socketUseCases.emmitReloadRequest("/categorias")
-                    }
-
-                    return result
-                }
-            }
-        }
-    })
+    return new PrismaClient()
 }
 
 export const prisma = globalThis.singleTon_Prisma ?? prismaClientSingleton()
