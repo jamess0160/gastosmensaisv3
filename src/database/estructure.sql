@@ -16,7 +16,7 @@ CREATE TABLE `CashInflows` (
     `Description` VARCHAR(255) NOT NULL,
     `Value` FLOAT NOT NULL,
     `EfectiveDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
-    `IdDestiny` INT,
+    `IdDestiny` INT NOT NULL,
     FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`)
 );
 
@@ -71,6 +71,7 @@ CREATE TABLE `FixedExpenses` (
 CREATE TABLE `InstallmentExpenses` (
     `IdInstallmentExpense` INT PRIMARY KEY AUTO_INCREMENT,
     `Price` FLOAT,
+    `StartDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
     `ExpectedDate` DATETIME NOT NULL,
     `CurrentInstallment` INT NOT NULL,
     `MaxInstallment` INT NOT NULL,

@@ -36,12 +36,12 @@ model baseexpenses {
 }
 
 model cashinflows {
-  IdCashInflow Int       @id @default(autoincrement())
-  Description  String    @db.VarChar(255)
-  Value        Float     @db.Float
-  EfectiveDate DateTime  @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny    Int?
-  destinys     destinys? @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_1")
+  IdCashInflow Int      @id @default(autoincrement())
+  Description  String   @db.VarChar(255)
+  Value        Float    @db.Float
+  EfectiveDate DateTime @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny    Int
+  destinys     destinys @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_1")
 
   @@index([IdDestiny], map: "IdDestiny")
 }
@@ -75,6 +75,7 @@ model fixedexpenses {
 model installmentexpenses {
   IdInstallmentExpense Int          @id @default(autoincrement())
   Price                Float?       @db.Float
+  StartDate            DateTime     @default(dbgenerated("(curdate())")) @db.DateTime(0)
   ExpectedDate         DateTime     @db.DateTime(0)
   CurrentInstallment   Int
   MaxInstallment       Int

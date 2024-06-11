@@ -8,10 +8,10 @@ VALUES
     ('Conjunto', 0, null);
 
 INSERT INTO
-    `CashInflows` (`Description`, `Value`)
+    `CashInflows` (`Description`, `Value`, `IdDestiny`)
 VALUES
-    ('Salário Tiago', 3600),
-    ('Salário Luana', 1200);
+    ('Salário Tiago', 3600, 2),
+    ('Salário Luana', 1200, 2);
 
 INSERT INTO
     `Banks` (`Name`, `IconPath`)
