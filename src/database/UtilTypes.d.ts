@@ -3,8 +3,12 @@ import { prisma } from "./prisma"
 import { ResumeContainerData } from "@/app/inicio/components/ResumeContainer/ResumeContainer"
 import { DestinyResume } from "@/useCases/BaseExpenses/getMonthlyDestinyResume"
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
+import { ExpenseTypeData } from "@/useCases/Expenses/GetCategoriesData"
 
 export namespace UtilTypes {
+
+    export type PrismaTransaction = Parameters<Parameters<typeof prisma.$transaction>[0]>[0]
+    export type Promissed<T> = { [K in keyof T]: Promise<T[K]> }
 
     export interface CreateExpense {
         IdBaseExpense?: number
@@ -19,8 +23,6 @@ export namespace UtilTypes {
         IdExpenseCategory: string
         IdBank: string
     }
-
-    export type PrismaTransaction = Parameters<Parameters<typeof prisma.$transaction>[0]>[0]
 
     export interface CookiesPostBody {
         month: string
@@ -45,5 +47,10 @@ export namespace UtilTypes {
         ExpenseFormData: FieldsData
     }
 
-    export type Promissed<T> = { [K in keyof T]: Promise<T[K]> }
+    export interface CategoriasPageData {
+        month: number
+        year: number
+        ExpenseFormData: FieldsData
+        categoriesData: ExpenseTypeData
+    }
 }

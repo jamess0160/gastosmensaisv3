@@ -2,12 +2,14 @@ import { BaseUseCase } from "../../base/baseUseCase"
 import { baseExpensesUseCases } from "../BaseExpenses/BaseExpensesUseCases"
 import { fixedExpensesUseCases } from "../FixedExpenses/FixedExpensesUseCases"
 import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases"
+import { GetCategoriesData } from "./GetCategoriesData"
 import { CreateExpense } from "./createExpense"
 import { UpdateExpense } from "./updateExpense"
 
 export class ExpensesUseCase extends BaseUseCase {
     CreateExpense = new CreateExpense(this)
     UpdateExpense = new UpdateExpense(this)
+    GetCategoriesData = new GetCategoriesData(this)
 
     async deleteExpense(IdBaseExpense: number) {
         let baseExpenses = await baseExpensesUseCases.getUnique(IdBaseExpense)

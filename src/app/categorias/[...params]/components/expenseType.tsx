@@ -1,8 +1,8 @@
 import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
-import { CategoryData } from "../page"
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
 import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { CategoryData } from "@/useCases/Expenses/GetCategoriesData"
 
 //#region Functions 
 
@@ -10,7 +10,7 @@ export default function ExpenseType(props: PageProps) {
 
     let data = clientUtilsUseCases.handleTableData(props.CategorieData.tableData)
 
-    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={item.IdBaseExpense} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
+    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={index} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
 
     return (
         <>

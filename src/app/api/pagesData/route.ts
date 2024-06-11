@@ -4,6 +4,8 @@ import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCas
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
+import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
+import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
@@ -21,6 +23,10 @@ export async function GET(request: NextRequest) {
 
     if (pageRoute === "inicio") {
         return NextResponse.json(await loadInicioPage())
+    }
+
+    if (pageRoute === "categorias") {
+        return NextResponse.json(await loadCategoriasPage(searchParams))
     }
 
     return NextResponse.json({ pageRoute })
@@ -48,8 +54,24 @@ function loadInicioPage(): Promise<UtilTypes.InicioPageData> {
     })
 }
 
-function loadCategoriasPage() {
+function loadCategoriasPage(searchParams: URLSearchParams): Promise<UtilTypes.CategoriasPageData> | void {
+    let { month, year } = serverUtilsUseCases.getMonthYear()
 
+    let type = searchParams.get("type") as Categories
+    let id = searchParams.get("id")
+
+    if (!type || !id) return
+
+    return clientUtilsUseCases.resolvePromiseObj<CategoriasPageData>({
+        month: Promise.resolve(month),
+        year: Promise.resolve(year),
+        categoriesData: expensesUseCase.GetCategoriesData.run(type, parseInt(id), month, year),
+        ExpenseFormData: clientUtilsUseCases.resolvePromiseObj<ExpenseFormData>({
+            Banks: banksUseCases.getAll(),
+            Destinys: destinysUseCases.getAll(),
+            ExpenseCategories: expenseCategoriesUseCases.getAll(),
+        }),
+    })
 }
 
 //#endregion
@@ -63,5 +85,7 @@ type ExpenseFormData = UtilTypes.Promissed<UtilTypes.InicioPageData['ExpenseForm
 type Resumes = UtilTypes.Promissed<UtilTypes.InicioPageData['Resumes']>
 
 type Container = UtilTypes.Promissed<UtilTypes.InicioPageData['Resumes']['container']>
+
+type CategoriasPageData = UtilTypes.Promissed<UtilTypes.CategoriasPageData>
 
 //#endregion
