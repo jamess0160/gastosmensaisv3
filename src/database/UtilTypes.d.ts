@@ -17,4 +17,16 @@ export namespace UtilTypes {
     }
 
     export type PrismaTransaction = Parameters<Parameters<typeof prisma.$transaction>[0]>[0]
+
+    export interface CookiesPostBody {
+        month: string
+        year: string
+    }
+
+    export interface CreateCashInflow {
+        IdCashInflow?: number
+        IdDestiny: string
+        Description: string
+        Value: string
+    }
 }
