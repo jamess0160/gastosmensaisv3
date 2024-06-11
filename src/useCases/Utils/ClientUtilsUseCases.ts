@@ -52,7 +52,9 @@ export class ClientUtilsUseCases {
         return "0" + value
     }
 
-    formatClientDate(date: string) {
+    formatClientDate(date?: string) {
+        if (!date) return
+        
         let momentDate = moment(date, "DD/MM/YYYY")
 
         if (momentDate.isValid() === false) {
@@ -60,6 +62,24 @@ export class ClientUtilsUseCases {
         }
 
         return momentDate.toDate()
+    }
+
+    handleTableData<T = any>(data: T[], minRowCount = 10): Array<T | false> {
+
+        let tableData = data as Array<T | false>
+
+        if (data.length < minRowCount) {
+            let count = minRowCount - data.length
+            for (let i = 0; i < count; i++) {
+                tableData.push(false)
+            }
+        }
+
+        return tableData
+    }
+
+    sumProp<T extends any>(data: T[], prop: keyof T) {
+        return data.reduce((old, item) => old + (item[prop] as number), 0)
     }
 }
 
