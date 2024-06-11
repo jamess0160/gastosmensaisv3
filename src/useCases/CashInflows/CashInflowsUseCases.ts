@@ -1,6 +1,7 @@
 import { BaseUseCase } from "@/base/baseUseCase";
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 import type { prisma } from "@/database/prisma";
+import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases";
 
 export class CashInflowsUseCases extends BaseUseCase {
 
@@ -11,6 +12,9 @@ export class CashInflowsUseCases extends BaseUseCase {
                     gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
                     lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
                 }
+            },
+            include: {
+                destinys: true
             }
         })
     }
@@ -23,7 +27,7 @@ export class CashInflowsUseCases extends BaseUseCase {
                 Description: item.Description,
                 IdDestiny: item.IdDestiny,
                 Value: item.Value,
-                EfectiveDate: new Date(),
+                EfectiveDate: serverUtilsUseCases.getCurrMoment().toDate(),
             }
         }))
     }
@@ -32,7 +36,7 @@ export class CashInflowsUseCases extends BaseUseCase {
         return this.prisma.cashinflows.create({ data })
     }
 
-    createMany(data: CreateCashInFlow[]) {
+    createMany(data: CreateManyCashInFlow) {
         return this.prisma.cashinflows.createMany({ data })
     }
 
@@ -43,7 +47,7 @@ export class CashInflowsUseCases extends BaseUseCase {
         })
     }
 
-    remove(IdCashInflow: number) {
+    delete(IdCashInflow: number) {
         return this.prisma.cashinflows.delete({
             where: { IdCashInflow }
         })
@@ -55,8 +59,12 @@ export const cashInflowsUseCases = new CashInflowsUseCases()
 
 //#region Interfaces / Types 
 
-type CreateCashInFlow = Parameters<typeof prisma.cashinflows.create>[0]['data']
+export type CreateCashInFlow = Parameters<typeof prisma.cashinflows.create>[0]['data']
+
+type CreateManyCashInFlow = Parameters<typeof prisma.cashinflows.createMany>[0]['data']
 
 type UpdateCashInFlow = Parameters<typeof prisma.cashinflows.update>[0]['data']
+
+export type CashInflowMY = Awaited<ReturnType<InstanceType<typeof CashInflowsUseCases>['getAllByMY']>>[0]
 
 //#endregion
