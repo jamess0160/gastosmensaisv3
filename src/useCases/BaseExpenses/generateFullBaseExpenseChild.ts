@@ -2,6 +2,7 @@ import { baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } fro
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
+import { AutoGetExpenseType } from "../Utils/getExpensePrice";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 
@@ -16,7 +17,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                 fixedexpenses: undefined,
                 installmentexpenses: undefined,
             })
-        })
+        }).sort(this.sortExpensesDescription).sort(this.sortExpensesTypes)
     }
 
     private getFullBaseExpense(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
@@ -36,7 +37,12 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                             some: {
                                 OR: [
                                     {
-                                        EndDate: null
+                                        EndDate: null,
+                                        baseexpenses: {
+                                            EntryDate: {
+                                                lte: dateFilter.gte
+                                            }
+                                        }
                                     },
                                     {
                                         EndDate: {
@@ -50,7 +56,12 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                     {
                         installmentexpenses: {
                             some: {
-                                ExpectedDate: dateFilter
+                                ExpectedDate: {
+                                    gte: dateFilter.gte
+                                },
+                                StartDate: {
+                                    lt: dateFilter.lt
+                                }
                             }
                         }
                     }
@@ -68,25 +79,53 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                                 EndDate: null
                             },
                             {
-                                StartDate: {
-                                    gte: dateFilter.gte
-                                }
-                            },
-                            {
                                 EndDate: {
-                                    lte: dateFilter.lt
-                                }
+                                    gte: dateFilter.gte
+                                },
                             }
                         ]
                     }
                 },
                 installmentexpenses: {
                     where: {
-                        ExpectedDate: dateFilter
+                        ExpectedDate: {
+                            gte: dateFilter.gte
+                        },
+                        StartDate: {
+                            lt: dateFilter.lt
+                        }
                     }
                 },
             }
         })
+    }
+
+    private sortExpensesTypes(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+        let values: Record<AutoGetExpenseType, number> = {
+            none: 0,
+            default: 1,
+            installment: 2,
+            fixed: 3,
+        }
+
+        let aType = clientUtilsUseCases.GetExpenseType.auto(a)
+        let bType = clientUtilsUseCases.GetExpenseType.auto(b)
+
+        let aValue = values[aType]
+        let bValue = values[bType]
+
+        return bValue - aValue
+    }
+
+    private sortExpensesDescription(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+        let aType = clientUtilsUseCases.GetExpenseType.auto(a)
+        let bType = clientUtilsUseCases.GetExpenseType.auto(b)
+
+        if (aType === "default" || bType === "default") {
+            return 0
+        }
+        
+        return a.Description.localeCompare(b.Description)
     }
 }
 

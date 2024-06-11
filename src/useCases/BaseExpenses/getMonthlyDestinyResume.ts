@@ -9,17 +9,17 @@ import { getParamReturn, sistemParamsUseCases } from '../SistemParams/SistemPara
 export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
     async run(month: number, year: number) {
-        let { cashInflows, destinys, params } = await clientUtilsUseCases.resolvePromiseObj({
+        let data = await clientUtilsUseCases.resolvePromiseObj({
             cashInflows: cashInflowsUseCases.getAllByMY(month, year),
             destinys: destinysUseCases.getAll(),
             params: sistemParamsUseCases.getAll(month, year),
         })
 
-        destinys = destinys.filter((item) => item.IdDestiny !== parseInt(params.IdDestinoConjunto))
+        data.destinys = data.destinys.filter((item) => item.IdDestiny !== parseInt(data.params.IdDestinoConjunto))
 
-        let jointExpenses = params.IdDestinoConjunto ? await this.calculateJointExpenses(month, year, parseInt(params.IdDestinoConjunto), destinys) : 0
+        let jointExpenses = data.params.IdDestinoConjunto ? await this.calculateJointExpenses(month, year, parseInt(data.params.IdDestinoConjunto), data.destinys) : 0
 
-        return Promise.all(destinys.map<Promise<DestinyResume>>((item) => this.generateDestinyResume(item, cashInflows, destinys.length, params, month, year, jointExpenses)))
+        return this.generateDestinyResume(month, year, data, jointExpenses)
     }
 
     private async calculateJointExpenses(month: number, year: number, IdDestinoConjunto: number, destinys: destinys[]) {
@@ -31,38 +31,48 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
         return totalJointExpenses / whoSplitJointExpense.length
     }
 
-    private async generateDestinyResume(item: destinys, cashInflows: cashinflows[], destinysCount: number, params: getParamReturn, month: number, year: number, jointExpenses: number) {
+    private generateDestinyResume(month: number, year: number, data: DestinyResumeData, jointExpenses: number): Promise<DestinyResume[]> {
+        let ValorMaximoGeral = parseFloat(data.params.ValorMaximoGeral)
+        let IdDestinoGeral = parseFloat(data.params.IdDestinoGeral)
 
-        let destinyBudget = this.calculateDestinyBudget(cashInflows, item, destinysCount)
+        let destinysBudget = data.destinys.map((item) => this.calculateDestinyBudget(item, data))
 
-        if (item.IdDestiny === parseInt(params.IdDestinoGeral)) {
-            destinyBudget = destinyBudget > parseFloat(params.ValorMaximoGeral) ? parseFloat(params.ValorMaximoGeral) : destinyBudget
-        }
+        let geralBudget = destinysBudget.find((item) => item.destiny.IdDestiny === parseInt(data.params.IdDestinoGeral))
 
-        let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny: item.IdDestiny })
+        if (!geralBudget) throw new Error("Geral não encontrado!")
 
-        let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
+        let geralCommonCash = geralBudget.budget > ValorMaximoGeral ? (geralBudget.budget - ValorMaximoGeral) / (destinysBudget.length - 1) : 0
 
-        if (item.SplitJointExpense) {
-            totalExpenses += jointExpenses
-        }
+        return Promise.all(destinysBudget.map(async (item) => {
+            let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny: item.destiny.IdDestiny })
 
-        return {
-            DestinyData: item,
-            RemainingBudget: destinyBudget - totalExpenses
-        }
+            let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
+
+            if (item.destiny.SplitJointExpense) {
+                totalExpenses += jointExpenses
+            }
+
+            if (item.destiny.IdDestiny === IdDestinoGeral) {
+                item.budget = (item.budget > ValorMaximoGeral ? ValorMaximoGeral : item.budget) - geralCommonCash
+            }
+
+            return {
+                DestinyData: item.destiny,
+                RemainingBudget: (item.budget + geralCommonCash) - totalExpenses
+            }
+        }))
     }
 
-    private calculateDestinyBudget(cashInflows: cashinflows[], destiny: destinys, totalDestinys: number) {
-        let commonCash = cashInflows.reduce((old, item) => {
-            return old + (item.IdDestiny ? 0 : item.Value)
-        }, 0) / totalDestinys
+    private calculateDestinyBudget(destiny: destinys, data: DestinyResumeData) {
+        let IdDestinoConjunto = parseInt(data.params.IdDestinoConjunto)
 
-        let destinyCash = cashInflows.reduce((old, item) => {
-            return old + (item.IdDestiny === destiny.IdDestiny ? item.Value : 0)
-        }, 0)
+        let commonCash = clientUtilsUseCases.sumProp(data.cashInflows.filter((item) => item.IdDestiny === IdDestinoConjunto), "Value")
+        let destinyCash = clientUtilsUseCases.sumProp(data.cashInflows.filter((item) => item.IdDestiny === destiny.IdDestiny), "Value")
 
-        return commonCash + destinyCash
+        return {
+            destiny: destiny,
+            budget: destinyCash + (commonCash / data.destinys.length)
+        }
     }
 }
 
@@ -71,6 +81,12 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 export interface DestinyResume {
     DestinyData: destinys
     RemainingBudget: number
+}
+
+interface DestinyResumeData {
+    cashInflows: cashinflows[]
+    destinys: destinys[]
+    params: getParamReturn
 }
 
 //#endregion
