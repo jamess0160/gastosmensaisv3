@@ -1,19 +1,22 @@
 import { UtilTypes } from "@/database/UtilTypes";
 import axios from "axios";
-import { ChangeEvent } from "react";
-import { FormProps } from "../ExpenseForm";
+import { ChangeEvent, Dispatch } from "react";
+import { UseFormReset } from "react-hook-form";
 
 class ExpenseFormEvents {
 
-    async onSubmit(setFormState: FormProps['setFormState'], edit: boolean, data: UtilTypes.CreateExpense) {
+    async onSubmit(data: UtilTypes.CreateExpense, setFormState: Dispatch<boolean>, resetForm: UseFormReset<UtilTypes.CreateExpense>, setIsLoading: Dispatch<boolean>, edit: boolean) {
+        setIsLoading(true)
 
         if (edit) {
             await this.editExpense(data)
+            setFormState(false)
         } else {
             await this.createExpense(data)
         }
 
-        setFormState(false)
+        setIsLoading(false)
+        resetForm()
     }
 
     private editExpense(data: UtilTypes.CreateExpense) {
