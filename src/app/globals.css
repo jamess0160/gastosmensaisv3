@@ -30,5 +30,10 @@ body {
 
 .bg-default {
 	--tw-bg-opacity: 1;
-	background-color: rgb(30  31  34 / var(--tw-bg-opacity));
+	background-color: rgb(30 31 34 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-default:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgb(30 31 34 / var(--tw-bg-opacity));
 }

@@ -24,7 +24,7 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
                             setSelectedCategory(item.IdExpenseCategory)
                         }
 
-                        let classes = "m-0 px-3 hover:bg-black hover:bg-opacity-20 p-2 max-md:!bg-transparent"
+                        let classes = "m-0 px-3 hover:bg-default p-2 max-md:!bg-transparent"
 
                         if (index === 0) {
                             classes += " rounded-tl-xl"
@@ -35,7 +35,7 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
                         }
 
                         if (selectedCategory === item.IdExpenseCategory) {
-                            classes += " bg-black bg-opacity-25 max-md:underline max-md:text-green-400"
+                            classes += " bg-default max-md:underline max-md:text-green-400"
                         }
 
                         return (

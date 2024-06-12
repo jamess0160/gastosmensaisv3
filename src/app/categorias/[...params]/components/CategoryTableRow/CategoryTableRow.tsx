@@ -17,7 +17,7 @@ export default function CategoryTableRow(props: TableRowProps) {
     let cellClass = "text-white text-nowrap text-clip"
 
     return (
-        <TableRow className={props.item.splitCount ? "bg-gray-700" : ""}>
+        <TableRow className={props.item.splitCount ? "bg-default" : ""}>
             <TableCell className={cellClass + " w-1/6"} align="left"> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass + " w-1/3"} align="center"> {props.item.Description} </TableCell>
             <TableCell className={cellClass} align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
