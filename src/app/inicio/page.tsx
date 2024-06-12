@@ -18,12 +18,14 @@ export default function Page() {
     }
 
     return (
-        <Container maxWidth="xl">
+        <>
             <Header month={data.month} year={data.year} />
-            <ResumeContainer ResumeContainerData={data.Resumes.container} />
-            <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
-            {data.Resumes.banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
-            <AddExpense ExpenseFormData={data.ExpenseFormData} />
-        </Container>
+            <Container maxWidth="xl">
+                <ResumeContainer ResumeContainerData={data.Resumes.container} />
+                <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
+                {data.Resumes.banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
+                <AddExpense ExpenseFormData={data.ExpenseFormData} />
+            </Container>
+        </>
     )
 }

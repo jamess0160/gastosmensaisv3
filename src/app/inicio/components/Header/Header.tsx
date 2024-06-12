@@ -17,9 +17,9 @@ export default function Header({ month, year }: HeaderProps) {
                     <Settings fontSize="large" />
                 </IconButton>
             </Link>
-            <h1 className="m-0">
+            <div className="m-0 text-4xl">
                 {`${clientUtilsUseCases.months[month]}, ${year}`}
-            </h1>
+            </div>
         </div>
     )
 }

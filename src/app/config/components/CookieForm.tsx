@@ -20,7 +20,7 @@ export default function CookieForm(props: CookieFormProps) {
     }
 
     return (
-        <form className="rounded-lg bg-slate-800 bg-opacity-50 w-1/2 flex flex-col gap-5 p-5" onSubmit={handleSubmit((data) => configEvents.onCookieChange(data, setLoading))}>
+        <form className="rounded-lg bg-slate-800 bg-opacity-50 w-1/2 max-md:w-11/12 flex flex-col gap-5 p-5" onSubmit={handleSubmit((data) => configEvents.onCookieChange(data, setLoading))}>
             <InputLabel className="text-white">Mês</InputLabel >
             <Select className="text-white" value={selectValue} onChange={onSelectChange.bind(null, setSelectValue, setValue)} >{monthsSelectItems}</Select>
 

@@ -4,7 +4,7 @@ import { CircularProgress, Container } from "@mui/material";
 import { usePooling } from "@/app/utils/usePooling";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 import { UtilTypes } from "@/database/UtilTypes";
-import ExpenseType from "./components/expenseType";
+import ExpenseGroup from "./components/ExpenseGroup";
 
 export default function Page(props: PageProps) {
     let [type, id] = props.params.params
@@ -25,11 +25,12 @@ export default function Page(props: PageProps) {
 
     return (
         <Container maxWidth="xl">
-            <div className="fixed top-2 right-4">
-                <h1 className="min-w-fit m-0 text-center underline" >{`${parsedType} - ${data.categoriesData.name}`}</h1>
+            <div className="visible max-md:invisible fixed top-2 right-4 rounded-xl p-3 z-10" style={{ backgroundColor: "#313338" }}>
+                <div className="min-w-fit m-0 text-center underline text-2xl">{parsedType} - {data.categoriesData.name}</div>
+                <div className="min-w-fit m-0 text-center underline text-xl">Total de gastos - R$ {data.categoriesData.sumExpenses}</div>
             </div>
             <div className="pt-12">
-                {data.categoriesData.data.map((item) => data && <ExpenseType id={`Category${item.IdExpenseCategory.toString()}`} key={item.IdExpenseCategory} CategorieData={item} ExpenseFormData={data.ExpenseFormData} month={data.month} year={data.year} />)}
+                <ExpenseGroup CategoryData={data.categoriesData.data} ExpenseFormData={data.ExpenseFormData} month={data.month} year={data.year} />
             </div>
         </Container>
     )

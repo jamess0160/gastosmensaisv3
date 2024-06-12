@@ -12,12 +12,14 @@ import { UtilTypes } from "@/database/UtilTypes";
 //#region Functions 
 
 export default function Row(props: RowProps) {
+    let cellClass = "text-white text-nowrap text-clip"
+
     return (
         <TableRow>
-            <TableCell className="text-white w-1/6">{props.item.Description}</TableCell>
-            <TableCell className="text-white w-1/3"> {props.item.destinys?.Name} </TableCell>
-            <TableCell className="text-white"> {`R$ ${props.item.Value}`} </TableCell>
-            <TableCell className="text-white">
+            <TableCell className={cellClass + " w-1/6"}>{props.item.Description}</TableCell>
+            <TableCell className={cellClass + " w-1/3"}> {props.item.destinys?.Name} </TableCell>
+            <TableCell className={cellClass}> {`R$ ${props.item.Value}`} </TableCell>
+            <TableCell className={cellClass}>
                 <div className="flex items-center justify-end">
                     <EditItem item={props.item} destinys={props.destinys} />
                     <DeleteItem item={props.item} />

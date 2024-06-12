@@ -19,9 +19,9 @@ export default function CreateCashInflow(props: CashInflowFormProps) {
 
     return (
         <>
-            <div className="w-full flex justify-center gap-14">
-                <Button className="w-1/4 text-black my-5" variant="contained" onClick={() => setOpen(true)}>Adicionar Entrada</Button>
-                <Button className="w-1/4 text-black my-5" variant="contained" style={msg === defaultMsg ? {} : { backgroundColor: "green" }} onClick={() => configEvents.cloneCashEntries(setLoading, setMsg)}>{msg}</Button>
+            <div className="w-full flex justify-center md:gap-14 max-md:flex-col max-md:items-center">
+                <Button className="w-1/4 max-md:w-11/12 text-black my-5" variant="contained" onClick={() => setOpen(true)}>Adicionar Entrada</Button>
+                <Button className="w-1/4 max-md:w-11/12 text-black my-5" variant="contained" style={msg === defaultMsg ? {} : { backgroundColor: "green" }} onClick={() => configEvents.cloneCashEntries(setLoading, setMsg)}>{msg}</Button>
             </div>
             <CashInflowForm destinys={props.destinys} open={open} setLoading={setLoading} setOpen={setOpen} />
         </>

@@ -14,28 +14,45 @@ import moment from "moment";
 
 export default function CategoryTableRow(props: TableRowProps) {
 
+    let cellClass = "text-white text-nowrap text-clip"
+
     return (
-        <TableRow>
-            <TableCell className="text-white w-1/6" align="left"> {getFirstCollumnData(props)} </TableCell>
-            <TableCell className="text-white w-1/3" align="center"> {props.item.Description} </TableCell>
-            <TableCell className="text-white" align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
+        <TableRow className={props.item.splitCount ? "bg-gray-700" : ""}>
+            <TableCell className={cellClass + " w-1/6"} align="left"> {getFirstCollumnData(props)} </TableCell>
+            <TableCell className={cellClass + " w-1/3"} align="center"> {props.item.Description} </TableCell>
+            <TableCell className={cellClass} align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
+            <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} />
+        </TableRow>
+    )
+}
+
+function LastCell(props: Omit<TableRowProps, "month" | "year">) {
+
+    if (props.item.splitCount && props.item.splitCount > 0) {
+        return (
             <TableCell className="text-white">
                 <div className="flex items-center justify-end">
-
-                    <ChangeActiveState item={props.item} />
-                    <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} />
-                    <DeleteItem item={props.item} />
-
+                    {props.item.obs}
                 </div>
             </TableCell>
-        </TableRow>
+        )
+    }
+
+    return (
+        <TableCell className="text-white">
+            <div className="flex items-center justify-end">
+                <ChangeActiveState item={props.item} />
+                <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} />
+                <DeleteItem item={props.item} />
+            </div>
+        </TableCell>
     )
 }
 
 function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
     if (clientUtilsUseCases.GetExpenseType.isDefault(item)) {
-        return item.child.ExpenseDate?.toLocaleDateString("pt-br")
+        return item.child.ExpenseDate ? new Date(item.child.ExpenseDate).toLocaleDateString("pt-br") : ""
     }
 
     if (clientUtilsUseCases.GetExpenseType.isFixed(item)) {

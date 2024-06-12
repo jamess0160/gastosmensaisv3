@@ -8,13 +8,23 @@ interface ResumeItemProps {
     color?: string
 }
 
-export default function ResumeItem({ Name, Value, href, color }: ResumeItemProps) {
+export default function ResumeItem({ Name, Value, href, color = "#232323" }: ResumeItemProps) {
+
+    if (href) {
+        return (
+            <Link href={href} className='max-md:w-full' style={{ textDecoration: "none", color: "white" }}>
+                <div className={styles.resumeItem + " max-md:!w-full"} style={color ? { backgroundColor: color } : {}}>
+                    <div className='w-fit m-auto pt-4 font-light'>{Name}</div>
+                    <div className='w-fit m-auto pt-5 font-bold'>R$ {Value.toFixed(2)}</div>
+                </div>
+            </Link>
+        )
+    }
+
     return (
-        <Link href={href || ""} style={{ textDecoration: "none", color: "white" }}>
-            <div className={styles.resumeItem} style={color ? { backgroundColor: color } : {}}>
-                <div>{Name}</div>
-                <div>R$ {Value.toFixed(2)}</div>
-            </div>
-        </Link>
+        <div className={styles.resumeItem + " pt-2 pb-6 px-6"} style={{ backgroundColor: color, height: "auto" }}>
+            <div className='w-fit font-light text-gray-300'>{Name}</div>
+            <div className='w-fit m-auto mt-3 font-bold'>R$ {Value.toFixed(2)}</div>
+        </div>
     )
 }

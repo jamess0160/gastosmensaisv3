@@ -7,8 +7,8 @@ import styles from '../ExpenseForm.module.css'
 export default function FormButtons({ setFormState, edit }: FormButtonProps) {
     return (
         <div className={styles.botoes}>
-            <Button onClick={() => setFormState(false)} className={`${styles.botao} ${styles.cancelar}`} >Fechar</Button>
-            <Button type="submit" className={`${styles.botao} ${styles.cadastrar}`} >{edit ? "Editar" : "Cadastrar"}</Button>
+            <Button className="w-1/3 border border-solid" onClick={() => setFormState(false)} >Fechar</Button>
+            <Button className="w-1/3" variant="contained" type="submit" >{edit ? "Editar" : "Cadastrar"}</Button>
         </div>
     )
 }

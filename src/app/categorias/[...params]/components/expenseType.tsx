@@ -13,9 +13,7 @@ export default function ExpenseType(props: PageProps) {
     let tableRows = data.map((item, index) => item ? <CategoryTableRow key={index} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
 
     return (
-        <>
-            <h1 id={props.id} className="m-0 mb-5">{props.CategorieData.name}</h1>
-
+        <div hidden={!props.selected}>
             <TableContainer className="bg-slate-800 bg-opacity-50">
                 <Table>
                     <TableBody>{tableRows}</TableBody>
@@ -23,7 +21,7 @@ export default function ExpenseType(props: PageProps) {
             </TableContainer>
 
             <h1 className="w-fit m-auto mt-5 underline">R$ {props.CategorieData.total}</h1>
-        </>
+        </div>
     )
 }
 
@@ -44,11 +42,11 @@ function EmptyRow() {
 //#region Interfaces / Types 
 
 interface PageProps {
-    id: string
     CategorieData: CategoryData
     ExpenseFormData: FieldsData
     month: number
     year: number
+    selected: boolean
 }
 
 export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
