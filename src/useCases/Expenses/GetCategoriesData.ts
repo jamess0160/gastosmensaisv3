@@ -29,13 +29,16 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 
         if (!bank) throw new Error("Banco não encontrado!")
 
+        let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
+            let categoryData = await baseExpensesUseCases.GetMonthlyBankCategory(month, year, id, item.IdExpenseCategory)
+
+            return this.handleExpenseData(item, categoryData)
+        }))
+
         return {
             name: bank.Name,
-            data: await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-                let categoryData = await baseExpensesUseCases.GetMonthlyBankCategory(month, year, id, item.IdExpenseCategory)
-
-                return this.handleExpenseData(item, categoryData)
-            }))
+            sumExpenses: parseFloat(data.reduce((old, item) => old + item.total, 0).toFixed(2)),
+            data: data
         }
     }
 
@@ -44,13 +47,16 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 
         if (!destiny) throw new Error("Destino não encontrado!")
 
+        let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
+            let categoryData = await baseExpensesUseCases.GetMonthlyDestinyCategory.run(month, year, id, item.IdExpenseCategory)
+
+            return this.handleExpenseData(item, categoryData)
+        }))
+
         return {
             name: destiny.Name,
-            data: await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-                let categoryData = await baseExpensesUseCases.GetMonthlyDestinyCategory(month, year, id, item.IdExpenseCategory)
-
-                return this.handleExpenseData(item, categoryData)
-            }))
+            sumExpenses: parseFloat(data.reduce((old, item) => old + item.total, 0).toFixed(2)),
+            data: data
         }
     }
 
@@ -71,6 +77,7 @@ export type Categories = "banco" | "pessoal"
 
 export interface ExpenseTypeData {
     name: string
+    sumExpenses: number
     data: CategoryData[]
 }
 

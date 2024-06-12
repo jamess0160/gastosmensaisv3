@@ -124,7 +124,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         if (aType === "default" || bType === "default") {
             return 0
         }
-        
+
         return a.Description.localeCompare(b.Description)
     }
 }
@@ -144,18 +144,20 @@ interface FullBaseExpense extends baseexpenses {
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
+    splitCount?: number
+    obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
 }
 
-export interface DefaultExpenseChild extends baseexpenses {
+export interface DefaultExpenseChild extends FullBaseExpenseChild {
     child: defaultexpenses
 }
 
-export interface FixedExpenseChild extends baseexpenses {
+export interface FixedExpenseChild extends FullBaseExpenseChild {
     child: fixedexpenses
 }
 
-export interface InstallmentExpenseChild extends baseexpenses {
+export interface InstallmentExpenseChild extends FullBaseExpenseChild {
     child: installmentexpenses
 }
 

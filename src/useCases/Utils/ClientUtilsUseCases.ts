@@ -15,15 +15,15 @@ export class ClientUtilsUseCases {
         }
 
         if (this.GetExpenseType.isDefault(expense)) {
-            return expense.Price
+            return (expense.Price) / (expense.splitCount || 1)
         }
 
         if (this.GetExpenseType.isFixed(expense)) {
-            return expense.child.Price || expense.Price
+            return (expense.child.Price || expense.Price) / (expense.splitCount || 1)
         }
 
         if (this.GetExpenseType.isInstallment(expense)) {
-            return expense.child.Price || expense.Price
+            return (expense.child.Price || expense.Price) / (expense.splitCount || 1)
         }
 
         return 0

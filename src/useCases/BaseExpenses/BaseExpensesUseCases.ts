@@ -5,12 +5,14 @@ import { GetMonthlyBanksResume } from "./getMonthlyBanksResume"
 import { GetMonthlyDestinyResume } from "./getMonthlyDestinyResume"
 import { UtilTypes } from "@/database/UtilTypes"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
+import { GetMonthlyDestinyCategory } from "./GetMonthlyDestinyCategory"
 
 export class BaseExpensesUseCases extends BaseUseCase {
 
     readonly GenerateFullBaseExpenseChild = new GenerateFullBaseExpenseChild(this)
     readonly GetMonthlyBanksResume = new GetMonthlyBanksResume(this)
     readonly GetMonthlyDestinyResume = new GetMonthlyDestinyResume(this)
+    readonly GetMonthlyDestinyCategory = new GetMonthlyDestinyCategory(this)
 
     getUnique(IdBaseExpense: number) {
         return this.prisma.baseexpenses.findFirstOrThrow({ where: { IdBaseExpense } })
@@ -23,10 +25,6 @@ export class BaseExpensesUseCases extends BaseUseCase {
 
     GetMonthlyBankCategory(month: number, year: number, IdBank: number, IdExpenseCategory?: number) {
         return this.GenerateFullBaseExpenseChild.run(month, year, { IdBank, IdExpenseCategory })
-    }
-
-    GetMonthlyDestinyCategory(month: number, year: number, IdDestiny: number, IdExpenseCategory: number) {
-        return this.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny, IdExpenseCategory })
     }
 
     create(data: CreateBaseExpense) {
