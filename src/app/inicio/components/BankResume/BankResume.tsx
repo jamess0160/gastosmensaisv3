@@ -1,6 +1,7 @@
 import { BankResume } from "@/useCases/BaseExpenses/getMonthlyBanksResume";
 import ResumeItem from "../ResumeItem/ResumeItem";
 import styles from './BankResume.module.css'
+import Image from "next/image";
 
 interface BankProps {
     bank: BankResume
@@ -12,7 +13,7 @@ export default function BankResume({ bank }: BankProps) {
     return (
         <div className={styles.bankContainer}>
             <div className={styles.bankName}>
-                <img src={bank.BankData.IconPath || defaultImage} style={{ width: "50px" }} />
+                <Image alt="sem imagem" src={bank.BankData.IconPath || defaultImage} style={{ width: "50px" }} />
                 <div>{bank.BankData.Name}</div>
             </div>
             <div className={styles.bank}>

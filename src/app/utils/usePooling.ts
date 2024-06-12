@@ -9,12 +9,13 @@ export function usePooling<T>(url: string, secondsInterval: number, options?: Po
     let [data, setData] = useState(options?.defaultValue)
 
     useEffect(() => {
+
         pooling<T>(url, setData, setLoading, options)
-        let interval = setInterval(() => {
-            pooling<T>(url, setData, setLoading, options)
-        }, moment.duration(secondsInterval, "seconds").asMilliseconds())
+
+        let interval = setInterval(pooling<T>, moment.duration(secondsInterval, "seconds").asMilliseconds(), url, setData, setLoading, options)
 
         return () => clearInterval(interval)
+
     }, [])
 
     return [data, isLoading]

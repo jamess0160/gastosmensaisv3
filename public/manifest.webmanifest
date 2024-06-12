@@ -1,0 +1,14 @@
+{
+    "name": "Gastos Mensais V3",
+    "short_name": "GastosMensais",
+    "start_url": ".",
+    "display": "standalone",
+    "description": "Aplicativo de controle de gastos",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ]
+}
