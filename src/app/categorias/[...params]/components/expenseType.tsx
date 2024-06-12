@@ -14,7 +14,7 @@ export default function ExpenseType(props: PageProps) {
 
     return (
         <div hidden={!props.selected}>
-            <TableContainer className="bg-slate-800 bg-opacity-50">
+            <TableContainer className="bg-default !bg-opacity-50">
                 <Table>
                     <TableBody>{tableRows}</TableBody>
                 </Table>
