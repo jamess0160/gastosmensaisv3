@@ -25,7 +25,7 @@ export default function Page(props: PageProps) {
 
     return (
         <Container maxWidth="xl">
-            <div className="visible max-md:invisible fixed top-2 right-4 rounded-xl p-3 z-10" style={{ backgroundColor: "#313338" }}>
+            <div className="fixed top-2 right-4 rounded-xl p-3 z-10 flex flex-col items-center max-md:bottom-0 max-md:right-0 max-md:left-0 max-md:top-auto max-md:rounded-b-none" style={{ backgroundColor: "#313338" }}>
                 <div className="min-w-fit m-0 text-center underline text-2xl">{parsedType} - {data.categoriesData.name}</div>
                 <div className="min-w-fit m-0 text-center underline text-xl">Total de gastos - R$ {data.categoriesData.sumExpenses}</div>
             </div>

@@ -27,13 +27,3 @@ body {
 	width: 100%;
 	background: linear-gradient(0deg, rgb(49, 51, 56) 66.87%, rgba(49, 51, 56, 0) 100%);
 }
-
-.bg-default {
-	--tw-bg-opacity: 1;
-	background-color: rgb(30 31 34 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-default:hover {
-	--tw-bg-opacity: 1;
-	background-color: rgb(30 31 34 / var(--tw-bg-opacity));
-}

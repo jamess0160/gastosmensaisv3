@@ -35,7 +35,7 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
                         }
 
                         if (selectedCategory === item.IdExpenseCategory) {
-                            classes += " bg-default max-md:underline max-md:text-green-400"
+                            classes += " bg-default max-md:underline max-md:text-fundoVerde"
                         }
 
                         return (
