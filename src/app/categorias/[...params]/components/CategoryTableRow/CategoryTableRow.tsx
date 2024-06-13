@@ -33,9 +33,9 @@ function LastCell(props: Omit<TableRowProps, "month" | "year">) {
             <TableCell className="text-white">
                 <div className="flex items-center justify-end">
                     <div className="w-1/2 flex justify-between">
-                        <div className="min-w-fit w-2/5">{props.item.obs}</div>
+                        <div className="leading-6 min-w-fit w-2/5">{props.item.obs}</div>
                         -
-                        <div className="min-w-fit w-2/5">{props.item.banks.Name}</div>
+                        <div className="leading-6 min-w-fit w-2/5">{props.item.banks.Name}</div>
                     </div>
                 </div>
             </TableCell>
@@ -86,7 +86,7 @@ function ChangeActiveState({ item }: ComponentsProps) {
         return <CircularProgress size="1rem" />
     }
 
-    return <Checkbox checked={item.Active === null ? false : item.Active} onChange={(event) => categoriasEvents.onActiveChange(event, item, setLodingState)} />
+    return <Checkbox className="py-0" checked={item.Active === null ? false : item.Active} onChange={(event) => categoriasEvents.onActiveChange(event, item, setLodingState)} />
 }
 
 function DeleteItem({ item }: ComponentsProps) {
@@ -97,7 +97,7 @@ function DeleteItem({ item }: ComponentsProps) {
     }
 
     return (
-        <IconButton onClick={() => categoriasEvents.onDeleteItemClick(item, setLodingState)}>
+        <IconButton className="py-0" onClick={() => categoriasEvents.onDeleteItemClick(item, setLodingState)}>
             <Delete color="primary" />
         </IconButton>
     )

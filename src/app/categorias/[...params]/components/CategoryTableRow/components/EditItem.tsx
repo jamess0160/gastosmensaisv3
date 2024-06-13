@@ -22,7 +22,7 @@ export default function EditItem({ item, ExpenseFormData }: EditItemProps) {
     }
 
     return (
-        <IconButton onClick={() => setLodingState(true)}>
+        <IconButton className="py-0" onClick={() => setLodingState(true)}>
             <Edit color="primary" />
         </IconButton>
     )
