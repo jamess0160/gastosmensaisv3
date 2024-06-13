@@ -32,7 +32,11 @@ function LastCell(props: Omit<TableRowProps, "month" | "year">) {
         return (
             <TableCell className="text-white">
                 <div className="flex items-center justify-end">
-                    {props.item.obs}
+                    <div className="w-1/2 flex justify-between">
+                        <div className="min-w-fit w-2/5">{props.item.obs}</div>
+                        -
+                        <div className="min-w-fit w-2/5">{props.item.banks.Name}</div>
+                    </div>
                 </div>
             </TableCell>
         )

@@ -1,4 +1,4 @@
-import { baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } from "@prisma/client"
+import { banks, baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
@@ -11,12 +11,13 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         let baseExpenses = await this.getFullBaseExpense(month, year, options)
 
         return baseExpenses.map<FullBaseExpenseChild>((item) => {
-            return Object.assign(item, {
+            return {
+                ...item,
                 child: item.defaultexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
                 defaultexpenses: undefined,
                 fixedexpenses: undefined,
                 installmentexpenses: undefined,
-            })
+            }
         }).sort(this.sortExpensesDescription).sort(this.sortExpensesTypes)
     }
 
@@ -72,6 +73,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             },
             include: {
                 defaultexpenses: true,
+                banks: true,
                 fixedexpenses: {
                     where: {
                         OR: [
@@ -138,12 +140,14 @@ interface GenerateFullBaseExpenseChildOptions {
 }
 
 interface FullBaseExpense extends baseexpenses {
+    banks: banks
     defaultexpenses: defaultexpenses | null
     fixedexpenses: fixedexpenses[]
     installmentexpenses: installmentexpenses[]
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
+    banks: banks
     splitCount?: number
     obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
