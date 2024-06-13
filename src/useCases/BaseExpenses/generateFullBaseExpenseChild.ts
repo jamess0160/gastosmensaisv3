@@ -1,4 +1,4 @@
-import { banks, baseexpenses, defaultexpenses, fixedexpenses, installmentexpenses } from "@prisma/client"
+import { banks, baseexpenses, defaultexpenses, destinys, fixedexpenses, installmentexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
@@ -74,6 +74,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             include: {
                 defaultexpenses: true,
                 banks: true,
+                destinys: true,
                 fixedexpenses: {
                     where: {
                         OR: [
@@ -140,6 +141,7 @@ interface GenerateFullBaseExpenseChildOptions {
 }
 
 interface FullBaseExpense extends baseexpenses {
+    destinys: destinys
     banks: banks
     defaultexpenses: defaultexpenses | null
     fixedexpenses: fixedexpenses[]
@@ -147,6 +149,7 @@ interface FullBaseExpense extends baseexpenses {
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
+    destinys: destinys
     banks: banks
     splitCount?: number
     obs?: string

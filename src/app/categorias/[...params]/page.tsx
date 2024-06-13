@@ -30,7 +30,13 @@ export default function Page(props: PageProps) {
                 <div className="min-w-fit m-0 text-center underline text-xl">Total de gastos - R$ {data.categoriesData.sumExpenses}</div>
             </div>
             <div className="pt-12">
-                <ExpenseGroup CategoryData={data.categoriesData.data} ExpenseFormData={data.ExpenseFormData} month={data.month} year={data.year} />
+                <ExpenseGroup
+                    CategoryData={data.categoriesData.data}
+                    ExpenseFormData={data.ExpenseFormData}
+                    month={data.month}
+                    year={data.year}
+                    type={type}
+                />
             </div>
         </Container>
     )

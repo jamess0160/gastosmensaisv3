@@ -9,6 +9,7 @@ import { useState } from "react";
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
 import moment from "moment";
+import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 
 //#region Functions 
 
@@ -21,22 +22,19 @@ export default function CategoryTableRow(props: TableRowProps) {
             <TableCell className={cellClass + " w-1/6"} align="left"> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass + " w-1/3"} align="center"> {props.item.Description} </TableCell>
             <TableCell className={cellClass} align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
+            <TableCell className={cellClass + " w-1/3"} align="center"> {props.type === "banco" ? props.item.destinys.Name : props.item.banks.Name} </TableCell>
             <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} />
         </TableRow>
     )
 }
 
-function LastCell(props: Omit<TableRowProps, "month" | "year">) {
+function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
 
     if (props.item.splitCount && props.item.splitCount > 0) {
         return (
             <TableCell className="text-white">
-                <div className="flex items-center justify-end">
-                    <div className="w-1/2 flex justify-between">
-                        <div className="leading-6 min-w-fit w-2/5">{props.item.obs}</div>
-                        -
-                        <div className="leading-6 min-w-fit w-2/5">{props.item.banks.Name}</div>
-                    </div>
+                <div className="flex items-center justify-end leading-6">
+                    {props.item.obs}
                 </div>
             </TableCell>
         )
@@ -116,6 +114,7 @@ interface TableRowProps {
     ExpenseFormData: FieldsData
     month: number
     year: number
+    type: Categories
 }
 
 //#endregion

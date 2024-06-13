@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/mate
 import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
 import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
-import { CategoryData } from "@/useCases/Expenses/GetCategoriesData"
+import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData"
 
 //#region Functions 
 
@@ -10,7 +10,7 @@ export default function ExpenseType(props: PageProps) {
 
     let data = clientUtilsUseCases.handleTableData(props.CategorieData.tableData)
 
-    let tableRows = data.map((item, index) => item ? <CategoryTableRow key={index} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
+    let tableRows = data.map((item, index) => item ? <CategoryTableRow type={props.type} key={index} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
 
     return (
         <div hidden={!props.selected}>
@@ -33,6 +33,7 @@ function EmptyRow() {
             <TableCell className={classes}>1</TableCell>
             <TableCell className={classes}>1</TableCell>
             <TableCell className={classes}>1</TableCell>
+            <TableCell className={classes}>1</TableCell>
         </TableRow>
     )
 }
@@ -47,6 +48,7 @@ interface PageProps {
     month: number
     year: number
     selected: boolean
+    type: Categories
 }
 
 export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
