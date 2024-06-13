@@ -14,8 +14,8 @@ export default function ResumeItem({ Name, Value, href, color = "#232323" }: Res
 
     if (href) {
         return (
-            <Link href={href} className='max-md:w-full' style={{ textDecoration: "none", color: "white" }}>
-                <div className={defaultClass + "  max-md:!w-full max-md:!h-auto"} style={{ backgroundColor: color }}>
+            <Link href={href} style={{ textDecoration: "none", color: "white" }}>
+                <div className={defaultClass + "  max-md:!h-auto"} style={{ backgroundColor: color }}>
                     <div className='w-fit m-auto font-light'>{Name}</div>
                     <div className='w-fit m-auto mt-3 md:pt-3 font-bold'>R$ {Value.toFixed(2)}</div>
                 </div>
