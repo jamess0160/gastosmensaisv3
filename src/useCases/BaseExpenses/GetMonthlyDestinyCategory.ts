@@ -22,7 +22,7 @@ export class GetMonthlyDestinyCategory extends BaseSection<BaseExpensesUseCases>
 
         if (!destiny || !destiny.SplitJointExpense) return []
 
-        let params = await sistemParamsUseCases.getParam("IdDestinoConjunto", clientUtilsUseCases.monthAndYearToMoment(month, year).toDate())
+        let params = await sistemParamsUseCases.getParam("IdDestinoConjunto", month, year)
 
         if (!params) {
             return []

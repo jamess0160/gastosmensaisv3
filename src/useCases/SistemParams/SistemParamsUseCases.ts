@@ -1,5 +1,6 @@
 import { BaseUseCase } from "../../base/baseUseCase";
 import { sistemparams } from '@prisma/client'
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 
 export class SistemParamsUseCases extends BaseUseCase {
 
@@ -43,12 +44,12 @@ export class SistemParamsUseCases extends BaseUseCase {
         }, {} as Record<SistemParams, string>)
     }
 
-    getParam(paramName: SistemParams, EfectiveDate: Date) {
+    getParam(paramName: SistemParams, month: number, year: number) {
         return this.prisma.sistemparams.findFirst({
             where: {
                 Key: paramName,
                 EfectiveDate: {
-                    gte: EfectiveDate
+                    lte: clientUtilsUseCases.monthAndYearToMoment(month, year).endOf("month").toDate()
                 }
             },
             orderBy: {
