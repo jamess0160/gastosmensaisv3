@@ -15,6 +15,13 @@ export function ReportChart(props: ReportChartProps) {
                             labels: {
                                 color: "white"
                             }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label(tooltipItem) {
+                                    tooltipItem.formattedValue = `R$${tooltipItem.raw}`
+                                },
+                            }
                         }
                     },
                     scales: {
@@ -23,7 +30,10 @@ export function ReportChart(props: ReportChartProps) {
                                 color: "white"
                             },
                             ticks: {
-                                color: "white"
+                                color: "white",
+                                callback(tickValue) {
+                                    return `R$${tickValue}`
+                                },
                             }
                         },
                         x: {
