@@ -36,21 +36,21 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
             IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
-            EntryDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+            EntryDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
         })
     }
 
     createDefaultExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
         return new DefaultExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
-            ExpenseDate: clientUtilsUseCases.formatClientDate(createExpenseData.ExpenseDate),
+            ExpenseDate: clientUtilsUseCases.handleClientDate(createExpenseData.ExpenseDate),
         })
     }
 
     createFixedExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
         return new FixedExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
-            StartDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+            StartDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
         })
     }

@@ -29,6 +29,15 @@ export class ClientUtilsUseCases {
         return 0
     }
 
+    GetExpenseDate(expense: FullBaseExpenseChild) {
+
+        if (this.GetExpenseType.isDefault(expense)) {
+            return expense.child.ExpenseDate
+        }
+
+        return expense.EntryDate
+    }
+
     async resolvePromiseObj<T extends Record<string, Promise<any>>>(promises: T): Promise<{ [K in keyof T]: Awaited<T[K]> }> {
         let arrayKeys = Object.keys(promises)
         let resultPromisses = await Promise.all(Object.values(promises))
@@ -52,7 +61,7 @@ export class ClientUtilsUseCases {
         return "0" + value
     }
 
-    formatClientDate(date?: string) {
+    handleClientDate(date?: string) {
         if (!date) return
 
         let momentDate = moment(date, "DD/MM/YYYY")
@@ -62,6 +71,12 @@ export class ClientUtilsUseCases {
         }
 
         return momentDate.toDate()
+    }
+
+    handleClientMonth(date?: string) {
+        if (!date) return
+
+        return moment(date, "YYYY-MM").startOf("month").toDate()
     }
 
     handleTableData<T = any>(data: T[], minRowCount = 10): Array<T | false> {

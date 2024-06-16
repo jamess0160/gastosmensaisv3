@@ -134,7 +134,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
 
 //#region Interfaces / Types 
 
-interface GenerateFullBaseExpenseChildOptions {
+export interface GenerateFullBaseExpenseChildOptions {
     IdBank?: number
     IdDestiny?: number
     IdExpenseCategory?: number

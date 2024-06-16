@@ -6,6 +6,7 @@ import { GetMonthlyDestinyResume } from "./getMonthlyDestinyResume"
 import { UtilTypes } from "@/database/UtilTypes"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
 import { GetMonthlyDestinyCategory } from "./GetMonthlyDestinyCategory"
+import { GetReports } from "./getReports"
 
 export class BaseExpensesUseCases extends BaseUseCase {
 
@@ -13,6 +14,7 @@ export class BaseExpensesUseCases extends BaseUseCase {
     readonly GetMonthlyBanksResume = new GetMonthlyBanksResume(this)
     readonly GetMonthlyDestinyResume = new GetMonthlyDestinyResume(this)
     readonly GetMonthlyDestinyCategory = new GetMonthlyDestinyCategory(this)
+    readonly GetReports = new GetReports(this)
 
     getUnique(IdBaseExpense: number) {
         return this.prisma.baseexpenses.findFirstOrThrow({ where: { IdBaseExpense } })

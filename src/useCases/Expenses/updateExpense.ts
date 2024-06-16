@@ -41,7 +41,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
             IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
-            EntryDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+            EntryDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
         })
     }
 
@@ -55,7 +55,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         }
 
         return new DefaultExpensesUseCases(tx).update(defaultExpense.IdDefaultExpense, {
-            ExpenseDate: clientUtilsUseCases.formatClientDate(createExpenseData.ExpenseDate),
+            ExpenseDate: clientUtilsUseCases.handleClientDate(createExpenseData.ExpenseDate),
         })
     }
 
@@ -70,7 +70,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
         if (serverUtilsUseCases.compareDates(BaseExpense.EntryDate)) {
             return new FixedExpensesUseCases(tx).update(fixedExpense.IdFixedExpense, {
-                StartDate: clientUtilsUseCases.formatClientDate(createExpenseData.EntryDate),
+                StartDate: clientUtilsUseCases.handleClientDate(createExpenseData.EntryDate),
                 Price: parseFloat(createExpenseData.Price.replace(",", "."))
             })
         }

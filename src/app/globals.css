@@ -47,3 +47,16 @@ body {
 ::-webkit-scrollbar-thumb:hover {
 	background: rgb(47, 47, 47);
 }
+
+*::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+	border-radius: 10px;
+	font-size: 20px;
+	padding-right: 10px;
+	cursor: pointer;
+}
+
+option {
+	color: #D9D9D9;
+	background-color: #1E1F22;
+}
