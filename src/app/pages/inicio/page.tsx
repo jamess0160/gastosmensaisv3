@@ -7,8 +7,8 @@ import DestinyResumeContainer from "./components/DestinyResume/DestinyResumeCont
 import ResumeContainer from "./components/ResumeContainer/ResumeContainer";
 import React from "react";
 import AddExpense from "./components/addExpense/AddExpense";
-import { usePooling } from "../utils/usePooling";
 import { UtilTypes } from "@/database/UtilTypes";
+import { usePooling } from "@/app/utils/usePooling";
 
 export default function Page() {
     let [data] = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })

@@ -1,4 +1,4 @@
-import ExpenseForm, { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
+import ExpenseForm, { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
 import { CategoryTableData } from "../../expenseType"
 import { CircularProgress, IconButton } from "@mui/material"
 import { Edit } from "@mui/icons-material"

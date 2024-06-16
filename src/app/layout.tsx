@@ -4,7 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import { Lexend } from "next/font/google";
-import BotaoVoltar from "./components/BotaoVoltar";
+import BotaoVoltar from "./pages/components/BotaoVoltar";
 
 const font = Lexend({
 	weight: ['300', '400', '500', '700'],

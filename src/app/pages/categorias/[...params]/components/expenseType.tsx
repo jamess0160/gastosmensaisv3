@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
-import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
+import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
 import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData"

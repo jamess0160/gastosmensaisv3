@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import axios from "axios";
 import { UtilTypes } from "@/database/UtilTypes";
 import { CashInflowMY } from "@/useCases/CashInflows/CashInflowsUseCases";
-import { openConfirmDialog } from "@/app/components/ConfirmDialog/confirmDialog";
+import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
 import { defaultMsg } from "../components/CreateCashInflow";
 
 class ConfigEvents {

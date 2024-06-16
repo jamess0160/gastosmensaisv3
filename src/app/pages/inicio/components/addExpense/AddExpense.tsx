@@ -2,7 +2,7 @@
 
 import { IconButton } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import ExpenseForm, { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm";
+import ExpenseForm, { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import { useState } from "react";
 
 export default function AddExpense({ ExpenseFormData }: ComponentProps) {

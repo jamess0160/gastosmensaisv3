@@ -1,9 +1,9 @@
 import { BankResume } from "@/useCases/BaseExpenses/getMonthlyBanksResume"
 import { prisma } from "./prisma"
-import { ResumeContainerData } from "@/app/inicio/components/ResumeContainer/ResumeContainer"
 import { DestinyResume } from "@/useCases/BaseExpenses/getMonthlyDestinyResume"
-import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm"
+import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
 import { ExpenseTypeData } from "@/useCases/Expenses/GetCategoriesData"
+import { ResumeContainerData } from "@/app/pages/inicio/components/ResumeContainer/ResumeContainer"
 
 export namespace UtilTypes {
 

@@ -6,7 +6,7 @@ import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 import { Delete } from "@mui/icons-material"
 import { categoriasEvents } from "../../events/events"
 import { useState } from "react";
-import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm";
+import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
 import moment from "moment";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";

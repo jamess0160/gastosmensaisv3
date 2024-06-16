@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch } from "react";
 import { CategoryTableData } from "../components/expenseType";
 import axios from "axios";
-import { openConfirmDialog } from "@/app/components/ConfirmDialog/confirmDialog";
+import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
 
 class CategoriasEvents {
     async onActiveChange(event: ChangeEvent<HTMLInputElement>, item: CategoryTableData, setLodingState: Dispatch<boolean>) {

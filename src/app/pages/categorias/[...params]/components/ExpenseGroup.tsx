@@ -1,7 +1,7 @@
 import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData";
 import { Dispatch, useState } from "react";
 import ExpenseType from "./expenseType";
-import { FieldsData } from "@/app/components/ExpenseForm/ExpenseForm";
+import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 
 export default function ExpenseGroup(props: ExpenseGroupProps) {
 

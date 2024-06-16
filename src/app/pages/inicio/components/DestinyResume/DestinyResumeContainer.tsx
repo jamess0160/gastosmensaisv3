@@ -10,7 +10,7 @@ export default function DestinyResumeContainer({ DestinysResume }: DestinyResume
     return (
         <div className={styles.DestinyResumeContainer}>
             {DestinysResume.map((item, index) => {
-                return <ResumeItem Name={item.DestinyData.Name} Value={item.RemainingBudget} color={item.DestinyData.Color || undefined} href={`/categorias/pessoal/${item.DestinyData.IdDestiny}`} key={index} />
+                return <ResumeItem Name={item.DestinyData.Name} Value={item.RemainingBudget} color={item.DestinyData.Color || undefined} href={`/pages/categorias/pessoal/${item.DestinyData.IdDestiny}`} key={index} />
             })}
         </div>
     )
