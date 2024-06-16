@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch } from "react";
-import { CategoryTableData } from "../components/expenseType";
+import { CategoryTableData } from "../../categorias/[...params]/components/expenseType";
 import axios from "axios";
 import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
 

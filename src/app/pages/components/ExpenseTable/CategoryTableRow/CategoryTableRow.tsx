@@ -1,15 +1,16 @@
 'use client';
 
 import { Checkbox, CircularProgress, IconButton, TableCell, TableRow } from "@mui/material"
-import { CategoryTableData as CategoryTableData } from "../expenseType"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 import { Delete } from "@mui/icons-material"
-import { categoriasEvents } from "../../events/events"
 import { useState } from "react";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
 import moment from "moment";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
+import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
+import { categoriasEvents } from "../events";
+import { EmptyCell, EmptyRow } from "./EmptyRow";
 
 //#region Functions 
 
@@ -22,13 +23,17 @@ export default function CategoryTableRow(props: TableRowProps) {
             <TableCell className={cellClass + " w-1/6"} align="left"> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass + " w-1/3"} align="center"> {props.item.Description} </TableCell>
             <TableCell className={cellClass} align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
-            <TableCell className={cellClass + " w-1/3"} align="center"> {props.type === "banco" ? props.item.destinys.Name : props.item.banks.Name} </TableCell>
+            <TableCell className={cellClass + " w-1/3"} align="center"> {getDestinyBankColumnData(props.item, props.type)} </TableCell>
             <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} />
         </TableRow>
     )
 }
 
 function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
+
+    if (!props.ExpenseFormData) {
+        return <EmptyCell />
+    }
 
     if (props.item.splitCount && props.item.splitCount > 0) {
         return (
@@ -61,7 +66,7 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
         return "Fixo"
     }
 
-    if (clientUtilsUseCases.GetExpenseType.isInstallment(item)) {
+    if (clientUtilsUseCases.GetExpenseType.isInstallment(item) && month && year) {
 
         let monthsDiff = Math.floor(moment(item.child.ExpectedDate).diff(clientUtilsUseCases.monthAndYearToMoment(month, year), "month", true))
 
@@ -70,7 +75,23 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
         return `${current}/${max}`
     }
 
-    return item.EntryDate?.toLocaleDateString("pt-br")
+    return moment(item.EntryDate).toDate().toLocaleDateString("pt-br")
+}
+
+function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories) {
+    if (!type) {
+        return `${item.destinys.Name} - ${item.banks.Name}`
+    }
+
+    if (type === "banco") {
+        return item.destinys.Name
+    }
+
+    if (type === "pessoal") {
+        return item.banks.Name
+    }
+
+    return ""
 }
 
 //#endregion
@@ -106,15 +127,15 @@ function DeleteItem({ item }: ComponentsProps) {
 //#region Interfaces / Types 
 
 interface ComponentsProps {
-    item: CategoryTableData
+    item: FullBaseExpenseChild
 }
 
 interface TableRowProps {
-    item: CategoryTableData
-    ExpenseFormData: FieldsData
-    month: number
-    year: number
-    type: Categories
+    item: FullBaseExpenseChild
+    ExpenseFormData?: FieldsData
+    month?: number
+    year?: number
+    type?: Categories
 }
 
 //#endregion

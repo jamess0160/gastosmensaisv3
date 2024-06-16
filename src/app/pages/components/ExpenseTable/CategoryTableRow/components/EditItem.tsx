@@ -1,11 +1,11 @@
 import ExpenseForm, { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
-import { CategoryTableData } from "../../expenseType"
 import { CircularProgress, IconButton } from "@mui/material"
 import { Edit } from "@mui/icons-material"
 import { useState } from "react"
 import { UtilTypes } from "@/database/UtilTypes"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 import moment from "moment"
+import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
 
 export default function EditItem({ item, ExpenseFormData }: EditItemProps) {
     let [loadingState, setLodingState] = useState(false)
@@ -32,7 +32,7 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<UtilTypes.C
     let base: Partial<UtilTypes.CreateExpense> = {
         IdBaseExpense: item.IdBaseExpense,
         Description: item.Description,
-        EntryDate: item.EntryDate ? moment(item.EntryDate).format("YYYY-MM-DD") : undefined,
+        EntryDate: item.EntryDate ? moment(item.EntryDate).format("YYYY-MM") : undefined,
         IdBank: item.IdBank.toString(),
         IdDestiny: item.IdDestiny.toString(),
         IdExpenseCategory: item.IdExpenseCategory.toString(),
@@ -70,6 +70,6 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<UtilTypes.C
 }
 
 interface EditItemProps {
-    item: CategoryTableData
+    item: FullBaseExpenseChild
     ExpenseFormData: FieldsData
 }

@@ -1,40 +1,17 @@
-import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
-import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
 import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData"
+import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable"
 
 //#region Functions 
 
 export default function ExpenseType(props: PageProps) {
 
-    let data = clientUtilsUseCases.handleTableData(props.CategorieData.tableData)
-
-    let tableRows = data.map((item, index) => item ? <CategoryTableRow type={props.type} key={index} item={item} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} /> : <EmptyRow key={index} />)
-
     return (
         <div hidden={!props.selected}>
-            <TableContainer className="bg-default !bg-opacity-50">
-                <Table>
-                    <TableBody>{tableRows}</TableBody>
-                </Table>
-            </TableContainer>
+            <ExpenseTable data={props.CategorieData.tableData} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} type={props.type} />
 
             <h1 className="w-fit m-auto mt-5 underline">R$ {props.CategorieData.total}</h1>
         </div>
-    )
-}
-
-function EmptyRow() {
-    let classes = "text-slate-800 text-opacity-50 select-none"
-    return (
-        <TableRow>
-            <TableCell className={classes}>1</TableCell>
-            <TableCell className={classes}>1</TableCell>
-            <TableCell className={classes}>1</TableCell>
-            <TableCell className={classes}>1</TableCell>
-            <TableCell className={classes}>1</TableCell>
-        </TableRow>
     )
 }
 
