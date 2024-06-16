@@ -22,7 +22,10 @@ export default function ExpenseForm(props: FormProps) {
         <Dialog open={props.formState}  >
             <div className={styles.dialog}>
                 <DialogTitle color={"white"}>{props.editItem ? "Editar gasto" : "Novo gasto"}</DialogTitle>
-                <form onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem)))} className={styles.form}>
+                <form
+                    onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem)))}
+                    className={styles.form}
+                >
                     <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} editItem={props.editItem} />
                     <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
                 </form>

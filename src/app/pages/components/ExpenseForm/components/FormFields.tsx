@@ -4,11 +4,14 @@ import styles from '../ExpenseForm.module.css'
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"
 import { FieldsData } from "../ExpenseForm"
 import { expenseFormEventsEvents } from "../events/events"
+import { Input } from "../../fields/input"
+import { Select } from "../../fields/selelct"
+import moment from "moment"
 
 //#region Functions 
 
 export default function FormFields({ register, setValue, fieldsData, editItem }: FormFieldsProps) {
-    let [checkboxState, setCheckboxState] = useState(editItem?.Type || "")
+    let [checkboxState, setCheckboxState] = useState<checkboxState>(editItem?.Type || null)
 
     function onCheckBoxChange(newValue: UtilTypes.CreateExpense['Type']) {
         setValue("Type", newValue)
@@ -17,14 +20,9 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
 
     return (
         <>
-            <div className={styles.campo}>
-                <legend>Data de Registro</legend>
-                <input {...register("EntryDate")} type="date"></input>
-            </div>
-            <div className={styles.campo}>
-                <legend>Descrição</legend>
-                <input  {...register("Description")} type="text"></input>
-            </div>
+            <Input label="Data de Registro" inputProps={{ ...register("EntryDate"), type: "month", defaultValue: moment().format("YYYY-MM") }} />
+            <Input label="Descrição" inputProps={{ ...register("Description"), type: "text" }} />
+
             <div className={`${styles.campo} ${styles.checkParent}`}>
                 <div className={styles.checkGroup}>
                     <div>
@@ -41,48 +39,42 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
                     </div>
                 </div>
             </div>
-            {
-                checkboxState === "Default" && <div className={styles.campo}>
-                    <legend>Data do Gasto</legend>
-                    <input {...register("ExpenseDate")} type="date"></input>
-                </div>
-            }
-            {
-                checkboxState === "Installment" && <>
-                    <div className={styles.campo}>
-                        <legend>Parcela atual</legend>
-                        <input {...register("CurrentInstallment")} type="number"></input>
-                    </div>
-                    <div className={styles.campo}>
-                        <legend>Parcelas totais</legend>
-                        <input {...register("MaxInstallment")} type="number"></input>
-                    </div>
-                </>
-            }
-            <div className={styles.campo} >
-                <legend>Valor</legend>
-                <input {...register("Price")} onChange={expenseFormEventsEvents.validatePriceInput}></input>
-            </div>
-            <div className={styles.campo} >
-                <legend>Destino</legend>
-                <select {...register("IdDestiny")}>
-                    {fieldsData.Destinys.map((item) => <option value={item.IdDestiny} key={item.IdDestiny}>{item.Name}</option>)}
-                </select>
-            </div>
-            <div className={styles.campo} >
-                <legend>Tipo de gasto</legend>
-                <select {...register("IdExpenseCategory")}>
-                    {fieldsData.ExpenseCategories.map((item) => <option value={item.IdExpenseCategory} key={item.IdExpenseCategory}>{item.Description}</option>)}
-                </select>
-            </div>
-            <div className={styles.campo} >
-                <legend>Banco</legend>
-                <select {...register("IdBank")}>
-                    {fieldsData.Banks.map((item) => <option value={item.IdBank} key={item.IdBank}>{item.Name}</option>)}
-                </select>
-            </div>
+
+            {getCheckBoxStateField(checkboxState, register)}
+
+            <Input label="Valor" inputProps={{ ...register("Price"), onChange: expenseFormEventsEvents.validatePriceInput }} />
+            <Select
+                label="Destino"
+                selectProps={{ ...register("IdDestiny") }}
+                selectItems={fieldsData.Destinys.map((item) => ({ key: item.IdDestiny, text: item.Name }))}
+            />
+            <Select
+                label="Tipo de gasto"
+                selectProps={{ ...register("IdExpenseCategory") }}
+                selectItems={fieldsData.ExpenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
+            />
+            <Select
+                label="Banco"
+                selectProps={{ ...register("IdBank") }}
+                selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank, text: item.Name }))}
+            />
         </>
     )
+}
+
+function getCheckBoxStateField(checkboxState: checkboxState, register: FormFieldsProps['register']) {
+    if (checkboxState === "Default") {
+        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate"), type: "date" }} />
+    }
+
+    if (checkboxState === "Installment") {
+        return (
+            <>
+                <Input label="Parcela atual" inputProps={{ ...register("CurrentInstallment"), type: "number" }} />
+                <Input label="Parcelas totais" inputProps={{ ...register("MaxInstallment"), type: "number" }} />
+            </>
+        )
+    }
 }
 
 //#endregion
@@ -95,5 +87,7 @@ interface FormFieldsProps {
     fieldsData: FieldsData
     editItem?: Partial<UtilTypes.CreateExpense>
 }
+
+type checkboxState = "Default" | "Installment" | "Fixed" | null
 
 //#endregion
