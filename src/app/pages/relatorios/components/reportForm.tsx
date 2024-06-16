@@ -3,24 +3,34 @@ import { Input } from "../../components/fields/input";
 import { Select, SelectItem } from "../../components/fields/selelct";
 import { UseFormRegister } from "react-hook-form";
 import { RelatorioFormData } from "@/app/api/relatorios/route";
+import { Button } from "@mui/material";
 
 export function ReportForm(props: ReportFormProps) {
     return (
-        <div className="flex gap-10">
-            <Select label="Intervalo" selectItems={intervalItems} selectProps={{ ...props.register("interval") }} />
+        <form onSubmit={props.onSubmit}>
 
-            <Input label="Inicio" inputProps={{ ...props.register("dateStart"), type: "date", }} />
+            <div className="flex gap-10 max-md:flex-wrap justify-center">
+                <Select label="Intervalo" selectItems={intervalItems} selectProps={{ ...props.register("interval") }} />
 
-            <Input label="Final" inputProps={{ ...props.register("dateEnd"), type: "date", }} />
+                <Input label="Inicio" inputProps={{ ...props.register("dateStart"), type: "date", }} />
 
-            <Input label="Descrição" inputProps={{ ...props.register("description") }} />
+                <Input label="Final" inputProps={{ ...props.register("dateEnd"), type: "date", }} />
 
-            <Select
-                label="Destino"
-                selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
-                selectProps={{ ...props.register("IdExpenseCategory") }}
-            />
-        </div>
+                <Input label="Descrição" inputProps={{ ...props.register("description") }} />
+
+                <Select
+                    label="Destino"
+                    selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
+                    selectProps={{ ...props.register("IdExpenseCategory") }}
+                />
+
+            </div>
+
+            <div className="w-full flex justify-center mt-10">
+                <Button type="submit" className="w-1/4 max-md:w-full" variant="contained">Pesquisar</Button>
+            </div>
+
+        </form>
     )
 }
 
@@ -36,5 +46,6 @@ const intervalItems: SelectItem[] = [
 
 interface ReportFormProps {
     register: UseFormRegister<RelatorioFormData>
+    onSubmit: () => unknown
     expenseCategories: expensecategories[]
 }

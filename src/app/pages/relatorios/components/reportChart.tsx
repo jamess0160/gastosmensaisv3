@@ -6,7 +6,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export function ReportChart(props: ReportChartProps) {
     return (
-        <div className="p-5 rounded w-1/2 m-auto aspect-video flex items-center border border-solid border-white" >
+        <div className="p-5 rounded w-1/2 m-auto aspect-video flex items-center border border-solid border-white max-md:w-full max-md:m-0 max-md:px-0" >
             <Bar
                 className="h-1/2"
                 options={{

@@ -12,6 +12,7 @@ export function Select(props: SelectProps) {
 
             </legend>
             <select
+                defaultValue={0}
                 {...props.selectProps}
                 className={`
                     w-full box-content pl-4 outline-none
@@ -20,7 +21,7 @@ export function Select(props: SelectProps) {
                     focus:border-gray-500
                 `}
             >
-                <option selected disabled value={0} />
+                <option disabled value={0} />
                 {
                     props.selectItems.map((item) => {
                         return <option value={item.key} key={item.key}>{item.text}</option>
