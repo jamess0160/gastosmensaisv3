@@ -15,7 +15,7 @@ export function Select(props: SelectProps) {
                 defaultValue={0}
                 {...props.selectProps}
                 className={`
-                    w-full box-content pl-4 outline-none
+                    w-full box-border pl-4 outline-none
                     bg-default text-xs h-full rounded-xl
                     border border-solid border-white text-white
                     focus:border-gray-500
