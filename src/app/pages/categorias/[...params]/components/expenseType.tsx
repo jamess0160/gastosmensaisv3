@@ -10,7 +10,7 @@ export default function ExpenseType(props: PageProps) {
         <div hidden={!props.selected}>
             <ExpenseTable data={props.CategorieData.tableData} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} type={props.type} />
 
-            <h1 className="w-fit m-auto mt-5 underline">R$ {props.CategorieData.total}</h1>
+            <h1 className="w-fit m-auto mt-5 underline max-md:mb-24">R$ {props.CategorieData.total}</h1>
         </div>
     )
 }
