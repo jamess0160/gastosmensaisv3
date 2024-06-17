@@ -19,7 +19,7 @@ export function ReportChart(props: ReportChartProps) {
                         tooltip: {
                             callbacks: {
                                 label(tooltipItem) {
-                                    tooltipItem.formattedValue = `R$${(tooltipItem.raw as number).toFixed(2)}`
+                                    tooltipItem.formattedValue = `R$ ${(tooltipItem.raw as number).toFixed(2)}`
                                 },
                             }
                         }
@@ -32,7 +32,7 @@ export function ReportChart(props: ReportChartProps) {
                             ticks: {
                                 color: "white",
                                 callback(tickValue) {
-                                    return `R$${tickValue}`
+                                    return `R$ ${tickValue}`
                                 },
                             }
                         },
