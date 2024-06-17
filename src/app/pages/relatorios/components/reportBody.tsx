@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from "react";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 import { CircularProgress } from "@mui/material";
 import { RelatorioFormData, RelatorioData } from "@/app/api/relatorios/route";
 import { useForm } from "react-hook-form";
@@ -10,14 +9,15 @@ import { expensecategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
+import moment from "moment";
 
 //#region Functions 
 
 export function ReportBody(props: ReportBodyProps) {
-    let date = clientUtilsUseCases.monthAndYearToMoment(props.monthYear.month, props.monthYear.year)
-    let now = date.format("YYYY-MM-DD")
+    let start = moment().startOf("month").format("YYYY-MM-DD")
+    let end = moment().format("YYYY-MM-DD")
 
-    let { register, handleSubmit } = useForm<RelatorioFormData>({ defaultValues: { dateStart: now, dateEnd: now } })
+    let { register, handleSubmit } = useForm<RelatorioFormData>({ defaultValues: { dateStart: start, dateEnd: end } })
 
     let [chartConfig, setChartConfig] = useState<RelatorioData['chartData']>({ labels: [], data: [] })
     let [tableData, setTableData] = useState<RelatorioData['tableData']>([])
@@ -46,7 +46,6 @@ export function ReportBody(props: ReportBodyProps) {
 //#region Interfaces / Types 
 
 interface ReportBodyProps {
-    monthYear: { month: number, year: number }
     expenseCategories: expensecategories[]
 }
 
