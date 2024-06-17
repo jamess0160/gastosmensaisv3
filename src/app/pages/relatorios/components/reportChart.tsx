@@ -19,7 +19,7 @@ export function ReportChart(props: ReportChartProps) {
                         tooltip: {
                             callbacks: {
                                 label(tooltipItem) {
-                                    tooltipItem.formattedValue = `R$${tooltipItem.raw}`
+                                    tooltipItem.formattedValue = `R$${(tooltipItem.raw as number).toFixed(2)}`
                                 },
                             }
                         }
