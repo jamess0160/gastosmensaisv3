@@ -2,23 +2,21 @@ import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from "@/base/baseSection";
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
 import moment from 'moment';
-import { GenerateFullBaseExpenseChildOptions } from './generateFullBaseExpenseChild';
+import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './generateFullBaseExpenseChild';
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
     async run(dateStart: string, dateEnd: string, description?: string, IdExpenseCategory?: string) {
-        let monthYears = this.getMonthYears(dateStart, dateEnd)
+        let start = moment(clientUtilsUseCases.handleClientDate(dateStart)).startOf("day")
+        let end = moment(clientUtilsUseCases.handleClientDate(dateEnd)).endOf("day")
+
+        let monthYears = this.getMonthYears(start, end)
 
         let options: GenerateFullBaseExpenseChildOptions = IdExpenseCategory ? { IdExpenseCategory: parseInt(IdExpenseCategory) } : {}
 
         let rawExpenseData = await Promise.all(monthYears.map((item) => this.instance.GenerateFullBaseExpenseChild.run(item.month, item.year, options)))
 
-        let expenseData = rawExpenseData.flat().sort((a, b) => {
-            let aDate = clientUtilsUseCases.GetExpenseDate(a).getTime()
-            let bDate = clientUtilsUseCases.GetExpenseDate(b).getTime()
-
-            return aDate - bDate
-        })
+        let expenseData = this.formatExpenseData(rawExpenseData, start, end)
 
         if (description) {
             return expenseData.filter((item) => item.Description.toLowerCase().includes(description.toLowerCase()))
@@ -27,9 +25,7 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         return expenseData
     }
 
-    private getMonthYears(dateStart: string, dateEnd: string) {
-        let start = moment(clientUtilsUseCases.handleClientDate(dateStart))
-        let end = moment(clientUtilsUseCases.handleClientDate(dateEnd))
+    private getMonthYears(start: moment.Moment, end: moment.Moment) {
 
         let monthsDiff = Math.ceil(end.diff(start, "month", true))
 
@@ -44,6 +40,28 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         }
 
         return monthYears
+    }
+
+    private formatExpenseData(rawExpenseData: Array<FullBaseExpenseChild[]>, start: moment.Moment, end: moment.Moment) {
+        return rawExpenseData
+            .flat()
+            .filter((item) => {
+                if (clientUtilsUseCases.GetExpenseDate(item).getTime() < start.toDate().getTime()) {
+                    return false
+                }
+
+                if (clientUtilsUseCases.GetExpenseDate(item).getTime() > end.toDate().getTime()) {
+                    return false
+                }
+
+                return true
+            })
+            .sort((a, b) => {
+                let aDate = clientUtilsUseCases.GetExpenseDate(a).getTime()
+                let bDate = clientUtilsUseCases.GetExpenseDate(b).getTime()
+
+                return aDate - bDate
+            })
     }
 }
 
