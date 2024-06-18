@@ -6,9 +6,7 @@ import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './gen
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
-    async run(dateStart: string, dateEnd: string, description?: string, IdExpenseCategory?: string) {
-        let start = moment(clientUtilsUseCases.handleClientDate(dateStart)).startOf("day")
-        let end = moment(clientUtilsUseCases.handleClientDate(dateEnd)).endOf("day")
+    async run(start: moment.Moment, end: moment.Moment, description?: string, IdExpenseCategory?: string) {
 
         let monthYears = this.getMonthYears(start, end)
 

@@ -7,7 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     let body = await request.json() as RelatorioFormData
 
-    let expenseData = await baseExpensesUseCases.GetReports.run(body.dateStart, body.dateEnd, body.description, body.IdExpenseCategory)
+    let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
+    let end = moment(clientUtilsUseCases.handleClientDate(body.dateEnd)).endOf("day")
+
+    let expenseData = await baseExpensesUseCases.GetReports.run(start, end, body.description, body.IdExpenseCategory)
+
 
     let chartData = expenseData.reduce<Record<string, number>>((old, item) => {
 
@@ -22,16 +26,34 @@ export async function POST(request: NextRequest) {
         return old
     }, {})
 
-    return NextResponse.json(<RelatorioData>{
-        chartData: Object.keys(chartData).reduce<RelatorioChartData>((old, key) => {
+    let dateArray = generateDateArray(start, end)
 
-            old.labels.push(key)
-            old.data.push(chartData[key])
+    let labels = dateArray.map((item) => getDateLabel(item, body.interval))
+
+    return NextResponse.json(<RelatorioData>{
+        chartData: labels.reduce<RelatorioChartData>((old, label) => {
+
+            old.labels.push(label)
+            old.data.push(chartData[label] || 0)
 
             return old
         }, { labels: [], data: [] }),
         tableData: expenseData
     })
+}
+
+function generateDateArray(arrayStart: moment.Moment, arrayEnd: moment.Moment) {
+    let start = arrayStart.clone()
+    let end = arrayEnd.clone()
+
+    let dateArray = [];
+
+    while (start <= end) {
+        dateArray.push(start.clone());
+        start.add(1, "day");
+    }
+
+    return dateArray;
 }
 
 function getDateLabel(expenseDate: moment.Moment, interval: RelatorioFormData['interval']) {
