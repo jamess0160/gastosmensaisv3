@@ -21,7 +21,12 @@ function prismaClientSingleton() {
     })
 }
 
-function afterWare(result: any[]) {
+function afterWare(result: any) {
+
+    if (Array.isArray(result) === false) {
+        return formatDataType(result)
+    }
+
     return result.map((item) => {
         return formatDataType(item)
     })
