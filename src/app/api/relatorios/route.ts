@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     let dateArray = generateDateArray(start, end)
 
-    let labels = dateArray.map((item) => getDateLabel(item, body.interval))
+    let labels = Array.from(new Set(dateArray.map((item) => getDateLabel(item, body.interval))))
 
     return NextResponse.json(<RelatorioData>{
         chartData: labels.reduce<RelatorioChartData>((old, label) => {
