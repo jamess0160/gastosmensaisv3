@@ -1,8 +1,9 @@
 import { RelatorioData } from '@/app/api/relatorios/route';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, } from 'chart.js';
 import { Bar } from "react-chartjs-2";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 export function ReportChart(props: ReportChartProps) {
     return (
@@ -22,6 +23,18 @@ export function ReportChart(props: ReportChartProps) {
                                     tooltipItem.formattedValue = `R$ ${(tooltipItem.raw as number).toFixed(2)}`
                                 },
                             }
+                        },
+                        datalabels: {
+                            anchor: "end",
+                            align: "top",
+                            color: "white",
+                            font: {
+                                weight: 'bold',
+                                size: 15,
+                            },
+                            formatter(value: number) {
+                                return value ? `R$ ${value}` : ""
+                            },
                         }
                     },
                     scales: {

@@ -49,6 +49,7 @@ class ConfigEvents {
 
         setTimeout(() => {
             setMsg(defaultMsg)
+            location.reload()
         }, 2000);
 
         setLoading(false)
