@@ -24,7 +24,7 @@ function handleCreateData(data: UtilTypes.CreateCashInflow): CreateCashInFlow {
         Description: data.Description,
         EfectiveDate: currMoment.toDate(),
         IdDestiny: parseInt(data.IdDestiny),
-        Value: parseFloat(data.Value)
+        Value: parseFloat(data.Value.replace(",", "."))
     }
 }
 
