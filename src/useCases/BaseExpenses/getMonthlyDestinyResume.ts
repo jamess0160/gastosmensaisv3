@@ -41,19 +41,19 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         if (!geralBudget) throw new Error("Geral não encontrado!")
 
-        let geralCommonCash = geralBudget.budget > ValorMaximoGeral ? (geralBudget.budget - ValorMaximoGeral) / (destinysBudget.length - 1) : 0
+        let geralCommonCash = geralBudget.commonBudget > ValorMaximoGeral ? (geralBudget.commonBudget - ValorMaximoGeral) / (destinysBudget.length - 1) : 0
 
         return Promise.all(destinysBudget.map(async (item) => {
             let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, { IdDestiny: item.destiny.IdDestiny })
 
-            let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
+            let totalExpenses = parseFloat(fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0).toFixed(2))
 
             if (item.destiny.SplitJointExpense) {
                 totalExpenses += jointExpenses
             }
 
             if (item.destiny.IdDestiny === IdDestinoGeral) {
-                item.budget = (item.budget > ValorMaximoGeral ? ValorMaximoGeral : item.budget) - geralCommonCash
+                item.budget = ((item.commonBudget > ValorMaximoGeral ? ValorMaximoGeral : item.commonBudget) - geralCommonCash) + item.destinyBudget
             }
 
             return {
@@ -71,6 +71,8 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         return {
             destiny: destiny,
+            destinyBudget: destinyCash,
+            commonBudget: (commonCash / data.destinys.length),
             budget: destinyCash + (commonCash / data.destinys.length)
         }
     }
