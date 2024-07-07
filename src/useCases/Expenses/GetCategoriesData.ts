@@ -38,6 +38,7 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         return {
             name: bank.Name,
             sumExpenses: parseFloat(data.reduce((old, item) => old + item.total, 0).toFixed(2)),
+            sumInactives: parseFloat(data.reduce((old, item) => old + item.totalInactives, 0).toFixed(2)),
             data: data
         }
     }
@@ -56,18 +57,21 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         return {
             name: destiny.Name,
             sumExpenses: parseFloat(data.reduce((old, item) => old + item.total, 0).toFixed(2)),
+            sumInactives: parseFloat(data.reduce((old, item) => old + item.totalInactives, 0).toFixed(2)),
             data: data
         }
     }
 
-    handleExpenseData(item: expensecategories, categoryData: FullBaseExpenseChild[]) {
-        let total = categoryData.reduce((old, item) => item.Active ? old + clientUtilsUseCases.GetExpensePrice(item) : old, 0)
+    handleExpenseData(item: expensecategories, categoryData: FullBaseExpenseChild[]): CategoryData {
+        let totalActives = categoryData.reduce((old, item) => item.Active ? old + clientUtilsUseCases.GetExpensePrice(item) : old, 0)
+        let totalInactives = categoryData.reduce((old, item) => item.Active ? old : old + clientUtilsUseCases.GetExpensePrice(item, { ignoreActive: true }), 0)
 
         return {
             IdExpenseCategory: item.IdExpenseCategory,
             name: item.Description,
             tableData: categoryData,
-            total: parseFloat(total.toFixed(2))
+            total: parseFloat(totalActives.toFixed(2)),
+            totalInactives: parseFloat(totalInactives.toFixed(2)),
         }
     }
 
@@ -78,6 +82,7 @@ export type Categories = "banco" | "pessoal"
 export interface ExpenseTypeData {
     name: string
     sumExpenses: number
+    sumInactives: number
     data: CategoryData[]
 }
 
@@ -85,5 +90,6 @@ export interface CategoryData {
     IdExpenseCategory: number
     name: string
     total: number
+    totalInactives: number
     tableData: FullBaseExpenseChild[]
 }

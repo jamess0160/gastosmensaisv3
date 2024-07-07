@@ -8,9 +8,9 @@ export class ClientUtilsUseCases {
 
     public readonly months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
-    GetExpensePrice(expense: FullBaseExpenseChild) {
+    GetExpensePrice(expense: FullBaseExpenseChild, options?: GetExpensePriceOptions) {
 
-        if (!expense.Active) {
+        if (options?.ignoreActive !== true && expense.Active === false) {
             return 0
         }
 
@@ -107,3 +107,7 @@ export class ClientUtilsUseCases {
 }
 
 export const clientUtilsUseCases = new ClientUtilsUseCases()
+
+interface GetExpensePriceOptions {
+    ignoreActive?: boolean
+}
