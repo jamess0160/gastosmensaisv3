@@ -10,7 +10,7 @@ export class ClientUtilsUseCases {
 
     GetExpensePrice(expense: FullBaseExpenseChild, options?: GetExpensePriceOptions) {
 
-        if (options?.ignoreActive !== true && expense.Active === false) {
+        if (Boolean(options?.sumInactive) === false && expense.Active === false) {
             return 0
         }
 
@@ -109,5 +109,5 @@ export class ClientUtilsUseCases {
 export const clientUtilsUseCases = new ClientUtilsUseCases()
 
 interface GetExpensePriceOptions {
-    ignoreActive?: boolean
+    sumInactive?: boolean
 }

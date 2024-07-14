@@ -64,7 +64,7 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 
     handleExpenseData(item: expensecategories, categoryData: FullBaseExpenseChild[]): CategoryData {
         let totalActives = categoryData.reduce((old, item) => item.Active ? old + clientUtilsUseCases.GetExpensePrice(item) : old, 0)
-        let totalInactives = categoryData.reduce((old, item) => item.Active ? old : old + clientUtilsUseCases.GetExpensePrice(item, { ignoreActive: true }), 0)
+        let totalInactives = categoryData.reduce((old, item) => item.Active ? old : old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true }), 0)
 
         return {
             IdExpenseCategory: item.IdExpenseCategory,
