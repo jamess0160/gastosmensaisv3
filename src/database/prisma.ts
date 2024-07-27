@@ -23,6 +23,8 @@ function prismaClientSingleton() {
 
 function afterWare(result: any) {
 
+    if(!result) return result
+
     if (Array.isArray(result) === false) {
         return formatDataType(result)
     }
