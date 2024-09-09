@@ -3,6 +3,7 @@ import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 import { AutoGetExpenseType } from "../Utils/getExpensePrice";
+import moment from "moment";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 
@@ -10,15 +11,19 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
 
         let baseExpenses = await this.getFullBaseExpense(month, year, options)
 
-        return baseExpenses.map<FullBaseExpenseChild>((item) => {
-            return {
-                ...item,
-                child: item.defaultexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
-                defaultexpenses: undefined,
-                fixedexpenses: undefined,
-                installmentexpenses: undefined,
-            }
-        }).sort(this.sortExpensesDescription).sort(this.sortExpensesTypes)
+        return baseExpenses
+            .map<FullBaseExpenseChild>((item) => {
+                return {
+                    ...item,
+                    child: item.defaultexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
+                    defaultexpenses: undefined,
+                    fixedexpenses: undefined,
+                    installmentexpenses: undefined,
+                }
+            })
+            .sort(this.sortExpensesDescription)
+            .sort(this.sortExpensesDates)
+            .sort(this.sortExpensesTypes)
     }
 
     private getFullBaseExpense(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
@@ -118,6 +123,15 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         let bValue = values[bType]
 
         return bValue - aValue
+    }
+
+    private sortExpensesDates(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+
+        if (!clientUtilsUseCases.GetExpenseType.isDefault(a) || !clientUtilsUseCases.GetExpenseType.isDefault(b)) {
+            return 0
+        }
+
+        return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
     }
 
     private sortExpensesDescription(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
