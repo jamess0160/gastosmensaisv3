@@ -1,6 +1,7 @@
 import { BaseUseCase } from "../../base/baseUseCase";
 import { sistemparams } from '@prisma/client'
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
+import moment from "moment";
 
 export class SistemParamsUseCases extends BaseUseCase {
 
@@ -11,6 +12,7 @@ export class SistemParamsUseCases extends BaseUseCase {
     }
 
     async getAll(month: number, year: number) {
+        let date = moment().set("month", month).set("year", year).startOf("month")
         let params = await this.prisma.$queryRaw<sistemparams[]>`
             SELECT
                 *
@@ -23,8 +25,7 @@ export class SistemParamsUseCases extends BaseUseCase {
                     FROM
                         SistemParams
                     WHERE
-                        MONTH(EfectiveDate) <= ${month + 1}
-                        and YEAR(EfectiveDate) <= ${year}
+                        EfectiveDate <= ${date.toDate()}
                     GROUP BY
                         \`Key\`
                 )
