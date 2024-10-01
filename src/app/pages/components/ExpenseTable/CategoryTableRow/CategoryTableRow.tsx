@@ -10,20 +10,20 @@ import moment from "moment";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
 import { categoriasEvents } from "../events";
-import { EmptyCell, EmptyRow } from "./EmptyRow";
+import { EmptyCell } from "./EmptyRow";
 
 //#region Functions 
 
-export default function CategoryTableRow(props: TableRowProps) {
+const cellClass = "text-white text-nowrap text-clip w-1/5"
 
-    let cellClass = "text-white text-nowrap text-clip"
+export default function CategoryTableRow(props: TableRowProps) {
 
     return (
         <TableRow className={props.item.splitCount ? "bg-default" : ""}>
-            <TableCell className={cellClass + " w-1/6"} align="left"> {getFirstCollumnData(props)} </TableCell>
-            <TableCell className={cellClass + " w-1/3"} align="center"> {props.item.Description} </TableCell>
-            <TableCell className={cellClass} align="center"> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
-            <TableCell className={cellClass + " w-1/3"} align="center"> {getDestinyBankColumnData(props.item, props.type)} </TableCell>
+            <TableCell className={cellClass}> {getFirstCollumnData(props)} </TableCell>
+            <TableCell className={cellClass}> {props.item.Description} </TableCell>
+            <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
+            <TableCell className={cellClass}> {getDestinyBankColumnData(props.item, props.type)} </TableCell>
             <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} />
         </TableRow>
     )
@@ -37,8 +37,8 @@ function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
 
     if (props.item.splitCount && props.item.splitCount > 0) {
         return (
-            <TableCell className="text-white">
-                <div className="flex items-center justify-end leading-6">
+            <TableCell className={cellClass}>
+                <div className="flex items-center justify-end leading-6 text-nowrap">
                     {props.item.obs}
                 </div>
             </TableCell>
@@ -46,7 +46,7 @@ function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
     }
 
     return (
-        <TableCell className="text-white">
+        <TableCell className={cellClass}>
             <div className="flex items-center justify-end">
                 <ChangeActiveState item={props.item} />
                 <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} />
