@@ -66,7 +66,7 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
         return "Fixo"
     }
 
-    if (clientUtilsUseCases.GetExpenseType.isInstallment(item) && month && year) {
+    if (clientUtilsUseCases.GetExpenseType.isInstallment(item) && month !== undefined && year !== undefined) {
 
         let monthsDiff = Math.floor(moment(item.child.ExpectedDate).diff(clientUtilsUseCases.monthAndYearToMoment(month, year), "month", true))
 
