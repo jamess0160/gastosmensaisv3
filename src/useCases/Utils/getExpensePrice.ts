@@ -15,15 +15,15 @@ export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{
     }
 
     public isDefault(expense: any): expense is DefaultExpenseChild {
-        return expense?.child?.IdDefaultExpense
+        return Boolean(expense?.child?.IdDefaultExpense)
     }
 
     public isFixed(expense: any): expense is FixedExpenseChild {
-        return expense?.child?.IdFixedExpense
+        return Boolean(expense?.child?.IdFixedExpense)
     }
 
     public isInstallment(expense: any): expense is InstallmentExpenseChild {
-        return expense?.child?.IdInstallmentExpense
+        return Boolean(expense?.child?.IdInstallmentExpense)
     }
 }
 
