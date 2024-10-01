@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form-mui"
 import { configEvents } from "../events/events"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { UtilTypes } from "@/database/UtilTypes"
 import { CircularProgress } from "@mui/material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
@@ -12,9 +12,12 @@ import { Input } from "../../components/fields/input"
 export default function CookieForm(props: CookieFormProps) {
     let [isLoading, setLoading] = useState(false)
 
-    let { register, handleSubmit } = useForm<UtilTypes.CookiesPostBody>({ defaultValues: { month: props.month, year: props.year } })
+    let { register, handleSubmit } = useForm<UtilTypes.CookiesPostBody>({ defaultValues: { month: (parseInt(props.month) + 1).toString(), year: props.year } })
 
-    let submitForm = handleSubmit((data) => configEvents.onCookieChange(data, setLoading))
+    let submitForm = handleSubmit((data) => {
+        data.month = (parseInt(data.month) - 1).toString()
+        configEvents.onCookieChange(data, setLoading)
+    })
 
     if (isLoading) {
         return <CircularProgress />
@@ -30,7 +33,7 @@ export default function CookieForm(props: CookieFormProps) {
 
                 <Select
                     label="Mês"
-                    selectItems={clientUtilsUseCases.months.map((item, index) => ({ key: index, text: item }))}
+                    selectItems={clientUtilsUseCases.months.map((item, index) => ({ key: index + 1, text: item }))}
                     selectProps={{ ...register("month") }}
                 />
 
