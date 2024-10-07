@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         chartData: labels.reduce<RelatorioChartData>((old, label) => {
 
             old.labels.push(label)
-            old.data.push(chartData[label] || 0)
+            old.data.push(chartData[label] ? Number(chartData[label].toFixed(2)) : 0)
 
             return old
         }, { labels: [], data: [] }),
