@@ -5,7 +5,7 @@ VALUES
     ('Luana', 1, '#463956'),
     ('Geral', 0, '#6d5f66'),
     ('Tiago', 1, '#3e697d'),
-    ('Conjunto', 0, null);
+    ('Conjunto', 0, NULL);
 
 INSERT INTO
     `CashInflows` (`Description`, `Value`, `IdDestiny`)
@@ -72,4 +72,13 @@ VALUES
         2,
         2,
         DATE_ADD(CURRENT_DATE(), INTERVAL 1 MONTH)
+    );
+
+INSERT INTO
+    `Users` (`Name`, `Login`, `Password`)
+VALUES
+    (
+        'Tiago e Luana',
+        'tilu',
+        '202cb962ac59075b964b07152d234b70'
     );

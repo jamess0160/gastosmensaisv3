@@ -78,3 +78,10 @@ CREATE TABLE `InstallmentExpenses` (
     `IdBaseExpense` INT NOT NULL,
     FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
+
+CREATE TABLE `Users` (
+    `IdUser` INT PRIMARY KEY AUTO_INCREMENT,
+    `Name` VARCHAR(255),
+    `Login` VARCHAR(255),
+    `Password` VARCHAR(255)
+);

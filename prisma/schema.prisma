@@ -11,7 +11,11 @@ model banks {
   IdBank       Int            @id @default(autoincrement())
   Name         String         @db.VarChar(255)
   IconPath     String?        @db.VarChar(255)
+  IdUser       Int?
+  users        users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "banks_ibfk_1")
   baseexpenses baseexpenses[]
+
+  @@index([IdUser], map: "IdUser")
 }
 
 model baseexpenses {
@@ -23,9 +27,11 @@ model baseexpenses {
   IdBank              Int
   IdExpenseCategory   Int
   Active              Boolean               @default(true)
+  IdUser              Int?
   destinys            destinys              @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_1")
   banks               banks                 @relation(fields: [IdBank], references: [IdBank], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_2")
   expensecategories   expensecategories     @relation(fields: [IdExpenseCategory], references: [IdExpenseCategory], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_3")
+  users               users?                @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_4")
   defaultexpenses     defaultexpenses?
   fixedexpenses       fixedexpenses[]
   installmentexpenses installmentexpenses[]
@@ -33,6 +39,7 @@ model baseexpenses {
   @@index([IdBank], map: "IdBank")
   @@index([IdDestiny], map: "IdDestiny")
   @@index([IdExpenseCategory], map: "IdExpenseCategory")
+  @@index([IdUser], map: "IdUser")
 }
 
 model cashinflows {
@@ -41,9 +48,12 @@ model cashinflows {
   Value        Float    @db.Float
   EfectiveDate DateTime @default(dbgenerated("(curdate())")) @db.DateTime(0)
   IdDestiny    Int
+  IdUser       Int?
   destinys     destinys @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_1")
+  users        users?   @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_2")
 
   @@index([IdDestiny], map: "IdDestiny")
+  @@index([IdUser], map: "IdUser")
 }
 
 model destinys {
@@ -51,14 +61,22 @@ model destinys {
   Name              String         @db.VarChar(255)
   Color             String?        @db.VarChar(255)
   SplitJointExpense Boolean        @default(dbgenerated("b'0'")) @db.Bit(1)
+  IdUser            Int?
   baseexpenses      baseexpenses[]
   cashinflows       cashinflows[]
+  users             users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "destinys_ibfk_1")
+
+  @@index([IdUser], map: "IdUser")
 }
 
 model expensecategories {
   IdExpenseCategory Int            @id @default(autoincrement())
   Description       String         @db.VarChar(255)
+  IdUser            Int?
   baseexpenses      baseexpenses[]
+  users             users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "expensecategories_ibfk_1")
+
+  @@index([IdUser], map: "IdUser")
 }
 
 model fixedexpenses {
@@ -90,6 +108,10 @@ model sistemparams {
   Key           String   @db.VarChar(255)
   Value         String   @db.VarChar(255)
   EfectiveDate  DateTime @default(dbgenerated("(curdate())")) @db.Date
+  IdUser        Int?
+  users         users?   @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "sistemparams_ibfk_1")
+
+  @@index([IdUser], map: "IdUser")
 }
 
 model defaultexpenses {
@@ -97,4 +119,17 @@ model defaultexpenses {
   ExpenseDate      DateTime     @default(dbgenerated("(curdate())")) @db.DateTime(0)
   IdBaseExpense    Int          @unique(map: "IdBaseExpense")
   baseexpenses     baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "defaultexpenses_ibfk_1")
+}
+
+model users {
+  IdUser            Int                 @id @default(autoincrement())
+  Name              String?             @db.VarChar(255)
+  Login             String?             @db.VarChar(255)
+  Password          String?             @db.VarChar(255)
+  banks             banks[]
+  baseexpenses      baseexpenses[]
+  cashinflows       cashinflows[]
+  destinys          destinys[]
+  expensecategories expensecategories[]
+  sistemparams      sistemparams[]
 }
