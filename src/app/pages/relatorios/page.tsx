@@ -1,9 +1,17 @@
 import { Container } from "@mui/material";
 import { ReportBody } from "./components/reportBody";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
+import { headers } from "next/headers";
 
 export default async function Relatorios() {
-    let expenseCategories = await expenseCategoriesUseCases.getAll()
+    let headersList = headers()
+    let IdUser = headersList.get('IdUser')
+
+    if (!IdUser) {
+        return <div>IdUser não encontrado!</div>
+    }
+
+    let expenseCategories = await expenseCategoriesUseCases.getAllByUser(Number(IdUser))
 
     return (
         <Container maxWidth="xl" className="pt-20">

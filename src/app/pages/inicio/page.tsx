@@ -19,7 +19,7 @@ export default function Page() {
 
     return (
         <>
-            <Header month={data.month} year={data.year} />
+            <Header month={data.month} year={data.year} userName={data.selfUserName} />
             <Container maxWidth="xl">
                 <ResumeContainer ResumeContainerData={data.Resumes.container} />
                 <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />

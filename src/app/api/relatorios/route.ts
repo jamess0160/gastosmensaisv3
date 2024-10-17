@@ -9,8 +9,13 @@ export async function POST(request: NextRequest) {
 
     let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
     let end = moment(clientUtilsUseCases.handleClientDate(body.dateEnd)).endOf("day")
+    let IdUser = request.headers.get("IdUser")
 
-    let expenseData = await baseExpensesUseCases.GetReports.run(start, end, body.description, body.IdExpenseCategory)
+    if (!IdUser) {
+        return NextResponse.json("IdUser não encontrado!", { status: 500 })
+    }
+
+    let expenseData = await baseExpensesUseCases.GetReports.run(start, end, Number(IdUser), body.description, body.IdExpenseCategory)
 
 
     let chartData = expenseData.reduce<Record<string, number>>((old, item) => {

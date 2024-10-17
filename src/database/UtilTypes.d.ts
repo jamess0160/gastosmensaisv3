@@ -39,6 +39,7 @@ export namespace UtilTypes {
     export interface InicioPageData {
         month: number
         year: number
+        selfUserName: string
         Resumes: {
             container: ResumeContainerData
             banksResume: BankResume[]

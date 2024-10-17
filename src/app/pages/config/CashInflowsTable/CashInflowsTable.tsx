@@ -6,7 +6,7 @@ import { destinys } from "@prisma/client";
 
 export default async function CashInflowsTable(props: CashInflowsTableProps) {
 
-    let cashInflows = await cashInflowsUseCases.getAllByMY(props.month, props.year)
+    let cashInflows = await cashInflowsUseCases.getAllByMY(props.month, props.year, props.IdUser)
 
     let tableData = clientUtilsUseCases.handleTableData(cashInflows)
 
@@ -38,4 +38,5 @@ interface CashInflowsTableProps {
     destinys: destinys[]
     month: number
     year: number
+    IdUser: number
 }

@@ -16,45 +16,52 @@ export async function GET(request: NextRequest) {
 
     let { searchParams } = new URL(request.url)
     let pageRoute = searchParams.get('pageRoute')
+    let IdUser = request.headers.get("IdUser")
+    let UserName = request.headers.get("UserName")
 
     if (!pageRoute) {
         return NextResponse.json({ msg: "IdCashInflow não encontrado na query!" }, { status: 406 })
     }
 
+    if (!IdUser || !UserName) {
+        return NextResponse.json({ msg: "IdUser não encontrado nos headers!" }, { status: 406 })
+    }
+
     if (pageRoute === "inicio") {
-        return NextResponse.json(await loadInicioPage())
+        return NextResponse.json(await loadInicioPage(Number(IdUser), UserName))
     }
 
     if (pageRoute === "categorias") {
-        return NextResponse.json(await loadCategoriasPage(searchParams))
+        return NextResponse.json(await loadCategoriasPage(Number(IdUser), searchParams))
     }
 
     return NextResponse.json({ pageRoute })
 }
 
-function loadInicioPage(): Promise<UtilTypes.InicioPageData> {
+function loadInicioPage(IdUser: number, UserName: string): Promise<UtilTypes.InicioPageData> {
     let { month, year } = serverUtilsUseCases.getMonthYear()
 
     return clientUtilsUseCases.resolvePromiseObj<InicioPageData>({
         month: Promise.resolve(month),
         year: Promise.resolve(year),
+        selfUserName: Promise.resolve(UserName),
         ExpenseFormData: clientUtilsUseCases.resolvePromiseObj<ExpenseFormData>({
-            Banks: banksUseCases.getAll(),
-            Destinys: destinysUseCases.getAll(),
-            ExpenseCategories: expenseCategoriesUseCases.getAll(),
+            Banks: banksUseCases.getAllByUser(IdUser),
+            Destinys: destinysUseCases.getAllByUser(IdUser),
+            ExpenseCategories: expenseCategoriesUseCases.getAllByUser(IdUser),
         }),
         Resumes: clientUtilsUseCases.resolvePromiseObj<Resumes>({
             container: clientUtilsUseCases.resolvePromiseObj<Container>({
-                monthlyExpenseSum: baseExpensesUseCases.GetMonthlySum(month, year),
-                monthlyInflow: cashInflowsUseCases.getAllByMY(month, year),
+                monthlyExpenseSum: baseExpensesUseCases.GetMonthlySum(month, year, IdUser),
+                monthlyInflow: cashInflowsUseCases.getAllByMY(month, year, IdUser),
             }),
-            banksResume: baseExpensesUseCases.GetMonthlyBanksResume.run(month, year),
-            destinysResume: baseExpensesUseCases.GetMonthlyDestinyResume.run(month, year),
+            banksResume: baseExpensesUseCases.GetMonthlyBanksResume.run(month, year, IdUser),
+            destinysResume: baseExpensesUseCases.GetMonthlyDestinyResume.run(month, year, IdUser),
         }),
     })
 }
 
-function loadCategoriasPage(searchParams: URLSearchParams): Promise<UtilTypes.CategoriasPageData> | void {
+function loadCategoriasPage(IdUser: number, searchParams: URLSearchParams): Promise<UtilTypes.CategoriasPageData> | void {
     let { month, year } = serverUtilsUseCases.getMonthYear()
 
     let type = searchParams.get("type") as Categories
@@ -65,11 +72,11 @@ function loadCategoriasPage(searchParams: URLSearchParams): Promise<UtilTypes.Ca
     return clientUtilsUseCases.resolvePromiseObj<CategoriasPageData>({
         month: Promise.resolve(month),
         year: Promise.resolve(year),
-        categoriesData: expensesUseCase.GetCategoriesData.run(type, parseInt(id), month, year),
+        categoriesData: expensesUseCase.GetCategoriesData.run(type, IdUser, parseInt(id), month, year),
         ExpenseFormData: clientUtilsUseCases.resolvePromiseObj<ExpenseFormData>({
-            Banks: banksUseCases.getAll(),
-            Destinys: destinysUseCases.getAll(),
-            ExpenseCategories: expenseCategoriesUseCases.getAll(),
+            Banks: banksUseCases.getAllByUser(IdUser),
+            Destinys: destinysUseCases.getAllByUser(IdUser),
+            ExpenseCategories: expenseCategoriesUseCases.getAllByUser(IdUser),
         }),
     })
 }
