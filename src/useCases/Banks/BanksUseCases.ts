@@ -2,16 +2,14 @@ import { BaseUseCase } from "@/base/baseUseCase";
 import type { prisma } from "@/database/prisma";
 
 export class BanksUseCases extends BaseUseCase {
-    getAll() {
-        return this.prisma.banks.findMany()
+    getAllByUser(IdUser: number) {
+        return this.prisma.banks.findMany({
+            where: { IdUser }
+        })
     }
 
     getFirstBy(where: WhereArgs) {
         return this.prisma.banks.findFirst({ where })
-    }
-
-    getBy(where: WhereArgs) {
-        return this.prisma.banks.findMany({ where })
     }
 
     create(data: CreateBank) {

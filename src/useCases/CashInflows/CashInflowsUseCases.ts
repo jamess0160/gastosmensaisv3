@@ -5,13 +5,14 @@ import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases";
 
 export class CashInflowsUseCases extends BaseUseCase {
 
-    getAllByMY(month: number, year: number) {
+    getAllByMY(month: number, year: number, IdUser: number) {
         return this.prisma.cashinflows.findMany({
             where: {
                 EfectiveDate: {
                     gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
                     lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
-                }
+                },
+                IdUser
             },
             include: {
                 destinys: true
@@ -19,8 +20,8 @@ export class CashInflowsUseCases extends BaseUseCase {
         })
     }
 
-    async clone(month: number, year: number) {
-        let effectiveCashInflows = await this.getAllByMY(month, year)
+    async clone(month: number, year: number, IdUser: number) {
+        let effectiveCashInflows = await this.getAllByMY(month, year, IdUser)
 
         return this.createMany(effectiveCashInflows.map((item) => {
             return {

@@ -8,15 +8,15 @@ import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
 
 export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
 
-    async run(month: number, year: number) {
-        let banks = await banksUseCases.getAll()
-        let categories = await expenseCategoriesUseCases.getAll()
+    async run(month: number, year: number, IdUser: number) {
+        let banks = await banksUseCases.getAllByUser(IdUser)
+        let categories = await expenseCategoriesUseCases.getAllByUser(IdUser)
 
-        return Promise.all(banks.map<Promise<BankResume>>((item) => this.generateBanksResume(month, year, categories, item)))
+        return Promise.all(banks.map<Promise<BankResume>>((item) => this.generateBanksResume(month, year, IdUser, categories, item)))
     }
 
-    private async generateBanksResume(month: number, year: number, category: expensecategories[], bank: banks): Promise<BankResume> {
-        let bankExpenses = await this.instance.GetMonthlyBankCategory(month, year, bank.IdBank)
+    private async generateBanksResume(month: number, year: number, IdUser: number, category: expensecategories[], bank: banks): Promise<BankResume> {
+        let bankExpenses = await this.instance.GetMonthlyBankCategory(month, year, IdUser, bank.IdBank)
 
         return {
             BankData: bank,

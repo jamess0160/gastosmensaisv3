@@ -11,7 +11,7 @@ export class SistemParamsUseCases extends BaseUseCase {
         IdDestinoGeral: "IdDestinoGeral",
     }
 
-    async getAll(month: number, year: number) {
+    async getAll(month: number, year: number, IdUser: number) {
         let date = moment().set("month", month).set("year", year).startOf("month")
         let params = await this.prisma.$queryRaw<sistemparams[]>`
             SELECT
@@ -26,6 +26,7 @@ export class SistemParamsUseCases extends BaseUseCase {
                         SistemParams
                     WHERE
                         EfectiveDate <= ${date.toDate()}
+                        AND IdUser = ${IdUser}
                     GROUP BY
                         \`Key\`
                 )

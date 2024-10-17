@@ -6,13 +6,13 @@ import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './gen
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
-    async run(start: moment.Moment, end: moment.Moment, description?: string, IdExpenseCategory?: string) {
+    async run(start: moment.Moment, end: moment.Moment, IdUser: number, description?: string, IdExpenseCategory?: string) {
 
         let monthYears = this.getMonthYears(start, end)
 
         let options: GenerateFullBaseExpenseChildOptions = IdExpenseCategory ? { IdExpenseCategory: parseInt(IdExpenseCategory) } : {}
 
-        let rawExpenseData = await Promise.all(monthYears.map((item) => this.instance.GenerateFullBaseExpenseChild.run(item.month, item.year, options)))
+        let rawExpenseData = await Promise.all(monthYears.map((item) => this.instance.GenerateFullBaseExpenseChild.run(item.month, item.year, IdUser, options)))
 
         let expenseData = this.formatExpenseData(rawExpenseData, start, end)
 

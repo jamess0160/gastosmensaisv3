@@ -20,13 +20,13 @@ export class BaseExpensesUseCases extends BaseUseCase {
         return this.prisma.baseexpenses.findFirstOrThrow({ where: { IdBaseExpense } })
     }
 
-    async GetMonthlySum(month: number, year: number) {
-        let baseExpenses = await this.GenerateFullBaseExpenseChild.run(month, year)
+    async GetMonthlySum(month: number, year: number, IdUser: number) {
+        let baseExpenses = await this.GenerateFullBaseExpenseChild.run(month, year, IdUser)
         return baseExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
     }
 
-    GetMonthlyBankCategory(month: number, year: number, IdBank: number, IdExpenseCategory?: number) {
-        return this.GenerateFullBaseExpenseChild.run(month, year, { IdBank, IdExpenseCategory })
+    GetMonthlyBankCategory(month: number, year: number, IdUser: number, IdBank: number, IdExpenseCategory?: number) {
+        return this.GenerateFullBaseExpenseChild.run(month, year, IdUser, { IdBank, IdExpenseCategory })
     }
 
     create(data: CreateBaseExpense) {

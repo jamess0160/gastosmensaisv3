@@ -2,8 +2,10 @@ import { BaseUseCase } from "@/base/baseUseCase";
 import { prisma } from "@/database/prisma";
 
 export class DestinysUseCases extends BaseUseCase {
-    getAll() {
-        return this.prisma.destinys.findMany()
+    getAllByUser(IdUser: number) {
+        return this.prisma.destinys.findMany({
+            where: { IdUser }
+        })
     }
 
     getFirstBy(where: WhereArgs) {

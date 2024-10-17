@@ -3,13 +3,12 @@ import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
 import { AutoGetExpenseType } from "../Utils/getExpensePrice";
-import moment from "moment";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 
-    async run(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions) {
+    async run(month: number, year: number, IdUser: number, options?: GenerateFullBaseExpenseChildOptions) {
 
-        let baseExpenses = await this.getFullBaseExpense(month, year, options)
+        let baseExpenses = await this.getFullBaseExpense(month, year, IdUser, options)
 
         return baseExpenses
             .map<FullBaseExpenseChild>((item) => {
@@ -26,7 +25,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             .sort(this.sortExpensesTypes)
     }
 
-    private getFullBaseExpense(month: number, year: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
+    private getFullBaseExpense(month: number, year: number, IdUser: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
         let dateFilter = {
             gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
             lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
@@ -75,6 +74,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                 IdBank: options?.IdBank || undefined,
                 IdExpenseCategory: options?.IdExpenseCategory || undefined,
                 IdDestiny: options?.IdDestiny || undefined,
+                IdUser: IdUser
             },
             include: {
                 defaultexpenses: true,

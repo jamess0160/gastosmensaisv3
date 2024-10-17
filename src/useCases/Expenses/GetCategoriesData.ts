@@ -10,15 +10,15 @@ import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
 
 export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 
-    async run(type: Categories, id: number, month: number, year: number): Promise<ExpenseTypeData> {
-        let expenseCategories = await expenseCategoriesUseCases.getAll()
+    async run(type: Categories, IdUser: number, id: number, month: number, year: number): Promise<ExpenseTypeData> {
+        let expenseCategories = await expenseCategoriesUseCases.getAllByUser(IdUser)
 
         if (type === "banco") {
             return this.getBanksData(id, expenseCategories, month, year)
         }
 
         if (type === "pessoal") {
-            return this.getDestinyData(id, expenseCategories, month, year)
+            return this.getDestinyData(IdUser, id, expenseCategories, month, year)
         }
 
         throw new Error("type não é válido")
@@ -43,13 +43,13 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         }
     }
 
-    async getDestinyData(id: number, expenseCategories: expensecategories[], month: number, year: number): Promise<ExpenseTypeData> {
+    async getDestinyData(IdUser: number, id: number, expenseCategories: expensecategories[], month: number, year: number): Promise<ExpenseTypeData> {
         let destiny = await destinysUseCases.getFirstBy({ IdDestiny: id })
 
         if (!destiny) throw new Error("Destino não encontrado!")
 
         let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-            let categoryData = await baseExpensesUseCases.GetMonthlyDestinyCategory.run(month, year, id, item.IdExpenseCategory)
+            let categoryData = await baseExpensesUseCases.GetMonthlyDestinyCategory.run(month, year, IdUser, id, item.IdExpenseCategory)
 
             return this.handleExpenseData(item, categoryData)
         }))
