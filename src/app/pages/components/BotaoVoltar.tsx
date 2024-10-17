@@ -2,12 +2,12 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material"
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function BotaoVoltar() {
     let pathName = usePathname()
 
-    if (pathName.includes("/pages/inicio")) {
+    if (pathName.includes("/pages/inicio") || pathName.includes("/pages/logOut")) {
         return
     }
 
