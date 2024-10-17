@@ -97,11 +97,11 @@ export class ClientUtilsUseCases {
         return data.reduce((old, item) => old + (item[prop] as number), 0)
     }
 
-    sleep(seconds: number) {
+    sleep(miliSeconds: number) {
         return new Promise<void>((resolve) => {
             setTimeout(() => {
                 resolve()
-            }, moment.duration(seconds, "seconds").asMilliseconds());
+            }, miliSeconds);
         })
     }
 }
