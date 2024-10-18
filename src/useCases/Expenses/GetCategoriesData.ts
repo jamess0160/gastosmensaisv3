@@ -14,7 +14,7 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         let expenseCategories = await expenseCategoriesUseCases.getAllByUser(IdUser)
 
         if (type === "banco") {
-            return this.getBanksData(id, expenseCategories, month, year)
+            return this.getBanksData(IdUser, id, expenseCategories, month, year)
         }
 
         if (type === "pessoal") {
@@ -24,13 +24,13 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         throw new Error("type não é válido")
     }
 
-    async getBanksData(id: number, expenseCategories: expensecategories[], month: number, year: number): Promise<ExpenseTypeData> {
+    async getBanksData(IdUser: number, id: number, expenseCategories: expensecategories[], month: number, year: number): Promise<ExpenseTypeData> {
         let bank = await banksUseCases.getFirstBy({ IdBank: id })
 
         if (!bank) throw new Error("Banco não encontrado!")
 
         let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-            let categoryData = await baseExpensesUseCases.GetMonthlyBankCategory(month, year, id, item.IdExpenseCategory)
+            let categoryData = await baseExpensesUseCases.GetMonthlyBankCategory(month, year, IdUser, id, item.IdExpenseCategory)
 
             return this.handleExpenseData(item, categoryData)
         }))
