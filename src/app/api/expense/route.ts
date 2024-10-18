@@ -3,7 +3,8 @@ import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 
 // Create expense
 export async function POST(request: NextRequest) {
-    return NextResponse.json(await expensesUseCase.CreateExpense.run(await request.json()))
+    let IdUser = request.headers.get("IdUser")
+    return NextResponse.json(await expensesUseCase.CreateExpense.run(Number(IdUser), await request.json()))
 }
 
 export async function PUT(request: NextRequest) {

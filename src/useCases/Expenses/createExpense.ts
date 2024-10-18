@@ -11,9 +11,9 @@ import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{
 
-    async run(createExpenseData: UtilTypes.CreateExpense) {
+    async run(IdUser: number, createExpenseData: UtilTypes.CreateExpense) {
         return prisma.$transaction(async (tx) => {
-            let { IdBaseExpense } = await this.createBaseExpense(tx, createExpenseData)
+            let { IdBaseExpense } = await this.createBaseExpense(tx, IdUser, createExpenseData)
 
             if (createExpenseData.Type === "Default") {
                 return this.createDefaultExpense(tx, IdBaseExpense, createExpenseData)
@@ -29,7 +29,7 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    createBaseExpense(tx: UtilTypes.PrismaTransaction, createExpenseData: UtilTypes.CreateExpense) {
+    createBaseExpense(tx: UtilTypes.PrismaTransaction, IdUser: number, createExpenseData: UtilTypes.CreateExpense) {
         return new BaseExpensesUseCases(tx).create({
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),
@@ -37,6 +37,7 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
             EntryDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
+            IdUser: IdUser
         })
     }
 
