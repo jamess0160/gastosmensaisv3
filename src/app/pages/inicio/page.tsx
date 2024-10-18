@@ -37,7 +37,7 @@ function getBanksResume(banksResume: UtilTypes.InicioPageData['Resumes']['banksR
     if (banksResume.length === 0) {
         return (
             <div className="text-center mt-10">
-                Você ainda não tem bancos cadastrados! Cadastre eles no menu "Personalização"
+                Você ainda não tem bancos cadastrados! Cadastre eles no menu &quot;Personalização&quot;
             </div>
         )
     }

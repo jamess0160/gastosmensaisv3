@@ -11,7 +11,7 @@ export default function DestinyResumeContainer({ DestinysResume }: DestinyResume
     if (DestinysResume.length === 0) {
         return (
             <div className="text-center">
-                Você ainda não tem destinos cadastrados! Cadastre eles no menu "Personalização"
+                Você ainda não tem destinos cadastrados! Cadastre eles no menu &quot;Personalização&quot;
             </div>
         )
     }
