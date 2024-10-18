@@ -20,8 +20,8 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
 
     return (
         <>
-            <Input label="Data de Registro" inputProps={{ ...register("EntryDate"), type: "month", defaultValue: moment().format("YYYY-MM") }} />
-            <Input label="Descrição" inputProps={{ ...register("Description"), type: "text" }} />
+            <Input label="Data de Registro" inputProps={{ ...register("EntryDate", { required: true }), type: "month", defaultValue: moment().format("YYYY-MM") }} />
+            <Input label="Descrição" inputProps={{ ...register("Description", { required: true }), type: "text" }} />
 
             <div className={`${styles.campo} ${styles.checkParent}`}>
                 <div className={styles.checkGroup}>
@@ -42,20 +42,20 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
 
             {getCheckBoxStateField(checkboxState, register)}
 
-            <Input label="Valor" inputProps={{ ...register("Price"), onChange: expenseFormEventsEvents.validatePriceInput }} />
+            <Input label="Valor" inputProps={{ ...register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
             <Select
                 label="Destino"
-                selectProps={{ ...register("IdDestiny") }}
+                selectProps={{ ...register("IdDestiny", { required: true }) }}
                 selectItems={fieldsData.Destinys.map((item) => ({ key: item.IdDestiny, text: item.Name }))}
             />
             <Select
                 label="Tipo de gasto"
-                selectProps={{ ...register("IdExpenseCategory") }}
+                selectProps={{ ...register("IdExpenseCategory", { required: true }) }}
                 selectItems={fieldsData.ExpenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
             />
             <Select
                 label="Banco"
-                selectProps={{ ...register("IdBank") }}
+                selectProps={{ ...register("IdBank", { required: true }) }}
                 selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank, text: item.Name }))}
             />
         </>
@@ -64,14 +64,14 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
 
 function getCheckBoxStateField(checkboxState: checkboxState, register: FormFieldsProps['register']) {
     if (checkboxState === "Default") {
-        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate"), type: "date" }} />
+        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate", { required: true }), type: "date" }} />
     }
 
     if (checkboxState === "Installment") {
         return (
             <>
-                <Input label="Parcela atual" inputProps={{ ...register("CurrentInstallment"), type: "number" }} />
-                <Input label="Parcelas totais" inputProps={{ ...register("MaxInstallment"), type: "number" }} />
+                <Input label="Parcela atual" inputProps={{ ...register("CurrentInstallment", { required: true }), type: "number" }} />
+                <Input label="Parcelas totais" inputProps={{ ...register("MaxInstallment", { required: true }), type: "number" }} />
             </>
         )
     }

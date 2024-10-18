@@ -7,6 +7,15 @@ interface DestinyResumeContainerParams {
 }
 
 export default function DestinyResumeContainer({ DestinysResume }: DestinyResumeContainerParams) {
+
+    if (DestinysResume.length === 0) {
+        return (
+            <div className="text-center">
+                Você ainda não tem destinos cadastrados! Cadastre eles no menu "Personalização"
+            </div>
+        )
+    }
+
     return (
         <div className={styles.DestinyResumeContainer}>
             {DestinysResume.map((item, index) => {

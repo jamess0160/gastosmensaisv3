@@ -85,7 +85,7 @@ export default function Header({ month, year, userName }: HeaderProps) {
                     {`${clientUtilsUseCases.months[month]}, ${year}`}
                 </div>
                 <div className="m-0 text-2xl text-end">
-                    {`Seja bem vindo ${userName}`}
+                    {`Olá ${userName}`}
                 </div>
             </div>
         </div>

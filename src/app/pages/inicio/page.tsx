@@ -17,15 +17,30 @@ export default function Page() {
         return <CircularProgress />
     }
 
+    let banksResume = getBanksResume(data.Resumes.banksResume)
+
     return (
         <>
             <Header month={data.month} year={data.year} userName={data.selfUserName} />
             <Container maxWidth="xl">
                 <ResumeContainer ResumeContainerData={data.Resumes.container} />
                 <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
-                {data.Resumes.banksResume.map((item, index) => <BankResume bank={item} key={index} />)}
+                {banksResume}
                 <AddExpense ExpenseFormData={data.ExpenseFormData} />
             </Container>
         </>
     )
+}
+
+function getBanksResume(banksResume: UtilTypes.InicioPageData['Resumes']['banksResume']) {
+
+    if (banksResume.length === 0) {
+        return (
+            <div className="text-center mt-10">
+                Você ainda não tem bancos cadastrados! Cadastre eles no menu "Personalização"
+            </div>
+        )
+    }
+
+    return banksResume.map((item, index) => <BankResume bank={item} key={index} />)
 }

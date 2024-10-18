@@ -6,17 +6,18 @@ import { UseFormReset } from "react-hook-form";
 class ExpenseFormEvents {
 
     async onSubmit(data: UtilTypes.CreateExpense, setFormState: Dispatch<boolean>, resetForm: UseFormReset<UtilTypes.CreateExpense>, setIsLoading: Dispatch<boolean>, edit: boolean) {
-        setIsLoading(true)
+        console.log("passou")
+        // setIsLoading(true)
 
-        if (edit) {
-            await this.editExpense(data)
-            setFormState(false)
-        } else {
-            await this.createExpense(data)
-        }
+        // if (edit) {
+        //     await this.editExpense(data)
+        //     setFormState(false)
+        // } else {
+        //     await this.createExpense(data)
+        // }
 
-        setIsLoading(false)
-        resetForm()
+        // setIsLoading(false)
+        // resetForm()
     }
 
     private editExpense(data: UtilTypes.CreateExpense) {
