@@ -21,11 +21,11 @@ export default function ExpenseForm(props: FormProps) {
     let dialogContent = (
         <div className={styles.dialog}>
             <DialogTitle color={"white"}>{props.editItem ? "Editar gasto" : "Novo gasto"}</DialogTitle>
-            {Object.values(formState.errors).length > 0 && <div className="mb-5 text-red-600">Por favor, preencha todos os campos para continuar!</div>}
             <form
                 onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem)))}
                 className={styles.form}
             >
+                {Object.values(formState.errors).length > 0 && <div className="mb-5 text-red-600 text-center">Por favor, preencha todos os campos para continuar!</div>}
                 <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} editItem={props.editItem} />
                 <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
             </form>
