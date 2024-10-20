@@ -31,6 +31,7 @@ export default function Header({ month, year, userName }: HeaderProps) {
             }
         }).finally(() => {
             location.href = "/pages/logOut"
+            location.reload()
         })
     }
 
