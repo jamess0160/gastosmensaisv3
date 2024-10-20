@@ -39,9 +39,11 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
         let geralBudget = destinysBudget.find((item) => item.destiny.IdDestiny === parseInt(data.params.IdDestinoGeral))
 
-        if (!geralBudget) return Promise.resolve([])
+        let geralCommonCash = 0
 
-        let geralCommonCash = geralBudget.commonBudget > ValorMaximoGeral ? (geralBudget.commonBudget - ValorMaximoGeral) / (destinysBudget.length - 1) : 0
+        if (geralBudget) {
+            geralCommonCash = geralBudget.commonBudget > ValorMaximoGeral ? (geralBudget.commonBudget - ValorMaximoGeral) / (destinysBudget.length - 1) : 0
+        }
 
         return Promise.all(destinysBudget.map(async (item) => {
             let fullDestinyExpenses = await this.instance.GenerateFullBaseExpenseChild.run(month, year, IdUser, { IdDestiny: item.destiny.IdDestiny })
