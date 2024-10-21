@@ -17,13 +17,13 @@ export class SistemParamsUseCases extends BaseUseCase {
             SELECT
                 *
             FROM
-                SistemParams
+                sistemparams
             WHERE
                 IdSistemParam IN (
                     SELECT
                         MAX(IdSistemParam)
                     FROM
-                        SistemParams
+                        sistemparams
                     WHERE
                         EfectiveDate <= ${date.toDate()}
                         AND IdUser = ${IdUser}
