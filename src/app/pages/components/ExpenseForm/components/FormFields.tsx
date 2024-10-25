@@ -64,7 +64,7 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
 
 function getCheckBoxStateField(checkboxState: checkboxState, register: FormFieldsProps['register']) {
     if (checkboxState === "Default") {
-        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate", { required: true }), type: "date" }} />
+        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate"), type: "date" }} />
     }
 
     if (checkboxState === "Installment") {
