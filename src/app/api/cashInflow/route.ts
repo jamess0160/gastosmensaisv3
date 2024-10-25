@@ -5,26 +5,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     let data = await request.json() as UtilTypes.CreateCashInflow
+    let IdUser = request.headers.get("IdUser")
 
-    return NextResponse.json(await cashInflowsUseCases.create(handleCreateData(data)))
+    return NextResponse.json(await cashInflowsUseCases.create(handleCreateData(data, Number(IdUser))))
 }
 
 export async function PUT(request: NextRequest) {
     let data = await request.json() as UtilTypes.CreateCashInflow
+    let IdUser = request.headers.get("IdUser")
 
     if (!data.IdCashInflow) return NextResponse.json({ msg: "Propriedade IdCashInflow não encontrada!" })
 
-    return NextResponse.json(await cashInflowsUseCases.update(data.IdCashInflow, handleCreateData(data)))
+    return NextResponse.json(await cashInflowsUseCases.update(data.IdCashInflow, handleCreateData(data, Number(IdUser))))
 }
 
-function handleCreateData(data: UtilTypes.CreateCashInflow): CreateCashInFlow {
+function handleCreateData(data: UtilTypes.CreateCashInflow, IdUser: number): CreateCashInFlow {
     let currMoment = serverUtilsUseCases.getCurrMoment()
 
     return {
         Description: data.Description,
         EfectiveDate: currMoment.toDate(),
         IdDestiny: parseInt(data.IdDestiny),
-        Value: parseFloat(data.Value.replace(",", "."))
+        Value: parseFloat(data.Value.replace(",", ".")),
+        IdUser: IdUser
     }
 }
 

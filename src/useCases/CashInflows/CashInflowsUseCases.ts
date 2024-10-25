@@ -29,6 +29,7 @@ export class CashInflowsUseCases extends BaseUseCase {
                 IdDestiny: item.IdDestiny,
                 Value: item.Value,
                 EfectiveDate: serverUtilsUseCases.getCurrMoment().toDate(),
+                IdUser: item.IdUser
             }
         }))
     }
