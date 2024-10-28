@@ -81,10 +81,10 @@ async function submitForm(params: SubmitFormParams) {
 }
 
 function generateTableRows(tableData: (destinys | false)[], setEdit: Dispatch<boolean>, setValue: UseFormSetValue<CreateTypes.CreateDestiny>, forceReload: () => Promise<void>) {
-    return tableData.map((item) => {
+    return tableData.map((item, index) => {
 
         if (!item) {
-            return <EmptyRow />
+            return <EmptyRow key={index} />
         }
 
         const eventEdit = () => {
@@ -95,7 +95,7 @@ function generateTableRows(tableData: (destinys | false)[], setEdit: Dispatch<bo
         }
 
         return (
-            <TableRow>
+            <TableRow key={index}>
                 <TableCell className={cellClass}> {item.Name} </TableCell>
                 <TableCell className={cellClass}> {item.Color} </TableCell>
                 <TableCell className={cellClass}>

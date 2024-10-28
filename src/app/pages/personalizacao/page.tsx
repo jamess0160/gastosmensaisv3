@@ -9,7 +9,7 @@ import { usePooling } from "@/app/utils/usePooling";
 import { UtilTypes } from "@/database/UtilTypes";
 import moment from "moment";
 
-export default function page() {
+export default function Page() {
     let [selectedCategory, setSelectedCategory] = useState(0)
 
     let { data, force } = usePooling<UtilTypes.PersonalizacaoPageData>("/api/pagesData", moment.duration(5, "seconds").asMilliseconds(), {

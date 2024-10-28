@@ -77,10 +77,10 @@ async function submitForm(params: SubmitFormParams) {
 }
 
 function generateTableRows(tableData: (expensecategories | false)[], setEdit: Dispatch<boolean>, setValue: UseFormSetValue<CreateTypes.CreateExpenseCategory>, forceReload: () => Promise<void>) {
-    return tableData.map((item) => {
+    return tableData.map((item, index) => {
 
         if (!item) {
-            return <EmptyRow />
+            return <EmptyRow key={index} />
         }
 
         const eventEdit = () => {
@@ -90,7 +90,7 @@ function generateTableRows(tableData: (expensecategories | false)[], setEdit: Di
         }
 
         return (
-            <TableRow>
+            <TableRow key={index} >
                 <TableCell className={cellClass}> {item.Description} </TableCell>
                 <TableCell className={cellClass}>
                     <div className="flex items-center justify-end mr-10">
