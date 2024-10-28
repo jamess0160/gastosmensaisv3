@@ -12,6 +12,7 @@ model banks {
   Name         String         @db.VarChar(255)
   IconPath     String?        @db.VarChar(255)
   IdUser       Int?
+  Color        String?        @db.VarChar(255)
   users        users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "banks_ibfk_1")
   baseexpenses baseexpenses[]
 
