@@ -1,11 +1,11 @@
-import { UtilTypes } from "@/database/UtilTypes";
+import { CreateTypes } from "@/database/CreateTypes";
 import axios from "axios";
 import { ChangeEvent, Dispatch } from "react";
 import { UseFormReset } from "react-hook-form";
 
 class ExpenseFormEvents {
 
-    async onSubmit(data: UtilTypes.CreateExpense, setFormState: Dispatch<boolean>, resetForm: UseFormReset<UtilTypes.CreateExpense>, setIsLoading: Dispatch<boolean>, edit: boolean) {
+    async onSubmit(data: CreateTypes.CreateExpense, setFormState: Dispatch<boolean>, resetForm: UseFormReset<CreateTypes.CreateExpense>, setIsLoading: Dispatch<boolean>, edit: boolean) {
         setIsLoading(true)
 
         if (edit) {
@@ -19,11 +19,11 @@ class ExpenseFormEvents {
         resetForm()
     }
 
-    private editExpense(data: UtilTypes.CreateExpense) {
+    private editExpense(data: CreateTypes.CreateExpense) {
         return axios.put("/api/expense", data)
     }
 
-    private createExpense(data: UtilTypes.CreateExpense) {
+    private createExpense(data: CreateTypes.CreateExpense) {
         return axios.post("/api/expense", data)
     }
 

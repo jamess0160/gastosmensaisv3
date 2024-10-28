@@ -9,10 +9,11 @@ import { UtilTypes } from "@/database/UtilTypes";
 import { baseexpenses } from '@prisma/client';
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
 import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases';
+import { CreateTypes } from '@/database/CreateTypes';
 
 export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
-    async run(createExpenseData: UtilTypes.CreateExpense) {
+    async run(createExpenseData: CreateTypes.CreateExpense) {
         if (!createExpenseData.IdBaseExpense) return { msg: "Campo 'IdBaseExpense' não encontrado" }
 
         let BaseExpense = await baseExpensesUseCases.getUnique(createExpenseData.IdBaseExpense)
@@ -34,7 +35,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    private updateBaseExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
+    private updateBaseExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
         return new BaseExpensesUseCases(tx).update(BaseExpense.IdBaseExpense, {
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),
@@ -45,7 +46,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    private async updateDefaultExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
+    private async updateDefaultExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
 
         let defaultExpense = await defaultExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
@@ -59,7 +60,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    private async updateFixedExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
+    private async updateFixedExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
 
         let fixedExpense = await fixedExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
@@ -82,7 +83,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
     }
 
-    private async updateInstallmentExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: UtilTypes.CreateExpense) {
+    private async updateInstallmentExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
 
         let installmentExpense = await installmentExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
