@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import { Dispatch, useEffect, useState } from "react";
 
-export function usePooling<T>(url: string, secondsInterval: number, options?: PoolingOptions<T>): [T | undefined, boolean] {
+export function usePooling<T>(url: string, secondsInterval: number, options?: PoolingOptions<T>): PooolingReturn<T> {
     let [isLoading, setLoading] = useState(false)
     let [data, setData] = useState(options?.defaultValue)
 
@@ -18,7 +18,13 @@ export function usePooling<T>(url: string, secondsInterval: number, options?: Po
 
     }, [])
 
-    return [data, isLoading]
+    return {
+        data,
+        isLoading,
+        force() {
+            return pooling(url, setData, setLoading, options)
+        },
+    }
 }
 
 async function pooling<T>(url: string, setData: Dispatch<T | undefined>, setLoading: Dispatch<boolean>, options?: PoolingOptions<T>) {
@@ -38,4 +44,10 @@ async function pooling<T>(url: string, setData: Dispatch<T | undefined>, setLoad
 interface PoolingOptions<T> {
     defaultValue?: T
     params?: Record<string, any>
+}
+
+interface PooolingReturn<T> {
+    data: T | undefined,
+    isLoading: boolean
+    force: () => Promise<void>
 }
