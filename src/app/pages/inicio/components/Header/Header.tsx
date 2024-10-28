@@ -72,7 +72,7 @@ export default function Header({ month, year, userName }: HeaderProps) {
                         </Link>
                     </MenuItem>
                     <MenuItem>
-                        <Link href={"/pages/config"} className="flex flex-row no-underline text-black">
+                        <Link href={"/pages/personalizacao"} className="flex flex-row no-underline text-black">
                             <ListItemIcon>
                                 <DisplaySettings fontSize="medium" />
                             </ListItemIcon>
