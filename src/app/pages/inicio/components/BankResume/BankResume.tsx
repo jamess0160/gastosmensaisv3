@@ -7,15 +7,24 @@ interface BankProps {
     bank: BankResume
 }
 
-const defaultImage = "/bankIcons/padrao.svg"
-
 export default function BankResume({ bank }: BankProps) {
+
     return (
         <div className={styles.bankContainer}>
-            <div className={styles.bankName}>
-                <Image alt="sem imagem" src={bank.BankData.IconPath || defaultImage} width={50} height={50} />
-                <div>{bank.BankData.Name}</div>
-            </div>
+            {bank.BankData.IconPath ?
+                (
+                    <div className={styles.bankName}>
+                        <Image alt="sem imagem" src={bank.BankData.IconPath} width={50} height={50} />
+                        <div>{bank.BankData.Name}</div>
+                    </div>
+                )
+                : (
+                    <div className={styles.bankName}>
+                        <div style={{ backgroundColor: bank.BankData.Color || "black", width: 50, height: 50, borderRadius: "10px" }}></div>
+                        <div>{bank.BankData.Name}</div>
+                    </div>
+                )
+            }
             <div className={styles.bank}>
 
                 {bank.Categories.map((item, index) => {
