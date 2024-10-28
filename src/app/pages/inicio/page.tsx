@@ -11,7 +11,7 @@ import { UtilTypes } from "@/database/UtilTypes";
 import { usePooling } from "@/app/utils/usePooling";
 
 export default function Page() {
-    let [data] = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })
+    let { data } = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })
 
     if (!data) {
         return <CircularProgress />
