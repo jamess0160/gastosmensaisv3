@@ -35,6 +35,10 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(await loadCategoriasPage(Number(IdUser), searchParams))
     }
 
+    if (pageRoute === "personalizacao") {
+        return NextResponse.json(await loadPersonalizacaoPage(Number(IdUser)))
+    }
+
     return NextResponse.json({ pageRoute })
 }
 
@@ -81,6 +85,14 @@ function loadCategoriasPage(IdUser: number, searchParams: URLSearchParams): Prom
     })
 }
 
+function loadPersonalizacaoPage(IdUser: number) {
+    return clientUtilsUseCases.resolvePromiseObj<PersonalizacaoPageData>({
+        Banks: banksUseCases.getAllByUser(IdUser),
+        Destinys: destinysUseCases.getAllByUser(IdUser),
+        ExpenseCategories: expenseCategoriesUseCases.getAllByUser(IdUser),
+    })
+}
+
 //#endregion
 
 //#region Interfaces / Types 
@@ -94,5 +106,7 @@ type Resumes = UtilTypes.Promissed<UtilTypes.InicioPageData['Resumes']>
 type Container = UtilTypes.Promissed<UtilTypes.InicioPageData['Resumes']['container']>
 
 type CategoriasPageData = UtilTypes.Promissed<UtilTypes.CategoriasPageData>
+
+type PersonalizacaoPageData = UtilTypes.Promissed<UtilTypes.PersonalizacaoPageData>
 
 //#endregion
