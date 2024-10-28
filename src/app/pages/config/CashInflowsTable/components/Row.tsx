@@ -8,6 +8,7 @@ import { useState } from "react";
 import { configEvents } from "../../events/events";
 import CashInflowForm from "../../components/CashInflowForm";
 import { UtilTypes } from "@/database/UtilTypes";
+import { CreateTypes } from "@/database/CreateTypes";
 
 //#region Functions 
 
@@ -50,7 +51,7 @@ function EditItem(props: EditProps) {
     )
 }
 
-function generateEditItem(data: CashInflowMY): UtilTypes.CreateCashInflow {
+function generateEditItem(data: CashInflowMY): CreateTypes.CreateCashInflow {
     return {
         IdCashInflow: data.IdCashInflow,
         Description: data.Description,

@@ -1,17 +1,17 @@
-import { UtilTypes } from "@/database/UtilTypes";
+import { CreateTypes } from "@/database/CreateTypes";
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-    let data = await request.json() as UtilTypes.CreateCashInflow
+    let data = await request.json() as CreateTypes.CreateCashInflow
     let IdUser = request.headers.get("IdUser")
 
     return NextResponse.json(await cashInflowsUseCases.create(handleCreateData(data, Number(IdUser))))
 }
 
 export async function PUT(request: NextRequest) {
-    let data = await request.json() as UtilTypes.CreateCashInflow
+    let data = await request.json() as CreateTypes.CreateCashInflow
     let IdUser = request.headers.get("IdUser")
 
     if (!data.IdCashInflow) return NextResponse.json({ msg: "Propriedade IdCashInflow não encontrada!" })
@@ -19,7 +19,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(await cashInflowsUseCases.update(data.IdCashInflow, handleCreateData(data, Number(IdUser))))
 }
 
-function handleCreateData(data: UtilTypes.CreateCashInflow, IdUser: number): CreateCashInFlow {
+function handleCreateData(data: CreateTypes.CreateCashInflow, IdUser: number): CreateCashInFlow {
     let currMoment = serverUtilsUseCases.getCurrMoment()
 
     return {

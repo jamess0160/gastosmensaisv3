@@ -8,10 +8,11 @@ import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/Inst
 import { UtilTypes } from "@/database/UtilTypes";
 import moment from 'moment';
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
+import { CreateTypes } from '@/database/CreateTypes';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{
 
-    async run(IdUser: number, createExpenseData: UtilTypes.CreateExpense) {
+    async run(IdUser: number, createExpenseData: CreateTypes.CreateExpense) {
         return prisma.$transaction(async (tx) => {
             let { IdBaseExpense } = await this.createBaseExpense(tx, IdUser, createExpenseData)
 
@@ -29,7 +30,7 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    createBaseExpense(tx: UtilTypes.PrismaTransaction, IdUser: number, createExpenseData: UtilTypes.CreateExpense) {
+    createBaseExpense(tx: UtilTypes.PrismaTransaction, IdUser: number, createExpenseData: CreateTypes.CreateExpense) {
         return new BaseExpensesUseCases(tx).create({
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),
@@ -41,14 +42,14 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    createDefaultExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
+    createDefaultExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: CreateTypes.CreateExpense) {
         return new DefaultExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
             ExpenseDate: clientUtilsUseCases.handleClientDate(createExpenseData.ExpenseDate),
         })
     }
 
-    createFixedExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
+    createFixedExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: CreateTypes.CreateExpense) {
         return new FixedExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
             StartDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
@@ -56,7 +57,7 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    createInstallmentExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: UtilTypes.CreateExpense) {
+    createInstallmentExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: CreateTypes.CreateExpense) {
         let CurrentInstallment = parseInt(createExpenseData.CurrentInstallment)
         let MaxInstallment = parseInt(createExpenseData.MaxInstallment)
         return new InstallmentExpensesUseCases(tx).create({

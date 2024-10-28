@@ -1,4 +1,3 @@
-import { UtilTypes } from "@/database/UtilTypes"
 import { useState } from "react"
 import styles from '../ExpenseForm.module.css'
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"
@@ -7,13 +6,14 @@ import { expenseFormEventsEvents } from "../events/events"
 import { Input } from "../../fields/input"
 import { Select } from "../../fields/selelct"
 import moment from "moment"
+import { CreateTypes } from "@/database/CreateTypes"
 
 //#region Functions 
 
 export default function FormFields({ register, setValue, fieldsData, editItem }: FormFieldsProps) {
     let [checkboxState, setCheckboxState] = useState<checkboxState>(editItem?.Type || null)
 
-    function onCheckBoxChange(newValue: UtilTypes.CreateExpense['Type']) {
+    function onCheckBoxChange(newValue: CreateTypes.CreateExpense['Type']) {
         setValue("Type", newValue)
         setCheckboxState(newValue)
     }
@@ -82,10 +82,10 @@ function getCheckBoxStateField(checkboxState: checkboxState, register: FormField
 //#region Interfaces / Types 
 
 interface FormFieldsProps {
-    register: UseFormRegister<UtilTypes.CreateExpense>
-    setValue: UseFormSetValue<UtilTypes.CreateExpense>
+    register: UseFormRegister<CreateTypes.CreateExpense>
+    setValue: UseFormSetValue<CreateTypes.CreateExpense>
     fieldsData: FieldsData
-    editItem?: Partial<UtilTypes.CreateExpense>
+    editItem?: Partial<CreateTypes.CreateExpense>
 }
 
 type checkboxState = "Default" | "Installment" | "Fixed" | null

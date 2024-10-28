@@ -4,6 +4,7 @@ import { UtilTypes } from "@/database/UtilTypes";
 import { CashInflowMY } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
 import { defaultMsg } from "../components/CreateCashInflow";
+import { CreateTypes } from "@/database/CreateTypes";
 
 class ConfigEvents {
 
@@ -16,7 +17,7 @@ class ConfigEvents {
         location.reload()
     }
 
-    async onSubmitForm(data: UtilTypes.CreateCashInflow, edit: boolean, setLoading: Dispatch<boolean>) {
+    async onSubmitForm(data: CreateTypes.CreateCashInflow, edit: boolean, setLoading: Dispatch<boolean>) {
         setLoading(true)
 
         if (edit) {

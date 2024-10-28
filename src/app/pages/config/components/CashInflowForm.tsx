@@ -1,19 +1,15 @@
 'use client'
-
-import { UtilTypes } from "@/database/UtilTypes";
-import { Button, Dialog, DialogContent, DialogTitle, Input, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { destinys } from "@prisma/client";
-import { Dispatch, useState } from "react";
-import { UseFormSetValue, useForm } from "react-hook-form";
+import { Dispatch } from "react";
+import { useForm } from "react-hook-form";
 import { configEvents } from "../events/events";
 import styles from '../Config.module.css'
+import { CreateTypes } from "@/database/CreateTypes";
 
 export default function CashInflowForm(props: CashInflowFormProps) {
-    let { register, handleSubmit, setValue } = useForm<UtilTypes.CreateCashInflow>({ defaultValues: props.editItem })
+    let { register, handleSubmit } = useForm<CreateTypes.CreateCashInflow>({ defaultValues: props.editItem })
 
-    let [selectValue, setSelectValue] = useState(props.editItem?.IdCashInflow?.toString())
-
-    // let SelectItems = props.destinys.map((item) => <MenuItem key={item.IdDestiny} value={item.IdDestiny} >{item.Name}</MenuItem>)
     let SelectItems = props.destinys.map((item) => <option key={item.IdDestiny} value={item.IdDestiny} >{item.Name}</option>)
 
     return (
@@ -24,9 +20,6 @@ export default function CashInflowForm(props: CashInflowFormProps) {
 
                     <DialogContent>
                         <form className="flex flex-col gap-5 p-5 items-center" onSubmit={handleSubmit((data) => configEvents.onSubmitForm(data, Boolean(props.editItem), props.setLoading))}>
-                            {/* <InputLabel className="text-white">Destino</InputLabel>
-                            <Select className="text-white" value={selectValue} onChange={onSelectChange.bind(null, setSelectValue, setValue)}>{SelectItems}</Select> */}
-
                             <div className={styles.campo} >
                                 <legend>Destino</legend>
                                 <select {...register("IdDestiny")}>
@@ -43,12 +36,6 @@ export default function CashInflowForm(props: CashInflowFormProps) {
                                 <legend>Valor</legend>
                                 <input {...register("Value")}></input>
                             </div>
-
-                            {/* <InputLabel className="text-white">Descrição</InputLabel>
-                            <Input className="text-white" {...register("Description")} />
-
-                            <InputLabel className="text-white">Valor</InputLabel>
-                            <Input inputProps={{}} className="text-white" type="number" {...register("Value")} /> */}
 
                             <div className="w-full flex justify-around">
                                 <Button className="w-1/3 border border-solid" onClick={() => onCancel(props)}>Cancelar</Button>
@@ -67,15 +54,10 @@ function onCancel(props: CashInflowFormProps) {
     props.setLoading(false)
 }
 
-function onSelectChange(setSelectValue: Dispatch<string | undefined>, setValue: UseFormSetValue<UtilTypes.CreateCashInflow>, data: SelectChangeEvent<string>) {
-    setSelectValue(data.target.value)
-    setValue("IdDestiny", data.target.value)
-}
-
 interface CashInflowFormProps {
     open: boolean
     destinys: destinys[]
     setOpen: Dispatch<boolean>
     setLoading: Dispatch<boolean>
-    editItem?: UtilTypes.CreateCashInflow
+    editItem?: CreateTypes.CreateCashInflow
 }
