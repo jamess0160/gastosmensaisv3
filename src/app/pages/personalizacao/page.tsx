@@ -28,15 +28,15 @@ export default function Page() {
         <Container maxWidth="xl" className="pt-12">
             <Tabs selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
-            <div hidden={selectedCategory !== 0} className="p-3" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+            <div hidden={selectedCategory !== 0} className="p-3 rounded-lg" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
                 <DestinysPage destinys={data.Destinys} forceReload={force} />
             </div>
 
-            <div hidden={selectedCategory !== 1} className="p-3" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+            <div hidden={selectedCategory !== 1} className="p-3 rounded-lg" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
                 <BanksPage banks={data.Banks} forceReload={force} />
             </div>
 
-            <div hidden={selectedCategory !== 2} className="p-3" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+            <div hidden={selectedCategory !== 2} className="p-3 rounded-lg" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
                 <ExpenseCategoriesPage expensecategories={data.ExpenseCategories} forceReload={force} />
             </div>
 

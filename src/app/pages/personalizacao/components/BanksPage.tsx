@@ -39,7 +39,7 @@ export function BanksPage(props: BanksPageProps) {
                     <div>
                         Carregando...
                     </div>
-                    : <form className="mb-10 mt-10 w-1/2 flex flex-col gap-y-5" onSubmit={handleSubmit(handleSubmitForm)}>
+                    : <form className="lg:w-1/3 flex flex-col max-md:items-center gap-5 p-5" onSubmit={handleSubmit(handleSubmitForm)}>
 
                         {Object.values(formState.errors).length !== 0 && (
                             <div className="mb-5 text-red-600">
@@ -48,11 +48,11 @@ export function BanksPage(props: BanksPageProps) {
                         )}
 
                         <Input label="Nome" inputProps={{ ...register("Name", { required: true }), type: "text" }} />
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-10/12">
                             Cor
-                            <input className="h-10" type="color" {...register("Color", { required: true })} />
+                            <input className="h-10 w-full" type="color" {...register("Color", { required: true })} />
                         </div>
-                        <Button className="w-1/3" variant="contained" type="submit" >{edit ? "Editar Banco" : "Cadastrar Banco"}</Button>
+                        <Button className="w-10/12" variant="contained" type="submit" >{edit ? "Editar Banco" : "Cadastrar Banco"}</Button>
                     </form>
             }
 
@@ -99,7 +99,7 @@ function generateTableRows(tableData: (banks | false)[], setEdit: Dispatch<boole
                 <TableCell className={cellClass}> {item.Name} </TableCell>
                 <TableCell className={cellClass}> {item.Color} </TableCell>
                 <TableCell className={cellClass}>
-                    <div className="flex items-center justify-end mr-10">
+                    <div className="flex items-center justify-end lg:mr-10">
                         <IconButton className="py-0" onClick={eventEdit}>
                             <Edit color="primary" />
                         </IconButton>
