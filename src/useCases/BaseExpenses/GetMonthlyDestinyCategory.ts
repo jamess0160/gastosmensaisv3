@@ -16,7 +16,7 @@ export class GetMonthlyDestinyCategory extends BaseSection<BaseExpensesUseCases>
     }
 
     private async checkJointExpenses(month: number, year: number, IdUser: number, IdDestiny: number, IdExpenseCategory: number): Promise<FullBaseExpenseChild[]> {
-        let splitDestinys = await destinysUseCases.getBy({ SplitJointExpense: true })
+        let splitDestinys = await destinysUseCases.getBy({ SplitJointExpense: true, IdUser })
         let destiny = await destinysUseCases.getFirstBy({ IdDestiny })
 
         if (!destiny || !destiny.SplitJointExpense) return []
