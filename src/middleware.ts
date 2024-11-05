@@ -10,30 +10,32 @@ const skip = [
 
 export async function middleware(request: NextRequest) {
 
-    // if (skip.includes(request.nextUrl.pathname)) {
-    //     return NextResponse.next()
-    // }
+    if (skip.includes(request.nextUrl.pathname)) {
+        return NextResponse.next()
+    }
 
-    // let auth = request.headers.get("authorization");
+    let auth = request.headers.get("authorization");
 
-    // if (!auth) {
-    //     return NextResponse.json("Authentication required", {
-    //         headers: {
-    //             "WWW-Authenticate": 'Basic realm="Protected'
-    //         },
-    //         status: 401
-    //     })
-    // }
+    if (!auth) {
+        return NextResponse.json("Authentication required", {
+            headers: {
+                "WWW-Authenticate": 'Basic realm="Protected'
+            },
+            status: 401
+        })
+    }
 
-    // // // Decodifica as credenciais Base64
-    // let credentials = Buffer.from(auth.split(' ')[1], 'base64').toString();
-    // let [login, password] = credentials.split(':');
+    // // Decodifica as credenciais Base64
+    let credentials = Buffer.from(auth.split(' ')[1], 'base64').toString();
+    let [login, password] = credentials.split(':');
 
-    // if (login === "logOut") {
-    //     return NextResponse.json("", {
-    //         status: 401
-    //     })
-    // }
+    if (login === "logOut") {
+        return NextResponse.json("", {
+            status: 401
+        })
+    }
+
+    throw new Error(`${process.env.VERCEL_URL} - ${request.nextUrl.origin}`)
 
     // let baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : request.nextUrl.origin
 
@@ -54,13 +56,6 @@ export async function middleware(request: NextRequest) {
     //         "UserName": data.user.Name || ""
     //     }
     // })
-
-    return NextResponse.next({
-        headers: {
-            "IdUser": (1).toString(),
-            "UserName": "teste"
-        }
-    })
 }
 
 export const config = {
