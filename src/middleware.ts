@@ -35,7 +35,9 @@ export async function middleware(request: NextRequest) {
         })
     }
 
-    let { data } = await axios.post<LoginResult>(`${request.nextUrl.origin}/api/login`, { login, password: md5(password) })
+    let baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : request.nextUrl.origin
+
+    let { data } = await axios.post<LoginResult>(`${baseUrl}/api/login`, { login, password: md5(password) })
 
     if (data.error) {
         return NextResponse.json("Invalid credentials", {
