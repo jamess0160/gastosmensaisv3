@@ -1,5 +1,6 @@
 'use client';
 
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 import axios from "axios";
 import moment from "moment";
 import { Dispatch, useEffect, useState } from "react";
@@ -12,9 +13,26 @@ export function usePooling<T>(url: string, secondsInterval: number, options?: Po
 
         pooling<T>(url, setData, setLoading, options)
 
-        let interval = setInterval(pooling<T>, moment.duration(secondsInterval, "seconds").asMilliseconds(), url, setData, setLoading, options)
+        let cleared = false
 
-        return () => clearInterval(interval)
+        async function recursive() {
+
+            if (cleared) {
+                return
+            }
+
+            await pooling(url, setData, setLoading, options)
+
+            await clientUtilsUseCases.sleep(moment.duration(secondsInterval, "seconds").asMilliseconds())
+
+            recursive()
+        }
+
+        recursive()
+
+        return () => {
+            cleared = true
+        }
 
     }, [])
 
