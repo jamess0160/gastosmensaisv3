@@ -14,9 +14,6 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
-    console.log(request.nextUrl.pathname)
-
-
     let auth = request.headers.get("authorization");
 
     if (!auth) {
