@@ -4,7 +4,7 @@ import { LoginResult } from "./app/api/login/route";
 import md5 from 'md5'
 
 const skip = [
-    "api/login",
+    "/api/login",
     "/pages/logOut"
 ]
 
