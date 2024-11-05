@@ -14,6 +14,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
+    console.log(request.nextUrl.pathname)
+
+
     let auth = request.headers.get("authorization");
 
     if (!auth) {
@@ -35,27 +38,23 @@ export async function middleware(request: NextRequest) {
         })
     }
 
-    throw new Error(`${process.env.VERCEL_URL} - ${request.nextUrl.origin}`)
+    let { data } = await axios.post<LoginResult>(`${request.nextUrl.origin}/api/login`, { login, password: md5(password) })
 
-    // let baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : request.nextUrl.origin
+    if (data.error) {
+        return NextResponse.json("Invalid credentials", {
+            headers: {
+                "WWW-Authenticate": 'Basic realm="Protected'
+            },
+            status: 401
+        })
+    }
 
-    // let { data } = await axios.post<LoginResult>(`${baseUrl}/api/login`, { login, password: md5(password) })
-
-    // if (data.error) {
-    //     return NextResponse.json("Invalid credentials", {
-    //         headers: {
-    //             "WWW-Authenticate": 'Basic realm="Protected'
-    //         },
-    //         status: 401
-    //     })
-    // }
-
-    // return NextResponse.next({
-    //     headers: {
-    //         "IdUser": data.user.IdUser.toString(),
-    //         "UserName": data.user.Name || ""
-    //     }
-    // })
+    return NextResponse.next({
+        headers: {
+            "IdUser": data.user.IdUser.toString(),
+            "UserName": data.user.Name || ""
+        }
+    })
 }
 
 export const config = {
