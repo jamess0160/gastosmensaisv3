@@ -155,16 +155,16 @@ export interface GenerateFullBaseExpenseChildOptions {
 }
 
 interface FullBaseExpense extends baseexpenses {
-    destinys: destinys
-    banks: banks
+    destinys: destinys | null
+    banks: banks | null
     defaultexpenses: defaultexpenses | null
     fixedexpenses: fixedexpenses[]
     installmentexpenses: installmentexpenses[]
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
-    destinys: destinys
-    banks: banks
+    destinys: destinys | null
+    banks: banks | null
     splitCount?: number
     obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined

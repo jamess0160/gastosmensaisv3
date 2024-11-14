@@ -17,7 +17,7 @@ CREATE TABLE `CashInflows` (
     `Value` FLOAT NOT NULL,
     `EfectiveDate` DATETIME NOT NULL DEFAULT (CURRENT_DATE),
     `IdDestiny` INT NOT NULL,
-    FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`) ON DELETE CASCADE
+    FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`) ON DELETE SET NULL
 );
 
 CREATE TABLE `Banks` (
@@ -47,9 +47,9 @@ CREATE TABLE `BaseExpenses` (
     `IdBank` INT NOT NULL,
     `IdExpenseCategory` INT NOT NULL,
     `Active` BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`) ON DELETE CASCADE,
-    FOREIGN KEY (`IdBank`) REFERENCES `Banks`(`IdBank`) ON DELETE CASCADE,
-    FOREIGN KEY (`IdExpenseCategory`) REFERENCES `ExpenseCategories`(`IdExpenseCategory`) ON DELETE CASCADE
+    FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`) ON DELETE SET NULL,
+    FOREIGN KEY (`IdBank`) REFERENCES `Banks`(`IdBank`) ON DELETE SET NULL,
+    FOREIGN KEY (`IdExpenseCategory`) REFERENCES `ExpenseCategories`(`IdExpenseCategory`) ON DELETE SET NULL
 );
 
 CREATE TABLE `DefaultExpenses` (

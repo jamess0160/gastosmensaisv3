@@ -24,15 +24,15 @@ model baseexpenses {
   Description         String                @db.VarChar(255)
   Price               Float                 @db.Float
   EntryDate           DateTime              @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny           Int
-  IdBank              Int
-  IdExpenseCategory   Int
+  IdDestiny           Int?
+  IdBank              Int?
+  IdExpenseCategory   Int?
   Active              Boolean               @default(true)
   IdUser              Int?
-  destinys            destinys              @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_1")
-  banks               banks                 @relation(fields: [IdBank], references: [IdBank], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_2")
-  expensecategories   expensecategories     @relation(fields: [IdExpenseCategory], references: [IdExpenseCategory], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_3")
-  users               users?                @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "baseexpenses_ibfk_4")
+  destinys            destinys?             @relation(fields: [IdDestiny], references: [IdDestiny], onUpdate: NoAction, map: "baseexpenses_ibfk_1")
+  banks               banks?                @relation(fields: [IdBank], references: [IdBank], onUpdate: NoAction, map: "baseexpenses_ibfk_2")
+  expensecategories   expensecategories?    @relation(fields: [IdExpenseCategory], references: [IdExpenseCategory], onUpdate: NoAction, map: "baseexpenses_ibfk_3")
+  users               users?                @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "baseexpenses_ibfk_4")
   defaultexpenses     defaultexpenses?
   fixedexpenses       fixedexpenses[]
   installmentexpenses installmentexpenses[]
@@ -40,21 +40,21 @@ model baseexpenses {
   @@index([IdBank], map: "IdBank")
   @@index([IdDestiny], map: "IdDestiny")
   @@index([IdExpenseCategory], map: "IdExpenseCategory")
-  @@index([IdUser], map: "IdUser")
+  @@index([IdUser], map: "baseexpenses_ibfk_4")
 }
 
 model cashinflows {
-  IdCashInflow Int      @id @default(autoincrement())
-  Description  String   @db.VarChar(255)
-  Value        Float    @db.Float
-  EfectiveDate DateTime @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny    Int
+  IdCashInflow Int       @id @default(autoincrement())
+  Description  String    @db.VarChar(255)
+  Value        Float     @db.Float
+  EfectiveDate DateTime  @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdDestiny    Int?
   IdUser       Int?
-  destinys     destinys @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_1")
-  users        users?   @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "cashinflows_ibfk_2")
+  destinys     destinys? @relation(fields: [IdDestiny], references: [IdDestiny], onUpdate: NoAction, map: "cashinflows_ibfk_1")
+  users        users?    @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "cashinflows_ibfk_2")
 
   @@index([IdDestiny], map: "IdDestiny")
-  @@index([IdUser], map: "IdUser")
+  @@index([IdUser], map: "cashinflows_ibfk_2")
 }
 
 model destinys {

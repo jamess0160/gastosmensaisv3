@@ -59,5 +59,5 @@ interface CashInflowFormProps {
     destinys: destinys[]
     setOpen: Dispatch<boolean>
     setLoading: Dispatch<boolean>
-    editItem?: CreateTypes.CreateCashInflow
+    editItem?: Partial<CreateTypes.CreateCashInflow>
 }

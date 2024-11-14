@@ -51,11 +51,11 @@ function EditItem(props: EditProps) {
     )
 }
 
-function generateEditItem(data: CashInflowMY): CreateTypes.CreateCashInflow {
+function generateEditItem(data: CashInflowMY): Partial<CreateTypes.CreateCashInflow> {
     return {
         IdCashInflow: data.IdCashInflow,
         Description: data.Description,
-        IdDestiny: data.IdDestiny.toString(),
+        IdDestiny: data.IdDestiny?.toString(),
         Value: data.Value.toString(),
     }
 }

@@ -80,15 +80,15 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
 function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories) {
     if (!type) {
-        return `${item.destinys.Name} - ${item.banks.Name}`
+        return `${item.destinys?.Name} - ${item.banks?.Name}`
     }
 
     if (type === "banco") {
-        return item.destinys.Name
+        return item.destinys?.Name
     }
 
     if (type === "pessoal") {
-        return item.banks.Name
+        return item.banks?.Name
     }
 
     return ""
