@@ -41,7 +41,7 @@ export function ReportBody(props: ReportBodyProps) {
 
             <h1 className="w-fit m-auto">Total: R$ {sumExpenses.toFixed(2)}</h1>
 
-            <ExpenseTable data={tableData} />
+            <ExpenseTable data={tableData} force={() => Promise.resolve()} />
         </div>
     )
 }
