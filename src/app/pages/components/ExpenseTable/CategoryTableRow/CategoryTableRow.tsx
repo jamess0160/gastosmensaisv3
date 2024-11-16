@@ -24,7 +24,7 @@ export default function CategoryTableRow(props: TableRowProps) {
             <TableCell className={cellClass}> {props.item.Description} </TableCell>
             <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
             <TableCell className={cellClass}> {getDestinyBankColumnData(props.item, props.type)} </TableCell>
-            <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} />
+            <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
         </TableRow>
     )
 }
@@ -49,7 +49,7 @@ function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
         <TableCell className={cellClass}>
             <div className="flex items-center justify-end">
                 <ChangeActiveState item={props.item} />
-                <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} />
+                <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
                 <DeleteItem item={props.item} />
             </div>
         </TableCell>
@@ -136,6 +136,7 @@ interface TableRowProps {
     month?: number
     year?: number
     type?: Categories
+    force: () => Promise<void>
 }
 
 //#endregion

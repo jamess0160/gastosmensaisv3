@@ -31,6 +31,7 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
                                 month={props.month} year={props.year}
                                 selected={isSelected}
                                 type={props.type}
+                                force={props.force}
                             />
                         </div>
                     )
@@ -85,6 +86,7 @@ interface ExpenseGroupProps {
     month: number
     year: number
     type: Categories
+    force: () => Promise<void>
 }
 
 interface TabsProps {

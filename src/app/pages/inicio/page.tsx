@@ -11,7 +11,7 @@ import { UtilTypes } from "@/database/UtilTypes";
 import { usePooling } from "@/app/utils/usePooling";
 
 export default function Page() {
-    let { data } = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })
+    let { data, force } = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })
 
     if (!data) {
         return <CircularProgress />
@@ -26,7 +26,7 @@ export default function Page() {
                 <ResumeContainer ResumeContainerData={data.Resumes.container} />
                 <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
                 {banksResume}
-                <AddExpense ExpenseFormData={data.ExpenseFormData} />
+                <AddExpense ExpenseFormData={data.ExpenseFormData} force={force} />
             </Container>
         </>
     )

@@ -22,7 +22,7 @@ export default function ExpenseForm(props: FormProps) {
         <div className={styles.dialog}>
             <DialogTitle color={"white"}>{props.editItem ? "Editar gasto" : "Novo gasto"}</DialogTitle>
             <form
-                onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem)))}
+                onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem), props.force))}
                 className={styles.form}
             >
                 {Object.values(formState.errors).length > 0 && (
@@ -89,6 +89,7 @@ export interface FormProps {
     setFormState: Dispatch<boolean>
     fieldsData: FieldsData
     editItem?: Partial<CreateTypes.CreateExpense>
+    force: () => Promise<void>
 }
 
 export interface FieldsData {

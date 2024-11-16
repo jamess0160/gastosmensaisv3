@@ -7,7 +7,7 @@ import moment from "moment"
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
 import { CreateTypes } from "@/database/CreateTypes"
 
-export default function EditItem({ item, ExpenseFormData }: EditItemProps) {
+export default function EditItem({ item, ExpenseFormData, force }: EditItemProps) {
     let [loadingState, setLodingState] = useState(false)
 
     if (loadingState) {
@@ -16,7 +16,7 @@ export default function EditItem({ item, ExpenseFormData }: EditItemProps) {
         return (
             <>
                 <CircularProgress size="1rem" />
-                <ExpenseForm fieldsData={ExpenseFormData} formState={loadingState} setFormState={setLodingState} editItem={createExpense} />
+                <ExpenseForm fieldsData={ExpenseFormData} formState={loadingState} setFormState={setLodingState} editItem={createExpense} force={force} />
             </>
         )
     }
@@ -72,4 +72,5 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<CreateTypes
 interface EditItemProps {
     item: FullBaseExpenseChild
     ExpenseFormData: FieldsData
+    force: () => Promise<void>
 }

@@ -21,6 +21,7 @@ export function ExpenseTable(props: ExpenseTableProps) {
             month={props.month}
             year={props.year}
             type={props.type}
+            force={props.force}
         />
     })
 
@@ -39,4 +40,5 @@ interface ExpenseTableProps {
     month?: number
     year?: number
     type?: Categories
+    force: () => Promise<void>
 }

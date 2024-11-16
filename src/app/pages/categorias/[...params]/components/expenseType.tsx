@@ -8,7 +8,14 @@ export default function ExpenseType(props: PageProps) {
 
     return (
         <div hidden={!props.selected}>
-            <ExpenseTable data={props.CategorieData.tableData} ExpenseFormData={props.ExpenseFormData} month={props.month} year={props.year} type={props.type} />
+            <ExpenseTable
+                data={props.CategorieData.tableData}
+                ExpenseFormData={props.ExpenseFormData}
+                month={props.month}
+                year={props.year}
+                type={props.type}
+                force={props.force}
+            />
 
             <h1 className="w-fit m-auto mt-5 underline max-md:mb-24">R$ {props.CategorieData.total}</h1>
         </div>
@@ -26,6 +33,7 @@ interface PageProps {
     year: number
     selected: boolean
     type: Categories
+    force: () => Promise<void>
 }
 
 export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
