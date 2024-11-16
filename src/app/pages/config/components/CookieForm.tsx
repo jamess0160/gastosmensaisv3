@@ -38,7 +38,7 @@ export default function CookieForm(props: CookieFormProps) {
 
                 <Input label="Ano" inputProps={{ ...register("year") }} />
 
-                <Button className="w-1/2 max-md:w-11/12 text-black my-5" variant="contained" type="submit">Enviar</Button>
+                <Button className="w-1/2 max-md:w-11/12 text-black my-5" variant="contained" type="submit">Salvar</Button>
             </form>
         </div>
     )
