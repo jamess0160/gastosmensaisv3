@@ -69,7 +69,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
             return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 
-        if (serverUtilsUseCases.compareDates(BaseExpense.EntryDate)) {
+        if (serverUtilsUseCases.compareDates(fixedExpense.StartDate)) {
             return new FixedExpensesUseCases(tx).update(fixedExpense.IdFixedExpense, {
                 StartDate: clientUtilsUseCases.handleClientDate(createExpenseData.EntryDate),
                 Price: parseFloat(createExpenseData.Price.replace(",", "."))
