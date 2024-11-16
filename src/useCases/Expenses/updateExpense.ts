@@ -62,7 +62,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
     private async updateFixedExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
 
-        let fixedExpense = await fixedExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
+        let fixedExpense = await fixedExpensesUseCases.getFirstByBaseExpense(BaseExpense.IdBaseExpense)
 
         if (!fixedExpense) {
             await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
@@ -80,7 +80,10 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
             EndDate: serverUtilsUseCases.getCurrMoment().subtract(1, "month").toDate()
         })
 
-        return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
+        return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, {
+            ...createExpenseData,
+            EntryDate: serverUtilsUseCases.getCurrMoment().format("YYYY-MM")
+        })
     }
 
     private async updateInstallmentExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {

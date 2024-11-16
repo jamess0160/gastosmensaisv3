@@ -3,10 +3,10 @@ import { BaseUseCase } from "../../base/baseUseCase";
 
 export class FixedExpensesUseCases extends BaseUseCase {
 
-    getFirstByBaseExpense(IdBaseExpenses: number[]) {
+    getFirstByBaseExpense(IdBaseExpenses: number) {
         return this.prisma.fixedexpenses.findFirst({
             where: {
-                IdBaseExpense: { in: IdBaseExpenses }
+                IdBaseExpense: IdBaseExpenses
             },
             orderBy: {
                 IdFixedExpense: "desc"
