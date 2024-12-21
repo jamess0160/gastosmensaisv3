@@ -4,10 +4,14 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-    let { month, year } = serverUtilsUseCases.getMonthYear()
     let IdUser = request.headers.get("IdUser")
 
-    await cashInflowsUseCases.clone(month - 1, year, Number(IdUser))
+    let currMoment = serverUtilsUseCases.getCurrMoment()
+    let lastMoment = currMoment.subtract(1, "month")
+    let month = lastMoment.get("month")
+    let year = lastMoment.get("year")
+
+    await cashInflowsUseCases.clone(month, year, Number(IdUser))
 
     revalidatePath("/config")
 
