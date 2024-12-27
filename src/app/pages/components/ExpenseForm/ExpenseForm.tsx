@@ -11,7 +11,13 @@ import { CreateTypes } from "@/database/CreateTypes"
 //#region Functions 
 
 export default function ExpenseForm(props: FormProps) {
-    let { register, handleSubmit, setValue, reset, formState } = useForm<CreateTypes.CreateExpense>({ defaultValues: props.editItem })
+    let form = useForm<CreateTypes.CreateExpense>({
+        defaultValues: {
+            IdsDestinys: [],
+            ...props.editItem
+        }
+    })
+
     let [isLoading, setIsLoading] = useState(false)
 
     if (isLoading) {
@@ -22,15 +28,15 @@ export default function ExpenseForm(props: FormProps) {
         <div className={styles.dialog}>
             <DialogTitle color={"white"}>{props.editItem ? "Editar gasto" : "Novo gasto"}</DialogTitle>
             <form
-                onSubmit={handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, reset, setIsLoading, Boolean(props.editItem), props.force))}
+                onSubmit={form.handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, form.reset, setIsLoading, Boolean(props.editItem), props.force))}
                 className={styles.form}
             >
-                {Object.values(formState.errors).length > 0 && (
+                {Object.values(form.formState.errors).length > 0 && (
                     <div className="mb-5 text-red-600 text-center">
                         Por favor, preencha todos os campos para continuar!
                     </div>
                 )}
-                <FormFields register={register} setValue={setValue} fieldsData={props.fieldsData} editItem={props.editItem} />
+                <FormFields form={form} fieldsData={props.fieldsData} editItem={props.editItem} />
                 <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
             </form>
         </div>

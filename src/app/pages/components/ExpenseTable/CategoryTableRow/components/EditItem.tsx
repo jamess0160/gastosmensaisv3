@@ -34,7 +34,7 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<CreateTypes
         Description: item.Description,
         EntryDate: item.EntryDate ? moment(item.EntryDate).format("YYYY-MM") : undefined,
         IdBank: item.IdBank?.toString(),
-        IdDestiny: item.IdDestiny?.toString(),
+        IdsDestinys: item.expensedestinys.map((item) => item.IdDestiny.toString()),
         IdExpenseCategory: item.IdExpenseCategory?.toString(),
         Price: clientUtilsUseCases.GetExpensePrice(item).toString(),
     }

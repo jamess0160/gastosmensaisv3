@@ -1,27 +1,28 @@
 import { useState } from "react"
 import styles from '../ExpenseForm.module.css'
-import { UseFormRegister, UseFormSetValue } from "react-hook-form"
+import { UseFormReturn } from "react-hook-form"
 import { FieldsData } from "../ExpenseForm"
 import { expenseFormEventsEvents } from "../events/events"
 import { Input } from "../../fields/input"
-import { Select } from "../../fields/selelct"
+import { Select } from "../../fields/select"
 import moment from "moment"
 import { CreateTypes } from "@/database/CreateTypes"
 
 //#region Functions 
 
-export default function FormFields({ register, setValue, fieldsData, editItem }: FormFieldsProps) {
+export default function FormFields(props: FormFieldsProps) {
+    let { form, fieldsData, editItem } = props
     let [checkboxState, setCheckboxState] = useState<checkboxState>(editItem?.Type || null)
 
     function onCheckBoxChange(newValue: CreateTypes.CreateExpense['Type']) {
-        setValue("Type", newValue)
+        form.setValue("Type", newValue)
         setCheckboxState(newValue)
     }
 
     return (
         <>
-            <Input label="Data de Registro" inputProps={{ ...register("EntryDate", { required: true }), type: "month", defaultValue: moment().format("YYYY-MM") }} />
-            <Input label="Descrição" inputProps={{ ...register("Description", { required: true }), type: "text" }} />
+            <Input label="Data de Registro" inputProps={{ ...form.register("EntryDate", { required: true }), type: "month", defaultValue: moment().format("YYYY-MM") }} />
+            <Input label="Descrição" inputProps={{ ...form.register("Description", { required: true }), type: "text" }} />
 
             <div className={`${styles.campo} ${styles.checkParent}`}>
                 <div className={styles.checkGroup}>
@@ -40,38 +41,42 @@ export default function FormFields({ register, setValue, fieldsData, editItem }:
                 </div>
             </div>
 
-            {getCheckBoxStateField(checkboxState, register)}
+            {getCheckBoxStateField(checkboxState, form)}
 
-            <Input label="Valor" inputProps={{ ...register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+            <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
             <Select
                 label="Destino"
-                selectProps={{ ...register("IdDestiny", { required: true }) }}
+                form={form}
+                formProp="IdsDestinys"
+                selectProps={{ multiple: true }}
                 selectItems={fieldsData.Destinys.map((item) => ({ key: item.IdDestiny, text: item.Name }))}
             />
             <Select
                 label="Tipo de gasto"
-                selectProps={{ ...register("IdExpenseCategory", { required: true }) }}
+                form={form}
+                formProp="IdExpenseCategory"
                 selectItems={fieldsData.ExpenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
             />
             <Select
                 label="Banco"
-                selectProps={{ ...register("IdBank", { required: true }) }}
+                form={form}
+                formProp="IdBank"
                 selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank, text: item.Name }))}
             />
         </>
     )
 }
 
-function getCheckBoxStateField(checkboxState: checkboxState, register: FormFieldsProps['register']) {
+function getCheckBoxStateField(checkboxState: checkboxState, form: FormFieldsProps['form']) {
     if (checkboxState === "Default") {
-        return <Input label="Data do Gasto" inputProps={{ ...register("ExpenseDate"), type: "date" }} />
+        return <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
     }
 
     if (checkboxState === "Installment") {
         return (
             <>
-                <Input label="Parcela atual" inputProps={{ ...register("CurrentInstallment", { required: true }), type: "number" }} />
-                <Input label="Parcelas totais" inputProps={{ ...register("MaxInstallment", { required: true }), type: "number" }} />
+                <Input label="Parcela atual" inputProps={{ ...form.register("CurrentInstallment", { required: true }), type: "number" }} />
+                <Input label="Parcelas totais" inputProps={{ ...form.register("MaxInstallment", { required: true }), type: "number" }} />
             </>
         )
     }
@@ -82,8 +87,7 @@ function getCheckBoxStateField(checkboxState: checkboxState, register: FormField
 //#region Interfaces / Types 
 
 interface FormFieldsProps {
-    register: UseFormRegister<CreateTypes.CreateExpense>
-    setValue: UseFormSetValue<CreateTypes.CreateExpense>
+    form: UseFormReturn<CreateTypes.CreateExpense, any, CreateTypes.CreateExpense>
     fieldsData: FieldsData
     editItem?: Partial<CreateTypes.CreateExpense>
 }

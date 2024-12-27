@@ -23,7 +23,7 @@ export default function CategoryTableRow(props: TableRowProps) {
             <TableCell className={cellClass}> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass}> {props.item.Description} </TableCell>
             <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
-            <TableCell className={cellClass}> {getDestinyBankColumnData(props.item, props.type)} </TableCell>
+            <TableCell className={cellClass} title={getDestinyBankColumnData(props.item, props.type, { full: true })} > {getDestinyBankColumnData(props.item, props.type)} </TableCell>
             <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
         </TableRow>
     )
@@ -78,13 +78,13 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
     return moment(item.EntryDate).toDate().toLocaleDateString("pt-br")
 }
 
-function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories) {
+function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories, options?: { full: boolean }) {
     if (!type) {
-        return `${item.destinys?.Name} - ${item.banks?.Name}`
+        return `${formatDestinys(item, options)} - ${item.banks?.Name}`
     }
 
     if (type === "banco") {
-        return item.destinys?.Name
+        return formatDestinys(item, options)
     }
 
     if (type === "pessoal") {
@@ -92,6 +92,16 @@ function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories)
     }
 
     return ""
+}
+
+function formatDestinys(item: FullBaseExpenseChild, options?: { full: boolean }) {
+    let destintysNames = item.expensedestinys.map((item) => item.destinys.Name)
+
+    if (destintysNames.length > 3 && options?.full !== true) {
+        return destintysNames.slice(0, 2).join(", ") + "..."
+    }
+
+    return destintysNames.join(", ")
 }
 
 //#endregion

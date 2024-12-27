@@ -1,4 +1,6 @@
-import { HTMLAttributes, SelectHTMLAttributes } from "react";
+import { Select as MuiSelect, MenuItem, SelectProps as MuiSelectProps } from '@mui/material';
+import { HTMLAttributes } from "react";
+import { UseFormReturn } from 'react-hook-form';
 
 export function Select(props: SelectProps) {
 
@@ -6,13 +8,16 @@ export function Select(props: SelectProps) {
         <div className="relative w-10/12 h-8 text-white mix-blend-lighten">
             <legend
                 {...props.labelProps}
-                className={"absolute left-4 -top-3 bg-default" + (props.labelProps?.className || "")}
+                className={"absolute left-4 -top-3 bg-default z-10" + (props.labelProps?.className || "")}
             >
                 {props.label}
 
             </legend>
-            <select
-                defaultValue={0}
+            <MuiSelect
+                value={props.form.watch(props.formProp)}
+                onChange={(e) => {
+                    return props.form.setValue(props.formProp, e.target.value)
+                }}
                 {...props.selectProps}
                 className={`
                     w-full box-border pl-4 outline-none
@@ -21,21 +26,22 @@ export function Select(props: SelectProps) {
                     focus:border-gray-500
                 `}
             >
-                <option disabled value={0} />
                 {
                     props.selectItems.map((item) => {
-                        return <option value={item.key} key={item.key}>{item.text}</option>
+                        return <MenuItem value={item.key} key={item.key} className='text-white' >{item.text}</MenuItem>
                     })
                 }
-            </select>
+            </MuiSelect>
         </div>
     )
 }
 
 interface SelectProps {
     label: string
+    form: UseFormReturn<any, any, any>
+    formProp: string
     labelProps?: HTMLAttributes<HTMLLegendElement>
-    selectProps?: SelectHTMLAttributes<HTMLSelectElement>
+    selectProps?: MuiSelectProps
     selectItems: SelectItem[]
 }
 

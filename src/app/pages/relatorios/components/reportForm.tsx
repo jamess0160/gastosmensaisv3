@@ -1,7 +1,7 @@
 import { expensecategories } from "@prisma/client";
 import { Input } from "../../components/fields/input";
-import { Select, SelectItem } from "../../components/fields/selelct";
-import { UseFormRegister } from "react-hook-form";
+import { Select, SelectItem } from "../../components/fields/select";
+import { UseFormReturn } from "react-hook-form";
 import { RelatorioFormData } from "@/app/api/relatorios/route";
 import { Button } from "@mui/material";
 
@@ -10,18 +10,19 @@ export function ReportForm(props: ReportFormProps) {
         <form onSubmit={props.onSubmit}>
 
             <div className="flex gap-10 max-md:flex-wrap justify-center">
-                <Select label="Intervalo" selectItems={intervalItems} selectProps={{ ...props.register("interval") }} />
+                <Select label="Intervalo" selectItems={intervalItems} form={props.form} formProp="interval" />
 
-                <Input label="Inicio" inputProps={{ ...props.register("dateStart"), type: "date", }} />
+                <Input label="Inicio" inputProps={{ ...props.form.register("dateStart"), type: "date", }} />
 
-                <Input label="Final" inputProps={{ ...props.register("dateEnd"), type: "date", }} />
+                <Input label="Final" inputProps={{ ...props.form.register("dateEnd"), type: "date", }} />
 
-                <Input label="Descrição" inputProps={{ ...props.register("description") }} />
+                <Input label="Descrição" inputProps={{ ...props.form.register("description") }} />
 
                 <Select
                     label="Destino"
+                    form={props.form}
+                    formProp="IdExpenseCategory"
                     selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
-                    selectProps={{ ...props.register("IdExpenseCategory") }}
                 />
 
             </div>
@@ -45,7 +46,7 @@ const intervalItems: SelectItem[] = [
 //#endregion
 
 interface ReportFormProps {
-    register: UseFormRegister<RelatorioFormData>
+    form: UseFormReturn<RelatorioFormData, any, RelatorioFormData>
     onSubmit: () => unknown
     expenseCategories: expensecategories[]
 }

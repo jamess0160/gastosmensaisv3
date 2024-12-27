@@ -6,15 +6,15 @@ import { useState } from "react"
 import { UtilTypes } from "@/database/UtilTypes"
 import { Button, CircularProgress } from "@mui/material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
-import { Select } from "../../components/fields/selelct"
+import { Select } from "../../components/fields/select"
 import { Input } from "../../components/fields/input"
 
 export default function CookieForm(props: CookieFormProps) {
     let [isLoading, setLoading] = useState(false)
 
-    let { register, handleSubmit } = useForm<UtilTypes.CookiesPostBody>({ defaultValues: { month: (parseInt(props.month) + 1).toString(), year: props.year } })
+    let form = useForm<UtilTypes.CookiesPostBody>({ defaultValues: { month: (parseInt(props.month) + 1).toString(), year: props.year } })
 
-    let submitForm = handleSubmit((data) => {
+    let submitForm = form.handleSubmit((data) => {
         data.month = (parseInt(data.month) - 1).toString()
         configEvents.onCookieChange(data, setLoading)
     })
@@ -32,11 +32,12 @@ export default function CookieForm(props: CookieFormProps) {
 
                 <Select
                     label="Mês"
+                    form={form}
+                    formProp="month"
                     selectItems={clientUtilsUseCases.months.map((item, index) => ({ key: index + 1, text: item }))}
-                    selectProps={{ ...register("month") }}
                 />
 
-                <Input label="Ano" inputProps={{ ...register("year") }} />
+                <Input label="Ano" inputProps={{ ...form.register("year") }} />
 
                 <Button className="w-1/2 max-md:w-11/12 text-black my-5" variant="contained" type="submit">Salvar</Button>
             </form>

@@ -12,7 +12,12 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: "#ffffff"
-        }
+        },
+        background: {
+            default: "#1e1f22",
+            paper: "#1e1f22",
+        },
+
     },
     typography: {
         fontFamily: font.style.fontFamily,
