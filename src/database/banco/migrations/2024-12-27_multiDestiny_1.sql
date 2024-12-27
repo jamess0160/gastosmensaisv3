@@ -21,3 +21,28 @@ ALTER TABLE
 
 ALTER TABLE
     `BaseExpenses` DROP COLUMN `IdDestiny`;
+
+INSERT INTO
+    `ExpenseDestinys` (`IdBaseExpense`, `IdDestiny`)
+SELECT
+    `IdBaseExpense`,
+    1 AS `IdDestiny`
+FROM
+    `ExpenseDestinys`
+WHERE
+    `IdDestiny` = 4;
+
+INSERT INTO
+    `ExpenseDestinys` (`IdBaseExpense`, `IdDestiny`)
+SELECT
+    `IdBaseExpense`,
+    15 AS `IdDestiny`
+FROM
+    `ExpenseDestinys`
+WHERE
+    `IdDestiny` = 4;
+
+DELETE FROM
+    `ExpenseDestinys`
+WHERE
+    `IdDestiny` = 4;
