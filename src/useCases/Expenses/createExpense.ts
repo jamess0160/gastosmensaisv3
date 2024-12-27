@@ -34,11 +34,19 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         return new BaseExpensesUseCases(tx).create({
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),
-            IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
             EntryDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
-            IdUser: IdUser
+            IdUser: IdUser,
+            expensedestinys: {
+                createMany: {
+                    data: createExpenseData.IdsDestinys.map((item) => {
+                        return {
+                            IdDestiny: Number(item)
+                        }
+                    })
+                }
+            }
         })
     }
 

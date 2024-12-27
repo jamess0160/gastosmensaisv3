@@ -16,7 +16,7 @@ export namespace CreateTypes {
         CurrentInstallment: string
         MaxInstallment: string
         Price: string
-        IdDestiny: string
+        IdsDestinys: string[]
         IdExpenseCategory: string
         IdBank: string
     }

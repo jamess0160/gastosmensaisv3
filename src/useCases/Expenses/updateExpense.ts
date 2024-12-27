@@ -10,6 +10,7 @@ import { baseexpenses } from '@prisma/client';
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
 import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
+import { ExpenseDestinysUseCases } from '../ExpenseDestinys/ExpenseDestinysUseCases';
 
 export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -19,6 +20,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         let BaseExpense = await baseExpensesUseCases.getUnique(createExpenseData.IdBaseExpense)
 
         return prisma.$transaction(async (tx) => {
+            await this.clearExpenseDestinys(tx, BaseExpense.IdBaseExpense)
             await this.updateBaseExpense(tx, BaseExpense, createExpenseData)
 
             if (createExpenseData.Type === "Default") {
@@ -35,14 +37,26 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
+    private clearExpenseDestinys(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number) {
+        return new ExpenseDestinysUseCases(tx).deleteExpenseChilds(IdBaseExpense)
+    }
+
     private updateBaseExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
         return new BaseExpensesUseCases(tx).update(BaseExpense.IdBaseExpense, {
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),
-            IdDestiny: parseInt(createExpenseData.IdDestiny),
             IdExpenseCategory: parseInt(createExpenseData.IdExpenseCategory),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
             EntryDate: clientUtilsUseCases.handleClientMonth(createExpenseData.EntryDate),
+            expensedestinys: {
+                createMany: {
+                    data: createExpenseData.IdsDestinys.map((item) => {
+                        return {
+                            IdDestiny: Number(item)
+                        }
+                    })
+                }
+            }
         })
     }
 
@@ -51,7 +65,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         let defaultExpense = await defaultExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
         if (!defaultExpense) {
-            await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
+            await new BaseExpensesUseCases(tx).deleteChilds(BaseExpense.IdBaseExpense)
             return this.instance.CreateExpense.createDefaultExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 
@@ -65,7 +79,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         let fixedExpense = await fixedExpensesUseCases.getFirstByBaseExpense(BaseExpense.IdBaseExpense)
 
         if (!fixedExpense) {
-            await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
+            await new BaseExpensesUseCases(tx).deleteChilds(BaseExpense.IdBaseExpense)
             return this.instance.CreateExpense.createFixedExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 
@@ -91,7 +105,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         let installmentExpense = await installmentExpensesUseCases.getFirstByBaseExpense([BaseExpense.IdBaseExpense])
 
         if (!installmentExpense) {
-            await new BaseExpensesUseCases(tx).deleteChilds(tx, BaseExpense.IdBaseExpense)
+            await new BaseExpensesUseCases(tx).deleteChilds(BaseExpense.IdBaseExpense)
             return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
         }
 

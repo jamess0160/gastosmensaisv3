@@ -46,11 +46,11 @@ export class BaseExpensesUseCases extends BaseUseCase {
         })
     }
 
-    deleteChilds(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number) {
+    deleteChilds(IdBaseExpense: number) {
         return Promise.all([
-            tx.defaultexpenses.deleteMany({ where: { IdBaseExpense } }),
-            tx.fixedexpenses.deleteMany({ where: { IdBaseExpense } }),
-            tx.installmentexpenses.deleteMany({ where: { IdBaseExpense } }),
+            this.prisma.defaultexpenses.deleteMany({ where: { IdBaseExpense } }),
+            this.prisma.fixedexpenses.deleteMany({ where: { IdBaseExpense } }),
+            this.prisma.installmentexpenses.deleteMany({ where: { IdBaseExpense } }),
         ])
     }
 }

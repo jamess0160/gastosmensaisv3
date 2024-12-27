@@ -1,4 +1,4 @@
-import { banks, baseexpenses, defaultexpenses, destinys, fixedexpenses, installmentexpenses } from "@prisma/client"
+import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
@@ -73,13 +73,22 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                 ],
                 IdBank: options?.IdBank || undefined,
                 IdExpenseCategory: options?.IdExpenseCategory || undefined,
-                IdDestiny: options?.IdDestiny || undefined,
+                expensedestinys: {
+                    every: {
+                        IdDestiny: options?.IdDestiny || undefined,
+
+                    }
+                },
                 IdUser: IdUser
             },
             include: {
                 defaultexpenses: true,
                 banks: true,
-                destinys: true,
+                expensedestinys: {
+                    include: {
+                        destinys: true
+                    }
+                },
                 fixedexpenses: {
                     where: {
                         OR: [
@@ -155,7 +164,7 @@ export interface GenerateFullBaseExpenseChildOptions {
 }
 
 interface FullBaseExpense extends baseexpenses {
-    destinys: destinys | null
+    expensedestinys: ExpenseDestinys[]
     banks: banks | null
     defaultexpenses: defaultexpenses | null
     fixedexpenses: fixedexpenses[]
@@ -163,11 +172,15 @@ interface FullBaseExpense extends baseexpenses {
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
-    destinys: destinys | null
+    expensedestinys: ExpenseDestinys[]
     banks: banks | null
     splitCount?: number
     obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
+}
+
+interface ExpenseDestinys extends expensedestinys {
+    destinys: destinys
 }
 
 export interface DefaultExpenseChild extends FullBaseExpenseChild {
