@@ -18,7 +18,7 @@ export function ReportBody(props: ReportBodyProps) {
     let start = moment().startOf("month").format("YYYY-MM-DD")
     let end = moment().format("YYYY-MM-DD")
 
-    let { register, handleSubmit } = useForm<RelatorioFormData>({ defaultValues: { interval: "semana", dateStart: start, dateEnd: end } })
+    let form = useForm<RelatorioFormData>({ defaultValues: { interval: "semana", dateStart: start, dateEnd: end } })
 
     let [chartConfig, setChartConfig] = useState<RelatorioData['chartData']>({ labels: [], data: [] })
     let [tableData, setTableData] = useState<RelatorioData['tableData']>([])
@@ -33,8 +33,8 @@ export function ReportBody(props: ReportBodyProps) {
                     <CircularProgress /> :
                     <ReportForm
                         expenseCategories={props.expenseCategories}
-                        register={register}
-                        onSubmit={handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
+                        form={form}
+                        onSubmit={form.handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
                     />
             }
             <ReportChart chartConfig={chartConfig} />
