@@ -38,8 +38,6 @@ export function Select(props: SelectProps) {
             .join(", ")
     }
 
-    console.log({ value })
-
     return (
         <div className="relative w-10/12 h-8 text-white mix-blend-lighten">
             <legend
