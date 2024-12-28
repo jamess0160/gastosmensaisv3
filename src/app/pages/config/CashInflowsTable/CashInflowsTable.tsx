@@ -8,6 +8,8 @@ export default async function CashInflowsTable(props: CashInflowsTableProps) {
 
     let cashInflows = await cashInflowsUseCases.getAllByMY(props.month, props.year, props.IdUser)
 
+    console.log(cashInflows)
+
     let tableData = clientUtilsUseCases.handleTableData(cashInflows)
 
     let rows = tableData.map((item, index) => item ? <Row key={item.IdCashInflow} item={item} destinys={props.destinys} /> : <EmptyRow key={index} />)
