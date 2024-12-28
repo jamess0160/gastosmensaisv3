@@ -1,4 +1,5 @@
 import { CreateTypes } from "@/database/CreateTypes";
+import { cashInflowDestinysUseCases } from "@/useCases/CashInflowDestinys/CashInflowDestinysUseCases";
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
@@ -16,6 +17,8 @@ export async function PUT(request: NextRequest) {
 
     if (!data.IdCashInflow) return NextResponse.json({ msg: "Propriedade IdCashInflow não encontrada!" })
 
+    await cashInflowDestinysUseCases.deleteExpenseChilds(data.IdCashInflow)
+
     return NextResponse.json(await cashInflowsUseCases.update(data.IdCashInflow, handleCreateData(data, Number(IdUser))))
 }
 
@@ -25,9 +28,17 @@ function handleCreateData(data: CreateTypes.CreateCashInflow, IdUser: number): C
     return {
         Description: data.Description,
         EfectiveDate: currMoment.toDate(),
-        IdDestiny: parseInt(data.IdDestiny),
         Value: parseFloat(data.Value.replace(",", ".")),
-        IdUser: IdUser
+        IdUser: IdUser,
+        cashinflowdestinys: {
+            createMany: {
+                data: data.IdsDestinys.map((item) => {
+                    return {
+                        IdDestiny: Number(item)
+                    }
+                })
+            }
+        }
     }
 }
 

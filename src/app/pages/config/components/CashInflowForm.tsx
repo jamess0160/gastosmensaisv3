@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { configEvents } from "../events/events";
 import styles from '../Config.module.css'
 import { CreateTypes } from "@/database/CreateTypes";
+import { Select } from "../../components/fields/select";
+import { Input } from "../../components/fields/input";
 
 export default function CashInflowForm(props: CashInflowFormProps) {
-    let { register, handleSubmit } = useForm<CreateTypes.CreateCashInflow>({ defaultValues: props.editItem })
+    let form = useForm<CreateTypes.CreateCashInflow>({ defaultValues: props.editItem })
 
-    let SelectItems = props.destinys.map((item) => <option key={item.IdDestiny} value={item.IdDestiny} >{item.Name}</option>)
+    let SelectItems = props.destinys.map((item) => ({ key: item.IdDestiny.toString(), text: item.Name }))
 
     return (
         <Dialog open={props.open} fullScreen={true}>
@@ -19,23 +21,18 @@ export default function CashInflowForm(props: CashInflowFormProps) {
                     <DialogTitle align="center">{props.editItem ? "Editar entrada" : "Nova entrada"}</DialogTitle>
 
                     <DialogContent>
-                        <form className="flex flex-col gap-5 p-5 items-center" onSubmit={handleSubmit((data) => configEvents.onSubmitForm(data, Boolean(props.editItem), props.setLoading))}>
-                            <div className={styles.campo} >
-                                <legend>Destino</legend>
-                                <select {...register("IdDestiny")}>
-                                    {SelectItems}
-                                </select>
-                            </div>
+                        <form className="flex flex-col gap-5 pt-5 items-center" onSubmit={form.handleSubmit((data) => configEvents.onSubmitForm(data, Boolean(props.editItem), props.setLoading))}>
+                            <Select
+                                form={form}
+                                formProp="IdsDestinys"
+                                label="Destino"
+                                selectItems={SelectItems}
+                                selectProps={{ multiple: true }}
+                            />
 
-                            <div className={styles.campo} >
-                                <legend>Descrição</legend>
-                                <input {...register("Description")}></input>
-                            </div>
+                            <Input label="Descrição" inputProps={{ ...form.register("Description") }} />
 
-                            <div className={styles.campo} >
-                                <legend>Valor</legend>
-                                <input {...register("Value")}></input>
-                            </div>
+                            <Input label="Valor" inputProps={{ ...form.register("Value") }} />
 
                             <div className="w-full flex justify-around">
                                 <Button className="w-1/3 border border-solid" onClick={() => onCancel(props)}>Cancelar</Button>

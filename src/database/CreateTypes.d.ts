@@ -23,7 +23,7 @@ export namespace CreateTypes {
 
     export interface CreateCashInflow {
         IdCashInflow?: number
-        IdDestiny: string
+        IdsDestinys: string[]
         Description: string
         Value: string
     }

@@ -7,7 +7,6 @@ import { destinys } from "@prisma/client";
 import { useState } from "react";
 import { configEvents } from "../../events/events";
 import CashInflowForm from "../../components/CashInflowForm";
-import { UtilTypes } from "@/database/UtilTypes";
 import { CreateTypes } from "@/database/CreateTypes";
 
 //#region Functions 
@@ -18,7 +17,7 @@ export default function Row(props: RowProps) {
     return (
         <TableRow>
             <TableCell className={cellClass + " w-1/6"}>{props.item.Description}</TableCell>
-            <TableCell className={cellClass + " w-1/3"}> {props.item.destinys?.Name} </TableCell>
+            <TableCell className={cellClass + " w-1/3"}> {formatDestinys(props.item)} </TableCell>
             <TableCell className={cellClass}> {`R$ ${props.item.Value}`} </TableCell>
             <TableCell className={cellClass}>
                 <div className="flex items-center justify-end">
@@ -28,6 +27,10 @@ export default function Row(props: RowProps) {
             </TableCell>
         </TableRow>
     )
+}
+
+function formatDestinys(item: RowProps['item']) {
+    return item.cashinflowdestinys.map((item) => item.destinys.Name).join(", ")
 }
 
 function EditItem(props: EditProps) {
@@ -55,7 +58,7 @@ function generateEditItem(data: CashInflowMY): Partial<CreateTypes.CreateCashInf
     return {
         IdCashInflow: data.IdCashInflow,
         Description: data.Description,
-        IdDestiny: data.IdDestiny?.toString(),
+        IdsDestinys: data.cashinflowdestinys.map((item) => item.IdDestiny.toString()),
         Value: data.Value.toString(),
     }
 }
