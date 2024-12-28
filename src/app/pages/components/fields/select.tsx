@@ -1,8 +1,44 @@
-import { Select as MuiSelect, MenuItem, SelectProps as MuiSelectProps } from '@mui/material';
+import { Select as MuiSelect, MenuItem, SelectProps as MuiSelectProps, Checkbox, SelectChangeEvent } from '@mui/material';
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from 'react-hook-form';
 
 export function Select(props: SelectProps) {
+
+    let value: string | string[] = props.form.watch(props.formProp, props.selectProps?.multiple ? [] : "")
+
+    const selectClasses = `
+        w-full box-border outline-none
+        bg-default text-xs h-full rounded-xl
+        border border-solid border-white text-white
+        focus:border-gray-500
+    `
+
+    const onChange = (e: SelectChangeEvent<any>) => {
+        return props.form.setValue(props.formProp, e.target.value)
+    }
+
+    const MenuProps = {
+        MenuListProps: {
+            className: "bg-default"
+        }
+    }
+
+    const renderValue = () => {
+
+        if (Array.isArray(value) === false) {
+            let selectedItem = props.selectItems.find((item) => item.key === value)
+            return selectedItem?.text
+        }
+
+        return value
+            .map((itemValue) => {
+                let selectedItem = props.selectItems.find((item) => item.key === itemValue)
+                return selectedItem?.text
+            })
+            .join(", ")
+    }
+
+    console.log({ value })
 
     return (
         <div className="relative w-10/12 h-8 text-white mix-blend-lighten">
@@ -14,25 +50,25 @@ export function Select(props: SelectProps) {
 
             </legend>
             <MuiSelect
-                value={props.form.watch(props.formProp)}
-                onChange={(e) => {
-                    return props.form.setValue(props.formProp, e.target.value)
-                }}
+                value={value}
+                onChange={onChange}
+                className={selectClasses}
+                MenuProps={MenuProps}
+                renderValue={renderValue}
                 {...props.selectProps}
-                className={`
-                    w-full box-border pl-4 outline-none
-                    bg-default text-xs h-full rounded-xl
-                    border border-solid border-white text-white
-                    focus:border-gray-500
-                `}
-                MenuProps={{
-                    MenuListProps: {
-                        className: "bg-default"
-                    }
-                }}
             >
                 {
                     props.selectItems.map((item) => {
+
+                        if (props.selectProps?.multiple && Array.isArray(value)) {
+                            return (
+                                <MenuItem value={item.key} key={item.key} className='text-white' >
+                                    <Checkbox checked={value.includes(item.key)} />
+                                    {item.text}
+                                </MenuItem>
+                            )
+                        }
+
                         return <MenuItem value={item.key} key={item.key} className='text-white' >{item.text}</MenuItem>
                     })
                 }
@@ -51,6 +87,6 @@ interface SelectProps {
 }
 
 export interface SelectItem {
-    key: number | string
+    key: string
     text: string
 }

@@ -22,7 +22,7 @@ export function ReportForm(props: ReportFormProps) {
                     label="Destino"
                     form={props.form}
                     formProp="IdExpenseCategory"
-                    selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
+                    selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory.toString(), text: item.Description }))}
                 />
 
             </div>

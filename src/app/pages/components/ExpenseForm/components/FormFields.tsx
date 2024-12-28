@@ -49,19 +49,19 @@ export default function FormFields(props: FormFieldsProps) {
                 form={form}
                 formProp="IdsDestinys"
                 selectProps={{ multiple: true }}
-                selectItems={fieldsData.Destinys.map((item) => ({ key: item.IdDestiny, text: item.Name }))}
+                selectItems={fieldsData.Destinys.map((item) => ({ key: item.IdDestiny.toString(), text: item.Name }))}
             />
             <Select
                 label="Tipo de gasto"
                 form={form}
                 formProp="IdExpenseCategory"
-                selectItems={fieldsData.ExpenseCategories.map((item) => ({ key: item.IdExpenseCategory, text: item.Description }))}
+                selectItems={fieldsData.ExpenseCategories.map((item) => ({ key: item.IdExpenseCategory.toString(), text: item.Description }))}
             />
             <Select
                 label="Banco"
                 form={form}
                 formProp="IdBank"
-                selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank, text: item.Name }))}
+                selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank.toString(), text: item.Name }))}
             />
         </>
     )
