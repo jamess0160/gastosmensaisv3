@@ -4,7 +4,9 @@ import { UseFormReturn } from 'react-hook-form';
 
 export function Select(props: SelectProps) {
 
-    let value: string | string[] = props.form.watch(props.formProp, props.selectProps?.multiple ? [] : "")
+    let defaultValue = props.form.getValues()[props.formProp] ?? (props.selectProps?.multiple ? "teste" : "")
+
+    let value: string | string[] = props.form.watch(props.formProp, defaultValue)
 
     const selectClasses = `
         w-full box-border outline-none
