@@ -17,9 +17,10 @@ import { EmptyCell } from "./EmptyRow";
 const cellClass = "text-white text-nowrap text-clip w-1/5"
 
 export default function CategoryTableRow(props: TableRowProps) {
+    let splitCount = props.item.expensedestinys.length
 
     return (
-        <TableRow className={props.item.splitCount ? "bg-default" : ""}>
+        <TableRow className={splitCount ? "bg-default" : ""}>
             <TableCell className={cellClass}> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass}> {props.item.Description} </TableCell>
             <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
@@ -35,7 +36,9 @@ function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
         return <EmptyCell />
     }
 
-    if (props.item.splitCount && props.item.splitCount > 0) {
+    let splitCount = props.item.expensedestinys.length
+
+    if (splitCount && splitCount > 0) {
         return (
             <TableCell className={cellClass}>
                 <div className="flex items-center justify-end leading-6 text-nowrap">

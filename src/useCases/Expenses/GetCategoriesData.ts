@@ -49,7 +49,7 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         if (!destiny) throw new Error("Destino não encontrado!")
 
         let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-            let categoryData = await baseExpensesUseCases.GetMonthlyDestinyCategory.run(month, year, IdUser, id, item.IdExpenseCategory)
+            let categoryData = await baseExpensesUseCases.GenerateFullBaseExpenseChild.run(month, year, IdUser, { IdDestiny: id, IdExpenseCategory: item.IdExpenseCategory })
 
             return this.handleExpenseData(item, categoryData)
         }))

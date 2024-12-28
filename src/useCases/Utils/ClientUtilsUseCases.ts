@@ -10,20 +10,22 @@ export class ClientUtilsUseCases {
 
     GetExpensePrice(expense: FullBaseExpenseChild, options?: GetExpensePriceOptions) {
 
+        let splitCount = options?.split === true ? expense.expensedestinys.length : 1
+
         if (Boolean(options?.sumInactive) === false && expense.Active === false) {
             return 0
         }
 
         if (this.GetExpenseType.isDefault(expense)) {
-            return (expense.Price) / (expense.splitCount || 1)
+            return (expense.Price) / splitCount
         }
 
         if (this.GetExpenseType.isFixed(expense)) {
-            return (expense.child.Price || expense.Price) / (expense.splitCount || 1)
+            return (expense.child.Price || expense.Price) / splitCount
         }
 
         if (this.GetExpenseType.isInstallment(expense)) {
-            return (expense.child.Price || expense.Price) / (expense.splitCount || 1)
+            return (expense.child.Price || expense.Price) / splitCount
         }
 
         return 0
@@ -110,4 +112,5 @@ export const clientUtilsUseCases = new ClientUtilsUseCases()
 
 interface GetExpensePriceOptions {
     sumInactive?: boolean
+    split?: boolean
 }

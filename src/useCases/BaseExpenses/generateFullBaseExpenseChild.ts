@@ -74,9 +74,8 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                 IdBank: options?.IdBank || undefined,
                 IdExpenseCategory: options?.IdExpenseCategory || undefined,
                 expensedestinys: {
-                    every: {
+                    some: {
                         IdDestiny: options?.IdDestiny || undefined,
-
                     }
                 },
                 IdUser: IdUser
@@ -174,7 +173,6 @@ interface FullBaseExpense extends baseexpenses {
 export interface FullBaseExpenseChild extends baseexpenses {
     expensedestinys: ExpenseDestinys[]
     banks: banks | null
-    splitCount?: number
     obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
 }
