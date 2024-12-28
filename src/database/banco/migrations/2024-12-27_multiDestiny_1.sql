@@ -1,48 +1,48 @@
-CREATE TABLE `ExpenseDestinys` (
+CREATE TABLE `expensedestinys` (
     `IdExpenseDestiny` INT PRIMARY KEY AUTO_INCREMENT,
     `IdBaseExpense` INT NOT NULL,
     `IdDestiny` INT NOT NULL,
-    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE,
-    FOREIGN KEY (`IdDestiny`) REFERENCES `Destinys`(`IdDestiny`) ON DELETE CASCADE
+    FOREIGN KEY (`IdBaseExpense`) REFERENCES `baseexpenses`(`IdBaseExpense`) ON DELETE CASCADE,
+    FOREIGN KEY (`IdDestiny`) REFERENCES `destinys`(`IdDestiny`) ON DELETE CASCADE
 );
 
 INSERT INTO
-    `ExpenseDestinys` (`IdBaseExpense`, `IdDestiny`)
+    `expensedestinys` (`IdBaseExpense`, `IdDestiny`)
 SELECT
     `IdBaseExpense`,
     `IdDestiny`
 FROM
-    BaseExpenses
+    `baseexpenses`
 WHERE
-    IdDestiny IS NOT NULL;
+    `IdDestiny` IS NOT NULL;
 
 ALTER TABLE
-    `BaseExpenses` DROP CONSTRAINT `baseexpenses_ibfk_1`;
+    `baseexpenses` DROP CONSTRAINT `baseexpenses_ibfk_1`;
 
 ALTER TABLE
-    `BaseExpenses` DROP COLUMN `IdDestiny`;
+    `baseexpenses` DROP COLUMN `IdDestiny`;
 
 INSERT INTO
-    `ExpenseDestinys` (`IdBaseExpense`, `IdDestiny`)
+    `expensedestinys` (`IdBaseExpense`, `IdDestiny`)
 SELECT
     `IdBaseExpense`,
     1 AS `IdDestiny`
 FROM
-    `ExpenseDestinys`
+    `expensedestinys`
 WHERE
     `IdDestiny` = 4;
 
 INSERT INTO
-    `ExpenseDestinys` (`IdBaseExpense`, `IdDestiny`)
+    `expensedestinys` (`IdBaseExpense`, `IdDestiny`)
 SELECT
     `IdBaseExpense`,
     15 AS `IdDestiny`
 FROM
-    `ExpenseDestinys`
+    `expensedestinys`
 WHERE
     `IdDestiny` = 4;
 
 DELETE FROM
-    `ExpenseDestinys`
+    `expensedestinys`
 WHERE
     `IdDestiny` = 4;
