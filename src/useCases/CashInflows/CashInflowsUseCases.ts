@@ -1,7 +1,7 @@
 import { BaseUseCase } from "@/base/baseUseCase";
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
-import type { prisma } from "@/database/prisma";
 import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases";
+import { prisma } from '@/database/prisma'
 
 export class CashInflowsUseCases extends BaseUseCase {
 
@@ -51,7 +51,9 @@ export class CashInflowsUseCases extends BaseUseCase {
     }
 
     createMany(data: CreateCashInFlow[]) {
-        return this.prisma.cashinflows.createMany({ data })
+        return prisma.$transaction(data.map((item) => {
+            return prisma.cashinflows.create({ data: item })
+        }))
     }
 
     update(IdCashInflow: number, data: UpdateCashInFlow) {
