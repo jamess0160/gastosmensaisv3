@@ -95,10 +95,6 @@ export class ClientUtilsUseCases {
         return tableData
     }
 
-    sumProp<T extends any>(data: T[], prop: keyof T) {
-        return data.reduce((old, item) => old + (item[prop] as number), 0)
-    }
-
     sleep(miliSeconds: number) {
         return new Promise<void>((resolve) => {
             setTimeout(() => {

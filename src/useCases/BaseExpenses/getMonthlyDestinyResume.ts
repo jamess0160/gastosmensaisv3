@@ -1,4 +1,4 @@
-import { cashinflows, destinys } from '@prisma/client'
+import { cashinflows, cashinflowdestinys, destinys } from '@prisma/client'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from "@/base/baseSection";
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
@@ -33,7 +33,19 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
     }
 
     private calculateDestinyBudget(destiny: destinys, data: DestinyResumeData) {
-        let destinyCash = clientUtilsUseCases.sumProp(data.cashInflows.filter((item) => item.IdDestiny === destiny.IdDestiny), "Value")
+        let destinyCashInflows = data.cashInflows.filter((item) => {
+            let cashInflowDestinys = item.cashinflowdestinys.map((item) => item.IdDestiny)
+            return cashInflowDestinys.includes(destiny.IdDestiny)
+        })
+
+        let destinyCash = destinyCashInflows.reduce((old, item) => {
+
+            let splitCount = item.cashinflowdestinys.length
+
+            let cashInflowValue = item.Value / splitCount
+
+            return old + cashInflowValue
+        }, 0)
 
         return {
             destiny: destiny,
@@ -51,8 +63,12 @@ export interface DestinyResume {
 }
 
 interface DestinyResumeData {
-    cashInflows: cashinflows[]
+    cashInflows: CashInflows[]
     destinys: destinys[]
+}
+
+interface CashInflows extends cashinflows {
+    cashinflowdestinys: cashinflowdestinys[]
 }
 
 //#endregion

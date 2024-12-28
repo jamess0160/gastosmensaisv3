@@ -15,7 +15,11 @@ export class CashInflowsUseCases extends BaseUseCase {
                 IdUser
             },
             include: {
-                destinys: true
+                cashinflowdestinys: {
+                    include: {
+                        destinys: true
+                    }
+                }
             }
         })
     }
@@ -26,10 +30,18 @@ export class CashInflowsUseCases extends BaseUseCase {
         return this.createMany(effectiveCashInflows.map((item) => {
             return {
                 Description: item.Description,
-                IdDestiny: item.IdDestiny,
                 Value: item.Value,
                 EfectiveDate: serverUtilsUseCases.getCurrMoment().toDate(),
-                IdUser: item.IdUser
+                IdUser: item.IdUser,
+                cashinflowdestinys: {
+                    createMany: {
+                        data: item.cashinflowdestinys.map((item) => {
+                            return {
+                                IdDestiny: item.IdDestiny
+                            }
+                        })
+                    }
+                }
             }
         }))
     }
@@ -38,7 +50,7 @@ export class CashInflowsUseCases extends BaseUseCase {
         return this.prisma.cashinflows.create({ data })
     }
 
-    createMany(data: CreateManyCashInFlow) {
+    createMany(data: CreateCashInFlow[]) {
         return this.prisma.cashinflows.createMany({ data })
     }
 
@@ -62,8 +74,6 @@ export const cashInflowsUseCases = new CashInflowsUseCases()
 //#region Interfaces / Types 
 
 export type CreateCashInFlow = Parameters<typeof prisma.cashinflows.create>[0]['data']
-
-type CreateManyCashInFlow = NonNullable<Parameters<typeof prisma.cashinflows.createMany>[0]>['data']
 
 type UpdateCashInFlow = Parameters<typeof prisma.cashinflows.update>[0]['data']
 
