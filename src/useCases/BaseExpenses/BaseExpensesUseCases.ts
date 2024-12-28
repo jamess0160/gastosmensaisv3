@@ -19,7 +19,7 @@ export class BaseExpensesUseCases extends BaseUseCase {
 
     async GetMonthlySum(month: number, year: number, IdUser: number) {
         let baseExpenses = await this.GenerateFullBaseExpenseChild.run(month, year, IdUser)
-        return baseExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true }), 0)
+        return baseExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true, split: false }), 0)
     }
 
     GetMonthlyBankCategory(month: number, year: number, IdUser: number, IdBank: number, IdExpenseCategory?: number) {

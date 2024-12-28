@@ -10,7 +10,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
 
         let baseExpenses = await this.getFullBaseExpense(month, year, IdUser, options)
 
-        return baseExpenses
+        let result = baseExpenses
             .map<FullBaseExpenseChild>((item) => {
                 return {
                     ...item,
@@ -23,6 +23,12 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             .sort(this.sortExpensesDescription)
             .sort(this.sortExpensesDates)
             .sort(this.sortExpensesTypes)
+
+        if (options?.sortDestinys) {
+            return result.sort(this.sortDestinysQuantity)
+        }
+
+        return result
     }
 
     private getFullBaseExpense(month: number, year: number, IdUser: number, options?: GenerateFullBaseExpenseChildOptions): Promise<FullBaseExpense[]> {
@@ -116,6 +122,26 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         })
     }
 
+    private sortExpensesDescription(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+        let aType = clientUtilsUseCases.GetExpenseType.auto(a)
+        let bType = clientUtilsUseCases.GetExpenseType.auto(b)
+
+        if (aType === "default" || bType === "default") {
+            return 0
+        }
+
+        return a.Description.localeCompare(b.Description)
+    }
+
+    private sortExpensesDates(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+
+        if (!clientUtilsUseCases.GetExpenseType.isDefault(a) || !clientUtilsUseCases.GetExpenseType.isDefault(b)) {
+            return 0
+        }
+
+        return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
+    }
+
     private sortExpensesTypes(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
         let values: Record<AutoGetExpenseType, number> = {
             none: 0,
@@ -133,24 +159,8 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         return bValue - aValue
     }
 
-    private sortExpensesDates(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
-
-        if (!clientUtilsUseCases.GetExpenseType.isDefault(a) || !clientUtilsUseCases.GetExpenseType.isDefault(b)) {
-            return 0
-        }
-
-        return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
-    }
-
-    private sortExpensesDescription(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
-        let aType = clientUtilsUseCases.GetExpenseType.auto(a)
-        let bType = clientUtilsUseCases.GetExpenseType.auto(b)
-
-        if (aType === "default" || bType === "default") {
-            return 0
-        }
-
-        return a.Description.localeCompare(b.Description)
+    private sortDestinysQuantity(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
+        return b.expensedestinys.length - a.expensedestinys.length
     }
 }
 
@@ -160,6 +170,7 @@ export interface GenerateFullBaseExpenseChildOptions {
     IdBank?: number
     IdDestiny?: number
     IdExpenseCategory?: number
+    sortDestinys?: boolean
 }
 
 interface FullBaseExpense extends baseexpenses {
@@ -173,7 +184,6 @@ interface FullBaseExpense extends baseexpenses {
 export interface FullBaseExpenseChild extends baseexpenses {
     expensedestinys: ExpenseDestinys[]
     banks: banks | null
-    obs?: string
     child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
 }
 

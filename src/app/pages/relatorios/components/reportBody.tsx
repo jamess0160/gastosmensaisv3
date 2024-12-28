@@ -24,7 +24,7 @@ export function ReportBody(props: ReportBodyProps) {
     let [tableData, setTableData] = useState<RelatorioData['tableData']>([])
     let [isLoading, setLoading] = useState(false)
 
-    let sumExpenses = tableData.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item), 0)
+    let sumExpenses = tableData.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { split: false }), 0)
 
     return (
         <div className="flex flex-col gap-10">

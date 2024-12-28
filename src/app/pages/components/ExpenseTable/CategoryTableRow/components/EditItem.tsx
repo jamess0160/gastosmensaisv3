@@ -36,7 +36,7 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<CreateTypes
         IdBank: item.IdBank?.toString(),
         IdsDestinys: item.expensedestinys.map((item) => item.IdDestiny.toString()),
         IdExpenseCategory: item.IdExpenseCategory?.toString(),
-        Price: clientUtilsUseCases.GetExpensePrice(item).toString(),
+        Price: clientUtilsUseCases.GetExpensePrice(item, { split: false }).toString(),
     }
 
     if (clientUtilsUseCases.GetExpenseType.isDefault(item)) {

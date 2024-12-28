@@ -25,6 +25,11 @@ export function Select(props: SelectProps) {
                     border border-solid border-white text-white
                     focus:border-gray-500
                 `}
+                MenuProps={{
+                    MenuListProps: {
+                        className: "bg-default"
+                    }
+                }}
             >
                 {
                     props.selectItems.map((item) => {

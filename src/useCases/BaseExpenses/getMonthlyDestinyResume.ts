@@ -25,8 +25,6 @@ export class GetMonthlyDestinyResume extends BaseSection<BaseExpensesUseCases> {
 
             let totalExpenses = fullDestinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true, split: true }), 0)
 
-            console.log(item.destiny.Name, item.budget, totalExpenses, fullDestinyExpenses.length)
-
             return {
                 DestinyData: item.destiny,
                 RemainingBudget: parseFloat((item.budget - totalExpenses).toFixed(2))

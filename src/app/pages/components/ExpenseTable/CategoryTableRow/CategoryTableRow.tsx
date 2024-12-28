@@ -17,20 +17,20 @@ import { EmptyCell } from "./EmptyRow";
 const cellClass = "text-white text-nowrap text-clip w-1/5"
 
 export default function CategoryTableRow(props: TableRowProps) {
-    let splitCount = props.item.expensedestinys.length
+    let isSplit = props.type === "pessoal" && props.item.expensedestinys.length > 1
 
     return (
-        <TableRow className={splitCount ? "bg-default" : ""}>
+        <TableRow className={isSplit ? "bg-default" : ""}>
             <TableCell className={cellClass}> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={cellClass}> {props.item.Description} </TableCell>
-            <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item).toFixed(2)}`} </TableCell>
+            <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item, { split: props.type === "pessoal" }).toFixed(2)}`} </TableCell>
             <TableCell className={cellClass} title={getDestinyBankColumnData(props.item, props.type, { full: true })} > {getDestinyBankColumnData(props.item, props.type)} </TableCell>
-            <LastCell item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
+            <LastCell {...props} />
         </TableRow>
     )
 }
 
-function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
+function LastCell(props: TableRowProps) {
 
     if (!props.ExpenseFormData) {
         return <EmptyCell />
@@ -38,11 +38,11 @@ function LastCell(props: Omit<TableRowProps, "month" | "year" | "type">) {
 
     let splitCount = props.item.expensedestinys.length
 
-    if (splitCount && splitCount > 0) {
+    if (props.type === "pessoal" && splitCount && splitCount > 1) {
         return (
             <TableCell className={cellClass}>
                 <div className="flex items-center justify-end leading-6 text-nowrap">
-                    {props.item.obs}
+                    {formatDestinys(props.item)}
                 </div>
             </TableCell>
         )

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
             old[label] = 0
         }
 
-        old[label] += clientUtilsUseCases.GetExpensePrice(item)
+        old[label] += clientUtilsUseCases.GetExpensePrice(item, { split: false })
 
         return old
     }, {})

@@ -32,7 +32,7 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
             let categoryData = await baseExpensesUseCases.GetMonthlyBankCategory(month, year, IdUser, id, item.IdExpenseCategory)
 
-            return this.handleExpenseData(item, categoryData)
+            return this.handleExpenseData("banco", item, categoryData)
         }))
 
         return {
@@ -49,9 +49,13 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         if (!destiny) throw new Error("Destino não encontrado!")
 
         let data = await Promise.all(expenseCategories.map<Promise<CategoryData>>(async (item) => {
-            let categoryData = await baseExpensesUseCases.GenerateFullBaseExpenseChild.run(month, year, IdUser, { IdDestiny: id, IdExpenseCategory: item.IdExpenseCategory })
+            let categoryData = await baseExpensesUseCases.GenerateFullBaseExpenseChild.run(month, year, IdUser, {
+                IdDestiny: id,
+                IdExpenseCategory: item.IdExpenseCategory,
+                sortDestinys: true
+            })
 
-            return this.handleExpenseData(item, categoryData)
+            return this.handleExpenseData("pessoal", item, categoryData)
         }))
 
         return {
@@ -62,9 +66,24 @@ export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
         }
     }
 
-    handleExpenseData(item: expensecategories, categoryData: FullBaseExpenseChild[]): CategoryData {
-        let totalActives = categoryData.reduce((old, item) => item.Active ? old + clientUtilsUseCases.GetExpensePrice(item) : old, 0)
-        let totalInactives = categoryData.reduce((old, item) => item.Active ? old : old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true }), 0)
+    handleExpenseData(type: Categories, item: expensecategories, categoryData: FullBaseExpenseChild[]): CategoryData {
+        let totalActives = categoryData.reduce((old, item) => {
+
+            if (item.Active === false) {
+                return old
+            }
+
+            return old + clientUtilsUseCases.GetExpensePrice(item, { split: type !== "banco" })
+        }, 0)
+
+        let totalInactives = categoryData.reduce((old, item) => {
+
+            if (item.Active === true) {
+                return old
+            }
+
+            return old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true, split: type !== "banco" })
+        }, 0)
 
         return {
             IdExpenseCategory: item.IdExpenseCategory,

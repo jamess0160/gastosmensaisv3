@@ -20,7 +20,7 @@ export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
 
         return {
             BankData: bank,
-            TotalExpensesSum: bankExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true }), 0),
+            TotalExpensesSum: bankExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true, split: false }), 0),
             Categories: category.map((item) => this.generateBankResumeDestiny(bankExpenses, item)),
         }
     }
@@ -31,7 +31,7 @@ export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
         return {
             IdExpenseCategory: category.IdExpenseCategory,
             CategoryName: category.Description,
-            ExpensesSum: destinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true }), 0)
+            ExpensesSum: destinyExpenses.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { sumInactive: true, split: false }), 0)
         }
     }
 }

@@ -8,9 +8,9 @@ export class ClientUtilsUseCases {
 
     public readonly months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
-    GetExpensePrice(expense: FullBaseExpenseChild, options?: GetExpensePriceOptions) {
+    GetExpensePrice(expense: FullBaseExpenseChild, options: GetExpensePriceOptions) {
 
-        let splitCount = options?.split === true ? expense.expensedestinys.length : 1
+        let splitCount = options.split !== false ? expense.expensedestinys.length : 1
 
         if (Boolean(options?.sumInactive) === false && expense.Active === false) {
             return 0
@@ -111,6 +111,6 @@ export class ClientUtilsUseCases {
 export const clientUtilsUseCases = new ClientUtilsUseCases()
 
 interface GetExpensePriceOptions {
+    split: boolean
     sumInactive?: boolean
-    split?: boolean
 }
