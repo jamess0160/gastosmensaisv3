@@ -9,8 +9,8 @@ export class CashInflowsUseCases extends BaseUseCase {
         return this.prisma.cashinflows.findMany({
             where: {
                 EfectiveDate: {
-                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).toDate(),
-                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).add(1, 'month').toDate(),
+                    gte: clientUtilsUseCases.monthAndYearToMoment(month, year).subtract(3, "hours").toDate(),
+                    lt: clientUtilsUseCases.monthAndYearToMoment(month, year).subtract(3, "hours").add(1, 'month').toDate(),
                 },
                 IdUser
             },
