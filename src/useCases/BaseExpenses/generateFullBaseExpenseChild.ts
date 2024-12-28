@@ -31,8 +31,6 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             lt: clientUtilsUseCases.monthAndYearToMoment(month, year).subtract(3, "hours").add(1, 'month').toDate(),
         }
 
-        console.log({ dateFilter })
-
         return this.instance.prisma.baseexpenses.findMany({
             where: {
                 OR: [
