@@ -10,7 +10,7 @@ export function Select(props: SelectProps) {
         w-full box-border outline-none
         bg-default text-xs h-full rounded-xl
         border border-solid border-white text-white
-        focus:border-gray-500
+        focus:border-gray-500 AppSelect
     `
 
     const onChange = (e: SelectChangeEvent<any>) => {

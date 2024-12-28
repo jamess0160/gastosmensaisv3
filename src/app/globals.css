@@ -60,3 +60,7 @@ option {
 	color: #D9D9D9;
 	background-color: #1E1F22;
 }
+
+.AppSelect>.MuiSelect-icon {
+	color: white;
+}

@@ -49,36 +49,36 @@ export default function Header({ month, year, userName }: HeaderProps) {
                     anchorEl={anchorEl}
                     onClose={handleClose}
                 >
-                    <MenuItem>
-                        <Link href={"/pages/config"} className="flex flex-row no-underline text-black">
+                    <Link href={"/pages/config"} className="flex flex-row no-underline text-black">
+                        <MenuItem>
                             <ListItemIcon>
                                 <Settings fontSize="medium" />
                             </ListItemIcon>
                             <ListItemText>Configurações</ListItemText>
-                        </Link>
-                    </MenuItem>
+                        </MenuItem>
+                    </Link>
                     <MenuItem onClick={teste}>
                         <ListItemIcon>
                             <Logout fontSize="medium" />
                         </ListItemIcon>
                         <ListItemText>LogOut</ListItemText>
                     </MenuItem>
-                    <MenuItem>
-                        <Link href={"/pages/relatorios"} className="flex flex-row no-underline text-black">
+                    <Link href={"/pages/relatorios"} className="flex flex-row no-underline text-black">
+                        <MenuItem>
                             <ListItemIcon>
                                 <Assessment fontSize="medium" />
                             </ListItemIcon>
                             <ListItemText>Relatório</ListItemText>
-                        </Link>
-                    </MenuItem>
-                    <MenuItem>
-                        <Link href={"/pages/personalizacao"} className="flex flex-row no-underline text-black">
+                        </MenuItem>
+                    </Link>
+                    <Link href={"/pages/personalizacao"} className="flex flex-row no-underline text-black">
+                        <MenuItem>
                             <ListItemIcon>
                                 <DisplaySettings fontSize="medium" />
                             </ListItemIcon>
                             <ListItemText>Personalização</ListItemText>
-                        </Link>
-                    </MenuItem>
+                        </MenuItem>
+                    </Link>
                 </Menu>
             </div>
             <div>

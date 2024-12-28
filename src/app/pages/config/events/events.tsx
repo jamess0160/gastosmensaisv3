@@ -34,7 +34,10 @@ class ConfigEvents {
 
         let action = await openConfirmDialog("Você deseja mesmo deletar essa entrada?")
 
-        if (!action) return
+        if (!action) {
+            setLoading(false)
+            return
+        }
 
         await axios.delete("/api/cashInflow", { params: { IdCashInflow: data.IdCashInflow } })
 
