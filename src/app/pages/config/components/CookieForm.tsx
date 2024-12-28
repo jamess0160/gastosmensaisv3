@@ -34,7 +34,7 @@ export default function CookieForm(props: CookieFormProps) {
                     label="Mês"
                     form={form}
                     formProp="month"
-                    selectItems={clientUtilsUseCases.months.map((item, index) => ({ key: index + 1, text: item }))}
+                    selectItems={clientUtilsUseCases.months.map((item, index) => ({ key: (index + 1).toString(), text: item }))}
                 />
 
                 <Input label="Ano" inputProps={{ ...form.register("year") }} />
