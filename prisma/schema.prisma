@@ -42,28 +42,26 @@ model baseexpenses {
 }
 
 model cashinflows {
-  IdCashInflow Int       @id @default(autoincrement())
-  Description  String    @db.VarChar(255)
-  Value        Float     @db.Float
-  EfectiveDate DateTime  @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdDestiny    Int?
-  IdUser       Int?
-  destinys     destinys? @relation(fields: [IdDestiny], references: [IdDestiny], onUpdate: NoAction, map: "cashinflows_ibfk_1")
-  users        users?    @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "cashinflows_ibfk_2")
+  IdCashInflow       Int                  @id @default(autoincrement())
+  Description        String               @db.VarChar(255)
+  Value              Float                @db.Float
+  EfectiveDate       DateTime             @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdUser             Int?
+  cashinflowdestinys cashinflowdestinys[]
+  users              users?               @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "cashinflows_ibfk_2")
 
-  @@index([IdDestiny], map: "IdDestiny")
   @@index([IdUser], map: "cashinflows_ibfk_2")
 }
 
 model destinys {
-  IdDestiny         Int               @id @default(autoincrement())
-  Name              String            @db.VarChar(255)
-  Color             String?           @db.VarChar(255)
-  SplitJointExpense Boolean           @default(dbgenerated("b'0'")) @db.Bit(1)
-  IdUser            Int?
-  cashinflows       cashinflows[]
-  users             users?            @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "destinys_ibfk_1")
-  expensedestinys   expensedestinys[]
+  IdDestiny          Int                  @id @default(autoincrement())
+  Name               String               @db.VarChar(255)
+  Color              String?              @db.VarChar(255)
+  SplitJointExpense  Boolean              @default(dbgenerated("b'0'")) @db.Bit(1)
+  IdUser             Int?
+  cashinflowdestinys cashinflowdestinys[]
+  users              users?               @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "destinys_ibfk_1")
+  expensedestinys    expensedestinys[]
 
   @@index([IdUser], map: "IdUser")
 }
@@ -141,5 +139,16 @@ model expensedestinys {
   destinys         destinys     @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: Cascade, onUpdate: NoAction, map: "expensedestinys_ibfk_2")
 
   @@index([IdBaseExpense], map: "IdBaseExpense")
+  @@index([IdDestiny], map: "IdDestiny")
+}
+
+model cashinflowdestinys {
+  IdExpenseDestiny Int         @id @default(autoincrement())
+  IdCashInflow     Int
+  IdDestiny        Int
+  cashinflows      cashinflows @relation(fields: [IdCashInflow], references: [IdCashInflow], onDelete: Cascade, onUpdate: NoAction, map: "cashinflowdestinys_ibfk_1")
+  destinys         destinys    @relation(fields: [IdDestiny], references: [IdDestiny], onDelete: Cascade, onUpdate: NoAction, map: "cashinflowdestinys_ibfk_2")
+
+  @@index([IdCashInflow], map: "IdCashInflow")
   @@index([IdDestiny], map: "IdDestiny")
 }
