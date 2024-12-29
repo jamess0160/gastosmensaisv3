@@ -4,7 +4,11 @@ import { UseFormReturn } from 'react-hook-form';
 
 export function Select(props: SelectProps) {
 
-    let defaultValue = props.form.getValues()[props.formProp] ?? (props.selectProps?.multiple ? "teste" : "")
+    let defaultValue = props.form.getValues()[props.formProp] ?? ""
+
+    if (props.selectProps?.multiple && Array.isArray(defaultValue) === false) {
+        defaultValue = []
+    }
 
     let value: string | string[] = props.form.watch(props.formProp, defaultValue)
 
