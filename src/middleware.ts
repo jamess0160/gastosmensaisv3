@@ -35,7 +35,9 @@ export async function middleware(request: NextRequest) {
         })
     }
 
-    let { data } = await axios.post<LoginResult>(`${request.nextUrl.origin}/api/login`, { login, password: md5(password) })
+    let url = request.nextUrl.origin.replace("https", "http")
+
+    let { data } = await axios.post<LoginResult>(`${url}/api/login`, { login, password: md5(password) })
 
     if (data.error) {
         return NextResponse.json("Invalid credentials", {
