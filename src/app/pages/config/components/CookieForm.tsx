@@ -46,7 +46,7 @@ export default function CookieForm(props: CookieFormProps) {
                 onSubmit={submitForm}
             >
 
-                <div className="flex flex-row gap-4 w-3/4">
+                <div className="flex flex-row gap-2 w-full">
                     <IconButton className="rounded-full p-1 outline outline-1 outline-white" color="primary" onClick={subtract}>
                         <ArrowBack />
                     </IconButton>
