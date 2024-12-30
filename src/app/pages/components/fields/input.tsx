@@ -25,7 +25,7 @@ export function Input(props: InputProps) {
 }
 
 interface InputProps {
-    label: string
+    label?: string
     labelProps?: HTMLAttributes<HTMLLegendElement>
     inputProps?: InputHTMLAttributes<HTMLInputElement>
 }
