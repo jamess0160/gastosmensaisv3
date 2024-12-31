@@ -123,12 +123,14 @@ model users {
   Name              String?             @db.VarChar(255)
   Login             String?             @db.VarChar(255)
   Password          String?             @db.VarChar(255)
+  Token             String?             @db.VarChar(255)
   banks             banks[]
   baseexpenses      baseexpenses[]
   cashinflows       cashinflows[]
   destinys          destinys[]
   expensecategories expensecategories[]
   sistemparams      sistemparams[]
+  usersauth         usersauth[]
 }
 
 model expensedestinys {
@@ -151,4 +153,17 @@ model cashinflowdestinys {
 
   @@index([IdCashInflow], map: "IdCashInflow")
   @@index([IdDestiny], map: "IdDestiny")
+}
+
+model usersauth {
+  IdUserAuth Int     @id @default(autoincrement())
+  IdUser     Int
+  Token      String? @db.Text
+  PublicKey  Bytes?  @db.Blob
+  UserAuthId String? @db.Text
+  Counter    BigInt?
+  DeviceType String? @db.VarChar(255)
+  users      users   @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "usersauth_ibfk_1")
+
+  @@index([IdUser], map: "IdUser")
 }
