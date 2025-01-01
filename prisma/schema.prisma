@@ -158,10 +158,9 @@ model cashinflowdestinys {
 model usersauth {
   IdUserAuth Int     @id @default(autoincrement())
   IdUser     Int
-  Token      String? @db.Text
-  PublicKey  Bytes?  @db.Blob
-  UserAuthId String? @db.Text
-  Counter    BigInt?
+  Token      String  @db.Text
+  PublicKey  Bytes   @db.Blob
+  Counter    BigInt
   DeviceType String? @db.VarChar(255)
   users      users   @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "usersauth_ibfk_1")
 
