@@ -1,7 +1,7 @@
 import { CreateTypes } from "@/database/CreateTypes";
 import { cashInflowDestinysUseCases } from "@/useCases/CashInflowDestinys/CashInflowDestinysUseCases";
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
-import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

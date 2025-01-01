@@ -1,7 +1,7 @@
 import { BaseUseCase } from "../../base/baseUseCase"
 import { baseExpensesUseCases } from "../BaseExpenses/BaseExpensesUseCases"
 import { fixedExpensesUseCases } from "../FixedExpenses/FixedExpensesUseCases"
-import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases"
+import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases/ServerUtilsUseCases"
 import { GetCategoriesData } from "./GetCategoriesData"
 import { CreateExpense } from "./createExpense"
 import { UpdateExpense } from "./updateExpense"

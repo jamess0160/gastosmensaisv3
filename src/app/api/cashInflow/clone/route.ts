@@ -1,5 +1,5 @@
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
-import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 

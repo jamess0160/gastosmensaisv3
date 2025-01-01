@@ -8,7 +8,7 @@ import { InstallmentExpensesUseCases, installmentExpensesUseCases } from "@/useC
 import { UtilTypes } from "@/database/UtilTypes";
 import { baseexpenses } from '@prisma/client';
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
-import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases';
+import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases/ServerUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
 import { ExpenseDestinysUseCases } from '../ExpenseDestinys/ExpenseDestinysUseCases';
 

@@ -7,7 +7,7 @@ import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseC
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
-import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 
 //#region Functions 

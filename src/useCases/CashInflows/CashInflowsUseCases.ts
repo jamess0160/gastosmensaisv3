@@ -1,6 +1,6 @@
 import { BaseUseCase } from "@/base/baseUseCase";
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
-import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases";
+import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { prisma } from '@/database/prisma'
 
 export class CashInflowsUseCases extends BaseUseCase {
