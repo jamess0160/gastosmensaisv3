@@ -40,4 +40,11 @@ export namespace UtilTypes {
         Destinys: destinys[],
         ExpenseCategories: expensecategories[]
     }
+
+    export interface Session {
+        IdUser: number
+        AuthChallenge?: string
+    }
+
+    export type WebAuthOptionTypes = "login" | "register"
 }

@@ -123,7 +123,7 @@ model users {
   Name              String?             @db.VarChar(255)
   Login             String?             @db.VarChar(255)
   Password          String?             @db.VarChar(255)
-  Token             String?             @db.VarChar(255)
+  UseAuth           Boolean?
   banks             banks[]
   baseexpenses      baseexpenses[]
   cashinflows       cashinflows[]

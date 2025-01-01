@@ -12,4 +12,4 @@ CREATE TABLE `usersauth`(
 ALTER TABLE
     `users`
 ADD
-    `Token` varchar(255);
+    `UseAuth` boolean;
