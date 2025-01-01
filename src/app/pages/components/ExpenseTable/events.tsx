@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch } from "react";
 import { CategoryTableData } from "../../categorias/[...params]/components/expenseType";
 import axios from "axios";
-import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
+import { dialogs } from "../Dialogs/dialogs";
 
 class CategoriasEvents {
     async onActiveChange(event: ChangeEvent<HTMLInputElement>, item: CategoryTableData, setLodingState: Dispatch<boolean>) {
@@ -17,7 +17,7 @@ class CategoriasEvents {
     async onDeleteItemClick(item: CategoryTableData, setLodingState: Dispatch<boolean>) {
         setLodingState(true)
 
-        let action = await openConfirmDialog("Deseja mesmo deletar esse item?")
+        let action = await dialogs.Confirm.show("Deseja mesmo deletar esse item?")
 
         if (!action) return setLodingState(false)
 

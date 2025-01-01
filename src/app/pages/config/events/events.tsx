@@ -2,9 +2,9 @@ import { Dispatch } from "react";
 import axios from "axios";
 import { UtilTypes } from "@/database/UtilTypes";
 import { CashInflowMY } from "@/useCases/CashInflows/CashInflowsUseCases";
-import { openConfirmDialog } from "@/app/pages/components/ConfirmDialog/confirmDialog";
 import { defaultMsg } from "../components/CreateCashInflow";
 import { CreateTypes } from "@/database/CreateTypes";
+import { dialogs } from "../../components/Dialogs/dialogs";
 
 class ConfigEvents {
 
@@ -32,7 +32,7 @@ class ConfigEvents {
     async onDeleteItemClick(data: CashInflowMY, setLoading: Dispatch<boolean>) {
         setLoading(true)
 
-        let action = await openConfirmDialog("Você deseja mesmo deletar essa entrada?")
+        let action = await dialogs.Confirm.show("Você deseja mesmo deletar essa entrada?")
 
         if (!action) {
             setLoading(false)

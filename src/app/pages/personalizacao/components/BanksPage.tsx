@@ -7,7 +7,7 @@ import axios from "axios"
 import { Dispatch, useState } from "react"
 import { UseFormReset, UseFormSetValue, useForm } from "react-hook-form"
 import { Input } from "../../components/fields/input"
-import { openConfirmDialog } from "../../components/ConfirmDialog/confirmDialog"
+import { dialogs } from "../../components/Dialogs/dialogs"
 
 const cellClass = "text-white text-nowrap text-clip w-1/5 text-center"
 
@@ -124,7 +124,7 @@ function EmptyRow() {
 }
 
 async function deleteBank(IdBank: number, forceReload: () => Promise<void>) {
-    let action = await openConfirmDialog("Deseja mesmo deletar esse banco?")
+    let action = await dialogs.Confirm.show("Deseja mesmo deletar esse banco?")
 
     if (!action) {
         return

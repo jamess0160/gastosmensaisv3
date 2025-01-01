@@ -7,7 +7,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { destinys } from "@prisma/client";
 import { CreateTypes } from "@/database/CreateTypes";
 import axios from "axios";
-import { openConfirmDialog } from "../../components/ConfirmDialog/confirmDialog";
+import { dialogs } from "../../components/Dialogs/dialogs";
 
 const cellClass = "text-white text-nowrap text-clip w-1/5 text-center"
 
@@ -124,7 +124,7 @@ function EmptyRow() {
 }
 
 async function deleteDestiny(IdDestiny: number, forceReload: () => Promise<void>) {
-    let action = await openConfirmDialog("Deseja mesmo deletar esse destino?")
+    let action = await dialogs.Confirm.show("Deseja mesmo deletar esse destino?")
 
     if (!action) {
         return
