@@ -45,7 +45,7 @@ export function Select(props: SelectProps) {
     }
 
     return (
-        <div className="relative w-10/12 h-8 text-white mix-blend-lighten">
+        <div className="relative w-full h-8 text-white mix-blend-lighten">
             <legend
                 {...props.labelProps}
                 className={"absolute left-4 -top-3 bg-default z-10" + (props.labelProps?.className || "")}

@@ -20,7 +20,7 @@ export default function FormFields(props: FormFieldsProps) {
     }
 
     return (
-        <>
+        <div className={`${styles.form} !w-10/12`}>
             <Input label="Data de Registro" inputProps={{ ...form.register("EntryDate", { required: true }), type: "month", defaultValue: moment().format("YYYY-MM") }} />
             <Input label="Descrição" inputProps={{ ...form.register("Description", { required: true }), type: "text" }} />
 
@@ -63,7 +63,7 @@ export default function FormFields(props: FormFieldsProps) {
                 formProp="IdBank"
                 selectItems={fieldsData.Banks.map((item) => ({ key: item.IdBank.toString(), text: item.Name }))}
             />
-        </>
+        </div>
     )
 }
 
