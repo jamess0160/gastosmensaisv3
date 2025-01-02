@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
         throw new Error("userCredential não encontrado!")
     }
 
+    if (!process.env.hostName) {
+        throw new Error("process.env.hostName não encontrado!")
+    }
+
     let verification = await verifyAuthenticationResponse({
         response: data,
         expectedChallenge: session.AuthChallenge,
@@ -33,7 +37,7 @@ export async function POST(request: NextRequest) {
             counter: Number(userCredential.Counter),
             publicKey: userCredential.PublicKey
         },
-        expectedRPID: request.nextUrl.hostname
+        expectedRPID: process.env.hostName
     })
 
     if (verification.authenticationInfo && verification.verified) {

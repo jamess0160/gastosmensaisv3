@@ -22,12 +22,16 @@ export async function GET(request: NextRequest) {
         throw new Error("userdata não encontrado!")
     }
 
+    if (!process.env.hostName) {
+        throw new Error("process.env.hostName não encontrado!")
+    }
+
     if (type === "register") {
-        return NextResponse.json(await getRegisterOptions(`${IdUser} - ${userdata.Name}`, request.nextUrl.hostname))
+        return NextResponse.json(await getRegisterOptions(`${IdUser} - ${userdata.Name}`, process.env.hostName))
     }
 
     if (type === "login") {
-        return NextResponse.json(await getAuthOptions(IdUser, request.nextUrl.hostname))
+        return NextResponse.json(await getAuthOptions(IdUser, process.env.hostName))
     }
 
     return NextResponse.json({ msg: "Não foi passado nenhum type" }, { status: 500 })
