@@ -2,8 +2,8 @@ import { expensecategories } from "@prisma/client";
 import { Input } from "../../components/fields/input";
 import { Select, SelectItem } from "../../components/fields/select";
 import { UseFormReturn } from "react-hook-form";
-import { RelatorioFormData } from "@/app/api/relatorios/route";
 import { Button } from "@mui/material";
+import { RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST/generateReports";
 
 export function ReportForm(props: ReportFormProps) {
     return (
