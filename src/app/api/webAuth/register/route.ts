@@ -19,10 +19,14 @@ export async function POST(request: NextRequest) {
         throw new Error("AuthChallenge não encontrado!")
     }
 
+    if (!process.env.origin) {
+        throw new Error("process.env.origin não encontrado!")
+    }
+
     let verification = await verifyRegistrationResponse({
         response: data,
         expectedChallenge: session.AuthChallenge,
-        expectedOrigin: request.nextUrl.origin,
+        expectedOrigin: process.env.origin,
     })
 
     if (verification.registrationInfo && verification.verified) {

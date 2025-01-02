@@ -28,10 +28,14 @@ export async function POST(request: NextRequest) {
         throw new Error("process.env.hostName não encontrado!")
     }
 
+    if (!process.env.origin) {
+        throw new Error("process.env.origin não encontrado!")
+    }
+
     let verification = await verifyAuthenticationResponse({
         response: data,
         expectedChallenge: session.AuthChallenge,
-        expectedOrigin: request.nextUrl.origin,
+        expectedOrigin: process.env.origin,
         credential: {
             id: userCredential.Token,
             counter: Number(userCredential.Counter),
