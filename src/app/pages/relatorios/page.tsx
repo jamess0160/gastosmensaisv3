@@ -1,17 +1,16 @@
 import { Container } from "@mui/material";
 import { ReportBody } from "./components/reportBody";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
-import { headers } from "next/headers";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 
 export default async function Relatorios() {
-    let headersList = headers()
-    let IdUser = headersList.get('IdUser')
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
-    if (!IdUser) {
+    if (!session?.IdUser) {
         return <div>IdUser não encontrado!</div>
     }
 
-    let expenseCategories = await expenseCategoriesUseCases.getAllByUser(Number(IdUser))
+    let expenseCategories = await expenseCategoriesUseCases.getAllByUser(session.IdUser)
 
     return (
         <Container maxWidth="xl" className="pt-20">
