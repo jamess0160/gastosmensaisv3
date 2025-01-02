@@ -51,9 +51,9 @@ function LastCell(props: TableRowProps) {
     return (
         <TableCell className={cellClass}>
             <div className="flex items-center justify-end">
-                <ChangeActiveState item={props.item} />
+                <ChangeActiveState item={props.item} force={props.force} />
                 <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
-                <DeleteItem item={props.item} />
+                <DeleteItem item={props.item} force={props.force} />
             </div>
         </TableCell>
     )
@@ -111,17 +111,17 @@ function formatDestinys(item: FullBaseExpenseChild, options?: { full: boolean })
 
 //#region Components
 
-function ChangeActiveState({ item }: ComponentsProps) {
+function ChangeActiveState({ item, force }: ComponentsProps) {
     let [loadingState, setLodingState] = useState(false)
 
     if (loadingState) {
         return <CircularProgress size="1rem" />
     }
 
-    return <Checkbox className="py-0" checked={item.Active === null ? false : item.Active} onChange={(event) => categoriasEvents.onActiveChange(event, item, setLodingState)} />
+    return <Checkbox className="py-0" checked={item.Active === null ? false : item.Active} onChange={(event) => categoriasEvents.onActiveChange(event, item, setLodingState, force)} />
 }
 
-function DeleteItem({ item }: ComponentsProps) {
+function DeleteItem({ item, force }: ComponentsProps) {
     let [loadingState, setLodingState] = useState(false)
 
     if (loadingState) {
@@ -129,7 +129,7 @@ function DeleteItem({ item }: ComponentsProps) {
     }
 
     return (
-        <IconButton className="py-0" onClick={() => categoriasEvents.onDeleteItemClick(item, setLodingState)}>
+        <IconButton className="py-0" onClick={() => categoriasEvents.onDeleteItemClick(item, setLodingState, force)}>
             <Delete color="primary" />
         </IconButton>
     )
@@ -141,6 +141,7 @@ function DeleteItem({ item }: ComponentsProps) {
 
 interface ComponentsProps {
     item: FullBaseExpenseChild
+    force: () => Promise<void>
 }
 
 interface TableRowProps {
