@@ -53,7 +53,7 @@ async function pooling<T>(url: string, setData: Dispatch<T | undefined>, setLoad
         setData(data)
 
     } catch (error) {
-        console.log(error)
+        clientUtilsUseCases.handleError(error, `Ocorreu um erro ao executar a rota: ${url}`)
     } finally {
         setLoading(false)
     }

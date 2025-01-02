@@ -1,6 +1,8 @@
 import moment from "moment"
 import { GetExpenseType } from "./getExpensePrice"
 import type { FullBaseExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild"
+import { dialogs } from "@/app/pages/components/Dialogs/dialogs"
+import { AxiosError } from "axios"
 
 export class ClientUtilsUseCases {
 
@@ -101,6 +103,26 @@ export class ClientUtilsUseCases {
                 resolve()
             }, miliSeconds);
         })
+    }
+
+    handleError(error: unknown, title: string) {
+        console.log(error)
+
+        if (error instanceof AxiosError && error.response?.status === 406) {
+            return this.handleServerMessage(title, error.response.data)
+        }
+
+        return dialogs.Error.show(title)
+    }
+
+    private handleServerMessage(title: string, data: any) {
+        if (data.type === "error") {
+            return dialogs.Error.show(data.msg, title)
+        }
+
+        if (data.type === "redirect") {
+            location.href = data.url
+        }
     }
 }
 
