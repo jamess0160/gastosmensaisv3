@@ -1,5 +1,5 @@
 import { webAuthController } from "../controller/controller";
 
-export const GET = webAuthController.CheckUser.run
+export const GET = webAuthController.CheckUser.run.bind(webAuthController.CheckUser)
 
-export const POST = webAuthController.SetUseAuth.run
+export const POST = webAuthController.SetUseAuth.run.bind(webAuthController.SetUseAuth)

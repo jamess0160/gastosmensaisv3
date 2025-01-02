@@ -2,4 +2,4 @@ import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCas
 import { NextRequest, NextResponse } from "next/server";
 import { expenseController } from "../controller/controller";
 
-export const PUT = expenseController.UpdateActives.run
+export const PUT = expenseController.UpdateActives.run.bind(expenseController.UpdateActives)
