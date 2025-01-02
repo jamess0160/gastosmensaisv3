@@ -1,5 +1,5 @@
-import { ClientUtilsUseCases } from "./ClientUtilsUseCases";
-import type { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild";
+import { ClientUtilsUseCases } from "../ClientUtilsUseCases";
+import type { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../../../BaseExpenses/generateFullBaseExpenseChild";
 import { BaseSection } from "@/base/baseSection";
 
 export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{

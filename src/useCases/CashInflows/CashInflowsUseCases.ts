@@ -1,5 +1,5 @@
 import { BaseUseCase } from "@/base/baseUseCase";
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { prisma } from '@/database/prisma'
 

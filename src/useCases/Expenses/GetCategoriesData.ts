@@ -6,7 +6,7 @@ import { expensecategories } from "@prisma/client"
 import { banksUseCases } from "../Banks/BanksUseCases"
 import { baseExpensesUseCases } from "../BaseExpenses/BaseExpensesUseCases"
 import { destinysUseCases } from "../Destinys/DestinysUseCases"
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 
 export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 

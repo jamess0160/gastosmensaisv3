@@ -1,5 +1,5 @@
 import { CreateTypes } from "@/database/CreateTypes"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { Delete, Edit } from "@mui/icons-material"
 import { Button, IconButton, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { banks } from "@prisma/client"

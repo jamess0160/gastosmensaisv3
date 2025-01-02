@@ -10,7 +10,7 @@ import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
 import moment from "moment";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 
 //#region Functions 
 

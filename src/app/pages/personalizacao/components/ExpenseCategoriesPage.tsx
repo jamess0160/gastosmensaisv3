@@ -6,7 +6,7 @@ import { UseFormReset, UseFormSetValue, useForm } from "react-hook-form"
 import { Button, IconButton, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { Delete, Edit } from "@mui/icons-material"
 import { Input } from "../../components/fields/input"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { dialogs } from "../../components/Dialogs/dialogs"
 
 const cellClass = "text-white text-nowrap text-clip w-1/5 text-center"

@@ -2,7 +2,7 @@ import ExpenseForm, { FieldsData } from "@/app/pages/components/ExpenseForm/Expe
 import { CircularProgress, IconButton } from "@mui/material"
 import { Edit } from "@mui/icons-material"
 import { useState } from "react"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import moment from "moment"
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
 import { CreateTypes } from "@/database/CreateTypes"

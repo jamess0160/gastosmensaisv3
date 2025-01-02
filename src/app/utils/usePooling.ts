@@ -1,6 +1,6 @@
 'use client';
 
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import axios from "axios";
 import moment from "moment";
 import { Dispatch, useEffect, useState } from "react";
@@ -53,7 +53,7 @@ async function pooling<T>(url: string, setData: Dispatch<T | undefined>, setLoad
         setData(data)
 
     } catch (error) {
-        clientUtilsUseCases.handleError(error, `Ocorreu um erro ao executar a rota: ${url}`)
+        clientUtilsUseCases.HandleError.run(error, `Ocorreu um erro ao executar a rota: ${url}`)
     } finally {
         setLoading(false)
     }

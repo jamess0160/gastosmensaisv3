@@ -1,7 +1,7 @@
 'use client';
 
 import { Checkbox, CircularProgress, IconButton, TableCell, TableRow } from "@mui/material"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { Delete } from "@mui/icons-material"
 import { useState } from "react";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";

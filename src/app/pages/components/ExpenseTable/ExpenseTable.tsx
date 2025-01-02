@@ -1,7 +1,7 @@
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
 import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
 import { Table, TableBody, TableContainer } from "@mui/material"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { EmptyRow } from "./CategoryTableRow/EmptyRow"
 import { FieldsData } from "../ExpenseForm/ExpenseForm"
 import { Categories } from "@/useCases/Expenses/GetCategoriesData"

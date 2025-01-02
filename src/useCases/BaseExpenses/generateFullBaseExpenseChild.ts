@@ -1,8 +1,8 @@
 import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases";
-import { AutoGetExpenseType } from "../Utils/getExpensePrice";
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases";
+import { AutoGetExpenseType } from "../Utils/ClientUtilsUseCases/sections/getExpensePrice";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 

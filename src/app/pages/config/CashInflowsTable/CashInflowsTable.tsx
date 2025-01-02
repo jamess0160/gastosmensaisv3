@@ -1,7 +1,7 @@
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import Row from "./components/Row";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { destinys } from "@prisma/client";
 
 export default async function CashInflowsTable(props: CashInflowsTableProps) {

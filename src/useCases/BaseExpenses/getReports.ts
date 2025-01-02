@@ -1,6 +1,6 @@
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from "@/base/baseSection";
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import moment from 'moment';
 import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './generateFullBaseExpenseChild';
 

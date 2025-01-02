@@ -4,7 +4,7 @@ import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { banksUseCases } from '../Banks/BanksUseCases'
 import { expenseCategoriesUseCases } from '../ExpenseCategories/ExpenseCategoriesUseCases'
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases'
 
 export class GetMonthlyBanksResume extends BaseSection<BaseExpensesUseCases> {
 

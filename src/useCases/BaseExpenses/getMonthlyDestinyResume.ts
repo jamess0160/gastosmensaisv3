@@ -1,7 +1,7 @@
 import { cashinflows, cashinflowdestinys, destinys } from '@prisma/client'
 import { BaseExpensesUseCases } from './BaseExpensesUseCases'
 import { BaseSection } from "@/base/baseSection";
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases'
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases'
 import { cashInflowsUseCases } from '../CashInflows/CashInflowsUseCases'
 import { destinysUseCases } from '../Destinys/DestinysUseCases'
 

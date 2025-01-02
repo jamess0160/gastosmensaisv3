@@ -7,7 +7,7 @@ import { FixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUse
 import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
 import moment from 'moment';
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases';
+import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{

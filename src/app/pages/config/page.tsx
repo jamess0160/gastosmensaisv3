@@ -7,7 +7,7 @@ import CreateCashInflow from "./components/CreateCashInflow";
 
 export default async function Page() {
 
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session?.IdUser) {
         return <div>IdUser não encontrado!</div>

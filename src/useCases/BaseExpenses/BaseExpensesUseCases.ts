@@ -3,7 +3,7 @@ import { BaseUseCase } from "../../base/baseUseCase"
 import { GenerateFullBaseExpenseChild } from "./generateFullBaseExpenseChild"
 import { GetMonthlyBanksResume } from "./getMonthlyBanksResume"
 import { GetMonthlyDestinyResume } from "./getMonthlyDestinyResume"
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { GetReports } from "./getReports"
 
 export class BaseExpensesUseCases extends BaseUseCase {

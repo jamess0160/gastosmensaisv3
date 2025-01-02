@@ -1,4 +1,4 @@
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { Button, IconButton, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { Input } from "../../components/fields/input";
 import { UseFormReset, UseFormSetValue, useForm } from "react-hook-form";

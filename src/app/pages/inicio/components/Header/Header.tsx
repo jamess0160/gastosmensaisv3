@@ -2,7 +2,7 @@ import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/mat
 import { Assessment, Settings, Logout, DisplaySettings } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import React from "react";
 
 interface HeaderProps {
