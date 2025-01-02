@@ -1,7 +1,17 @@
+'use client';
+
+import axios from "axios";
+import { useEffect } from "react";
+
 export default function Page() {
-    return (
-        <div>
-            Desconectado com sucesso!
-        </div>
-    )
+
+    useEffect(() => {
+        async function main() {
+            axios.post("/api/logOut").finally(() => {
+                location.pathname = "/pages/login"
+            })
+        }
+
+        main()
+    })
 }

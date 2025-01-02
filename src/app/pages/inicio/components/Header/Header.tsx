@@ -24,15 +24,8 @@ export default function Header({ month, year, userName }: HeaderProps) {
         setAnchorEl(null);
     };
 
-    function teste() {
-        fetch("/pages/inicio", {
-            headers: {
-                "Authorization": 'Basic ' + btoa("logOut")
-            }
-        }).finally(() => {
-            location.href = "/pages/logOut"
-            location.reload()
-        })
+    function logOut() {
+        location.href = "/pages/logOut"
     }
 
     return (
@@ -57,7 +50,7 @@ export default function Header({ month, year, userName }: HeaderProps) {
                             <ListItemText>Configurações</ListItemText>
                         </MenuItem>
                     </Link>
-                    <MenuItem onClick={teste}>
+                    <MenuItem onClick={logOut}>
                         <ListItemIcon>
                             <Logout fontSize="medium" />
                         </ListItemIcon>
