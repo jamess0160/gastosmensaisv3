@@ -6,9 +6,8 @@ import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 //#region Functions 
@@ -17,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     let { searchParams } = new URL(request.url)
     let pageRoute = searchParams.get('pageRoute')
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })

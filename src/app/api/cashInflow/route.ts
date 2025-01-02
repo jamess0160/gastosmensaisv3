@@ -2,12 +2,11 @@ import { CreateTypes } from "@/database/CreateTypes";
 import { cashInflowDestinysUseCases } from "@/useCases/CashInflowDestinys/CashInflowDestinysUseCases";
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     let data = await request.json() as CreateTypes.CreateCashInflow
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
@@ -20,7 +19,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
     let data = await request.json() as CreateTypes.CreateCashInflow
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })

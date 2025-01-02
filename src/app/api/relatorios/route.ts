@@ -1,9 +1,8 @@
 import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import moment from "moment";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -11,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
     let end = moment(clientUtilsUseCases.handleClientDate(body.dateEnd)).endOf("day")
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })

@@ -3,7 +3,6 @@ import { usersUseCases } from "@/useCases/Users/UsersUseCases";
 import { usersAuthUseCases } from "@/useCases/UsersAuth/UsersAuthUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { generateAuthenticationOptions, generateRegistrationOptions } from "@simplewebauthn/server";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -38,35 +37,22 @@ export async function GET(request: NextRequest) {
 }
 
 async function getUserId() {
-    let session = await serverUtilsUseCases.getSession()
-    let lastUser = cookies().get("lastUser")
+    let session = await serverUtilsUseCases.Cookies.getSession()
+    let lastUser = await serverUtilsUseCases.Cookies.getLastUser()
 
     if (session && session.IdUser) {
         return session.IdUser
     }
 
-    if (!lastUser) {
-        return null
-    }
-
-    let data = await serverUtilsUseCases.CriptManager.decript(lastUser.value) as { IdUser: number }
-
-    return data.IdUser
+    return lastUser
 }
 
 async function getRegisterOptions(userName: string, rpID: string) {
-    let userPasskeys = await usersAuthUseCases.getAll()
-
     let options = await generateRegistrationOptions({
         rpName: "Gastos mensais",
         rpID: rpID,
         userName: userName,
         attestationType: 'none',
-
-        excludeCredentials: userPasskeys.map(passkey => ({
-            id: passkey.Token || "",
-        })),
-
         authenticatorSelection: {
             residentKey: 'preferred',
             userVerification: 'preferred',
@@ -74,7 +60,7 @@ async function getRegisterOptions(userName: string, rpID: string) {
         },
     })
 
-    await serverUtilsUseCases.setSession({ AuthChallenge: options.challenge })
+    await serverUtilsUseCases.Cookies.setSession({ AuthChallenge: options.challenge })
 
     return options
 }
@@ -91,7 +77,7 @@ async function getAuthOptions(IdUser: number, rpID: string) {
         rpID,
     })
 
-    await serverUtilsUseCases.setSession({ AuthChallenge: options.challenge })
+    await serverUtilsUseCases.Cookies.setSession({ AuthChallenge: options.challenge })
 
     return options
 }

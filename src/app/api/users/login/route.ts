@@ -1,12 +1,13 @@
 import { UtilTypes } from "@/database/UtilTypes";
 import { usersUseCases } from "@/useCases/Users/UsersUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        cookies().delete("lastUser")
+
+        serverUtilsUseCases.Cookies.clearLastUser()
+
         let loginData = await request.json() as UtilTypes.LoginData
 
         if (!loginData.username || !loginData.password) {
@@ -19,14 +20,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false })
         }
 
-        await serverUtilsUseCases.setSession({
+        await serverUtilsUseCases.Cookies.setSession({
             IdUser: user.IdUser,
             UserName: user.Name || "",
-            UserAuth: user.UseAuth
+            IsMobile: loginData.isMobile
         })
 
-        if (loginData.remember === true) {
-            cookies().set("lastUser", await serverUtilsUseCases.CriptManager.cript({ IdUser: user.IdUser }))
+        if (loginData.isMobile) {
+            await serverUtilsUseCases.Cookies.setLastUser(user.IdUser)
         }
 
         return NextResponse.json({ success: true })

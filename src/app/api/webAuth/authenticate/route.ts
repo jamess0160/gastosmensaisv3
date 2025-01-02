@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     let data = await request.json() as AuthenticationResponseJSON
 
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
@@ -56,11 +56,13 @@ export async function POST(request: NextRequest) {
             throw new Error("Usuário não encontrado!")
         }
 
-        await serverUtilsUseCases.setSession({
+        await serverUtilsUseCases.Cookies.setSession({
             IdUser: userData.IdUser,
             UserName: userData.Name || "",
-            UserAuth: userData.UseAuth,
+            IsMobile: true,
         })
+
+        await serverUtilsUseCases.Cookies.setLastUser(userData.IdUser)
     }
 
     return NextResponse.json({ verified: verification.verified })

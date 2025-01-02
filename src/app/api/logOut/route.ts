@@ -2,7 +2,7 @@ import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/Server
 import { NextResponse } from "next/server";
 
 export function POST() {
-    serverUtilsUseCases.clearSession()
+    serverUtilsUseCases.Cookies.clearSession()
 
     return NextResponse.json({ success: true })
 }

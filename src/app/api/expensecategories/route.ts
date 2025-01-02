@@ -1,13 +1,12 @@
 import { CreateTypes } from "@/database/CreateTypes";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateExpenseCategory
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
@@ -26,7 +25,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateExpenseCategory
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
