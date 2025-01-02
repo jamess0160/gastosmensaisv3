@@ -4,10 +4,16 @@ import { IconButton } from "@mui/material"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const ignoreButton = [
+    "/pages/inicio",
+    "/pages/logOut",
+    "/pages/login",
+]
+
 export default function BotaoVoltar() {
     let pathName = usePathname()
 
-    if (pathName.includes("/pages/inicio") || pathName.includes("/pages/logOut")) {
+    if (ignoreButton.includes(pathName)) {
         return
     }
 
