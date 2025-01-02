@@ -2,10 +2,13 @@ import { cookies } from "next/headers"
 import { clientUtilsUseCases } from "../ClientUtilsUseCases"
 import { UtilTypes } from "@/database/UtilTypes"
 import { CriptManager } from "./criptManager"
+import { SendClientMessage } from "./sendClientMessage"
+import moment from "moment"
 
 export class ServerUtilsUseCases {
 
-    private readonly CriptManager = new CriptManager()
+    public readonly CriptManager = new CriptManager()
+    public readonly SendClientMessage = new SendClientMessage()
 
     getMonthYear() {
         let month = parseInt(cookies().get("month")?.value || new Date().getMonth().toString())
@@ -47,11 +50,24 @@ export class ServerUtilsUseCases {
             throw new Error("process.env.sessionKey não configurada")
         }
 
-        cookies().set(process.env.sessionKey, await this.CriptManager.cript(data), {
+        let session = await this.getSession()
+
+        let newSession = Object.assign(session || {}, data) as UtilTypes.Session
+
+        cookies().set(process.env.sessionKey, await this.CriptManager.cript(newSession), {
             httpOnly: true,
             secure: true,
-            sameSite: "lax"
+            sameSite: "lax",
+            expires: newSession.UserAuth ? moment().add(1, "hour").toDate() : moment().add(1, "day").toDate()
         })
+    }
+
+    clearSession() {
+        if (!process.env.sessionKey) {
+            throw new Error("process.env.sessionKey não configurada")
+        }
+
+        cookies().delete(process.env.sessionKey)
     }
 }
 

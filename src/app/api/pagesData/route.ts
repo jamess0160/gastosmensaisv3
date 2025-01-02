@@ -8,6 +8,7 @@ import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 import { Categories } from "@/useCases/Expenses/GetCategoriesData";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 //#region Functions 
@@ -16,15 +17,20 @@ export async function GET(request: NextRequest) {
 
     let { searchParams } = new URL(request.url)
     let pageRoute = searchParams.get('pageRoute')
-    let IdUser = request.headers.get("IdUser")
-    let UserName = request.headers.get("UserName")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser, UserName } = session
 
     if (!pageRoute) {
         return NextResponse.json({ msg: "IdCashInflow não encontrado na query!" }, { status: 406 })
     }
 
     if (!IdUser || !UserName) {
-        return NextResponse.json({ msg: "IdUser não encontrado nos headers!" }, { status: 406 })
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
     }
 
     if (pageRoute === "inicio") {

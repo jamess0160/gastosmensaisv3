@@ -1,11 +1,19 @@
 import { CreateTypes } from "@/database/CreateTypes";
 import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateDestiny
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     await destinysUseCases.create({
         Name: body.Name,
@@ -19,7 +27,13 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateDestiny
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     if (!body.IdDestiny) {
         return NextResponse.json({ msg: "body.IdDestiny não encontrado!" }, { status: 500 })

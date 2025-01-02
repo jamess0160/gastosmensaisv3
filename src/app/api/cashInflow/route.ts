@@ -2,18 +2,31 @@ import { CreateTypes } from "@/database/CreateTypes";
 import { cashInflowDestinysUseCases } from "@/useCases/CashInflowDestinys/CashInflowDestinysUseCases";
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     let data = await request.json() as CreateTypes.CreateCashInflow
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     return NextResponse.json(await cashInflowsUseCases.create(handleCreateData(data, Number(IdUser))))
 }
 
 export async function PUT(request: NextRequest) {
     let data = await request.json() as CreateTypes.CreateCashInflow
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     if (!data.IdCashInflow) return NextResponse.json({ msg: "Propriedade IdCashInflow não encontrada!" })
 

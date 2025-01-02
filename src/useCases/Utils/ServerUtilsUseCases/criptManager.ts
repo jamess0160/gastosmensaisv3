@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose'
 
 export class CriptManager {
-    public async cript(data: any): Promise<string> {
+    public async cript(data: Record<string, any>): Promise<string> {
 
         return new SignJWT(data)
             .setProtectedHeader({ alg: 'HS256' })

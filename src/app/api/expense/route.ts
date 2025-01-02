@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
+import { redirect } from "next/navigation";
 
 // Create expense
 export async function POST(request: NextRequest) {
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
+
     return NextResponse.json(await expensesUseCase.CreateExpense.run(Number(IdUser), await request.json()))
 }
 

@@ -1,11 +1,19 @@
 import { CreateTypes } from "@/database/CreateTypes";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
+import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateExpenseCategory
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     await expenseCategoriesUseCases.create({
         Description: body.Description,
@@ -18,7 +26,13 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
 
     let body = await request.json() as CreateTypes.CreateExpenseCategory
-    let IdUser = request.headers.get("IdUser")
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     if (!body.IdExpenseCategory) {
         return NextResponse.json({ msg: "body.IdExpenseCategory não encontrado!" }, { status: 500 })

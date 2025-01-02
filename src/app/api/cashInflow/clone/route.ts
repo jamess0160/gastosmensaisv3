@@ -1,10 +1,17 @@
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { revalidatePath } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-    let IdUser = request.headers.get("IdUser")
+export async function POST() {
+    let session = await serverUtilsUseCases.getSession()
+
+    if (!session) {
+        return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+    }
+
+    let { IdUser } = session
 
     let currMoment = serverUtilsUseCases.getCurrMoment()
     let lastMoment = currMoment.subtract(1, "month")
