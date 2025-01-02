@@ -13,7 +13,7 @@ export default function Page() {
 
     useEffect(() => {
         controller.init()
-    }, [])
+    }, [controller])
 
     let form = useForm<UtilTypes.LoginData>()
     let [loading, setLoading] = useState(false)

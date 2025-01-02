@@ -10,9 +10,6 @@ export function usePooling<T>(url: string, secondsInterval: number, options?: Po
     let [data, setData] = useState(options?.defaultValue)
 
     useEffect(() => {
-
-        pooling<T>(url, setData, setLoading, options)
-
         let cleared = false
 
         async function recursive() {
