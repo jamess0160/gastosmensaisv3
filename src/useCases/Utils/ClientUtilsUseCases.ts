@@ -2,7 +2,7 @@ import moment from "moment"
 import { GetExpenseType } from "./getExpensePrice"
 import type { FullBaseExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild"
 import { dialogs } from "@/app/pages/components/Dialogs/dialogs"
-import { AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 
 export class ClientUtilsUseCases {
 
@@ -105,8 +105,16 @@ export class ClientUtilsUseCases {
         })
     }
 
-    handleError(error: unknown, title: string) {
+    handleError(error: any, title: string) {
         console.log(error)
+
+        axios.post("/api/logs", {
+            type: `Log navegador: ${title}`,
+            msg: error.toString(),
+            stack: error.stack?.split("\n"),
+            hash: location.hash,
+            data: error.response?.data
+        }).catch(() => { })
 
         if (error instanceof AxiosError && error.response?.status === 406) {
             return this.handleServerMessage(title, error.response.data)
