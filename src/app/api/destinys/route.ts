@@ -1,21 +1,7 @@
-import { CreateTypes } from "@/database/CreateTypes";
-import { NextRequest } from "next/server";
 import { destinysController } from "./controller/controller";
 
-export async function POST(request: NextRequest) {
-    let body = await request.json() as CreateTypes.CreateDestiny
+export const POST = destinysController.Create.run
 
-    return destinysController.Create.run(body)
-}
+export const PUT = destinysController.Update.run
 
-export async function PUT(request: NextRequest) {
-    let body = await request.json() as CreateTypes.CreateDestiny
-
-    return destinysController.Update.run(body)
-}
-
-export async function DELETE(request: NextRequest) {
-    let { searchParams } = new URL(request.url)
-
-    return destinysController.Remove.run(searchParams)
-}
+export const DELETE = destinysController.Remove.run

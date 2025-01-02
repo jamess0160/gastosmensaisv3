@@ -1,10 +1,12 @@
 import { CreateTypes } from "@/database/CreateTypes"
 import { CreateCashInFlow, cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases"
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export class Create {
-    public async run(data: CreateTypes.CreateCashInflow) {
+    public async run(request: NextRequest) {
+        let data = await request.json() as CreateTypes.CreateCashInflow
+        
         let session = await serverUtilsUseCases.Cookies.getSession()
 
         if (!session) {

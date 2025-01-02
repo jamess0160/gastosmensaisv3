@@ -1,8 +1,10 @@
 import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export class Remove {
-    public async run(searchParams: URLSearchParams) {
+    public async run(request: NextRequest) {
+        let { searchParams } = new URL(request.url)
+
         let IdCashInflow = searchParams.get('IdCashInflow')
 
         if (!IdCashInflow) {

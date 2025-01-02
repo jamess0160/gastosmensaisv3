@@ -1,8 +1,9 @@
 import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export class Remove {
-    public async run(searchParams: URLSearchParams) {
+    public async run(request: NextRequest) {
+        let { searchParams } = new URL(request.url)
 
         let IdDestiny = searchParams.get('IdDestiny')
 

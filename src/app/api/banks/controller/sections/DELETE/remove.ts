@@ -1,8 +1,9 @@
 import { banksUseCases } from "@/useCases/Banks/BanksUseCases"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export class Remove {
-    public async run(searchParams: URLSearchParams) {
+    public async run(request: NextRequest) {
+        let { searchParams } = new URL(request.url)
 
         let IdBank = searchParams.get('IdBank')
 
