@@ -9,6 +9,7 @@ import React from "react";
 import AddExpense from "./components/addExpense/AddExpense";
 import { UtilTypes } from "@/database/UtilTypes";
 import { usePooling } from "@/app/utils/usePooling";
+import { WebAuth } from "../components/WebAuth/WebAuth";
 
 export default function Page() {
     let { data, force } = usePooling<UtilTypes.InicioPageData>("/api/pagesData", 5, { params: { pageRoute: "inicio" } })
@@ -27,6 +28,7 @@ export default function Page() {
                 <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
                 {banksResume}
                 <AddExpense ExpenseFormData={data.ExpenseFormData} force={force} />
+                <WebAuth />
             </Container>
         </>
     )
