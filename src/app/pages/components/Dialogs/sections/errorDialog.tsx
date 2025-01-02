@@ -1,3 +1,4 @@
+'use client';
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material"
 import { createRoot } from "react-dom/client"
 

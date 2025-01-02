@@ -1,3 +1,5 @@
+'use client';
+
 import { InfoDialog } from "./sections/infoDialog";
 import { ConfirmDialog } from "./sections/confirmDialog";
 import { ErrorDialog } from "./sections/errorDialog";
