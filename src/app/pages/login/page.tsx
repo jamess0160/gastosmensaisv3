@@ -28,12 +28,6 @@ export default function Page() {
             >
                 <Input label="Usuário" inputProps={{ ...form.register("username", { required: true }) }} />
                 <Input label="Senha" inputProps={{ ...form.register("password", { required: true }), type: "password" }} />
-                <div className="flex flex-row">
-                    <label>
-                        <input type="checkbox" className="w-4 mr-2" {...form.register("remember")} />
-                        Lembrar de mim
-                    </label>
-                </div>
 
                 {Object.values(form.formState.errors).length > 0 && (
                     <div className="text-red-600 text-center font-bold">

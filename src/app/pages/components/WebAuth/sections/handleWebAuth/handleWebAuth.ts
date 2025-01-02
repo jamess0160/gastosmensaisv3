@@ -1,6 +1,7 @@
 import axios from "axios"
 import { RegisterUser } from "./sections/registerUser"
 import { AuthenticateUser } from "./sections/authenticateUser"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 
 export class HandleWebAuth {
 
@@ -8,6 +9,11 @@ export class HandleWebAuth {
     private readonly RegisterUser = new RegisterUser()
 
     public async run(options: AuthOptions) {
+
+        if (clientUtilsUseCases.isMobile() === false) {
+            return
+        }
+        
         let result = await this.userUseAuth()
 
         if (result.UseAuth === true && this.checkOptions("login", options)) {
@@ -20,7 +26,11 @@ export class HandleWebAuth {
     }
 
     private async userUseAuth() {
-        let { data } = await axios.get<{ UseAuth: boolean }>("/api/webAuth/checkUser")
+        let { data } = await axios.get<{ UseAuth: boolean }>("/api/webAuth/checkUser", {
+            params: {
+                DeviceKey: clientUtilsUseCases.LocalStorage.getDeviceKey()
+            }
+        })
         return data
     }
 

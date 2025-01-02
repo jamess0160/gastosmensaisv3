@@ -1,6 +1,6 @@
 import { dialogs } from "@/app/pages/components/Dialogs/dialogs"
 import { UtilTypes } from "@/database/UtilTypes"
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { PublicKeyCredentialCreationOptionsJSON, RegistrationResponseJSON, startRegistration } from "@simplewebauthn/browser"
 import axios from "axios"
 
@@ -20,23 +20,25 @@ export class RegisterUser {
 
             let response = await this.createAuth(authResult)
 
-            if (response && response.verified) {
+            if (response.verified) {
                 dialogs.Info.show("Biometria registrada com sucesso!")
+                clientUtilsUseCases.LocalStorage.setDeviceKey(response.DeviceKey)
             }
+
         } catch (error) {
-            clientUtilsUseCases.handleError(error, "Ocorreu um erro ao cadastrar a biometria")
+            clientUtilsUseCases.HandleError.run(error, "Ocorreu um erro ao cadastrar a biometria")
         }
     }
 
-    private async getOptions(type: UtilTypes.WebAuthOptionTypes): Promise<PublicKeyCredentialCreationOptionsJSON> {
-        let { data } = await axios.get("/api/webAuth/options", {
+    private async getOptions(type: UtilTypes.WebAuthOptionTypes) {
+        let { data } = await axios.get<PublicKeyCredentialCreationOptionsJSON>("/api/webAuth/options", {
             params: { type }
         })
         return data
     }
 
     private async createAuth(authResult: RegistrationResponseJSON) {
-        let { data } = await axios.post("/api/webAuth/register", authResult)
+        let { data } = await axios.post<CreateAuthResponse>("/api/webAuth/register", authResult)
         return data
     }
 
@@ -44,3 +46,5 @@ export class RegisterUser {
         return axios.post("/api/webAuth/checkUser")
     }
 }
+
+type CreateAuthResponse = { verified: false } | { verified: true, DeviceKey: string }

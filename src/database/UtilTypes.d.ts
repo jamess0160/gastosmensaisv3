@@ -44,7 +44,7 @@ export namespace UtilTypes {
     export interface Session {
         IdUser: number
         UserName: string
-        UserAuth: boolean | null
+        IsMobile: boolean
         AuthChallenge?: string
     }
 
@@ -53,6 +53,6 @@ export namespace UtilTypes {
     export interface LoginData {
         username: string
         password: string
-        remember: boolean
+        isMobile: boolean
     }
 }

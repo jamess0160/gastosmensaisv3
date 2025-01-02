@@ -5,11 +5,12 @@ import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/Server
 import { RegistrationResponseJSON } from "@simplewebauthn/browser";
 import { verifyRegistrationResponse } from "@simplewebauthn/server";
 import { NextRequest, NextResponse } from "next/server";
+import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
     let data = await request.json() as RegistrationResponseJSON
 
-    let session = await serverUtilsUseCases.getSession()
+    let session = await serverUtilsUseCases.Cookies.getSession()
 
     if (!session) {
         return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
@@ -29,6 +30,8 @@ export async function POST(request: NextRequest) {
         expectedOrigin: process.env.origin,
     })
 
+    let DeviceKey = crypto.randomBytes(40).toString("base64")
+
     if (verification.registrationInfo && verification.verified) {
 
         let credential = verification.registrationInfo.credential
@@ -46,6 +49,7 @@ export async function POST(request: NextRequest) {
                 Counter: credential.counter,
                 IdUser: session.IdUser,
                 PublicKey: Buffer.from(credential.publicKey),
+                DeviceKey: DeviceKey
             })
 
             await usersUseCases.update(session.IdUser, { UseAuth: true })
@@ -53,5 +57,5 @@ export async function POST(request: NextRequest) {
 
     }
 
-    return NextResponse.json({ verified: verification.verified })
+    return NextResponse.json({ verified: verification.verified, DeviceKey })
 }

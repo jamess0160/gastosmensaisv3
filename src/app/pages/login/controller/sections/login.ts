@@ -1,6 +1,6 @@
 import { dialogs } from "@/app/pages/components/Dialogs/dialogs";
 import { UtilTypes } from "@/database/UtilTypes";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import axios from "axios";
 import md5 from "md5";
 import { Dispatch, SetStateAction } from "react";
@@ -29,12 +29,12 @@ export class Login {
             let { data } = await axios.post<{ success: boolean }>("/api/users/login", {
                 username: loginData.username,
                 password: md5(loginData.password),
-                remember: loginData.remember
+                isMobile: clientUtilsUseCases.isMobile()
             })
 
             return data.success
         } catch (error) {
-            clientUtilsUseCases.handleError(error, "Ocorreu um erro ao fazer login!")
+            clientUtilsUseCases.HandleError.run(error, "Ocorreu um erro ao fazer login!")
             return null
         }
     }
