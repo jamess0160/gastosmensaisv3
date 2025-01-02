@@ -1,12 +1,9 @@
 import { UtilTypes } from "@/database/UtilTypes";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { cookiesController } from "./controller/controller";
 
 export async function POST(request: NextRequest) {
     let data = await request.json() as UtilTypes.CookiesPostBody
 
-    cookies().set("month", data.month || new Date().getMonth().toString())
-    cookies().set("year", data.year || new Date().getFullYear().toString())
-
-    return NextResponse.json({ msg: "Sucesso!" })
+    return cookiesController.SetMonthYear.run(data)
 }
