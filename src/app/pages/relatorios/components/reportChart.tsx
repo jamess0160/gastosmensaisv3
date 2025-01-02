@@ -1,7 +1,7 @@
-import { RelatorioData } from '@/app/api/relatorios/route';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, } from 'chart.js';
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { RelatorioData } from '@/app/api/relatorios/controller/sections/POST/generateReports';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 

@@ -1,4 +1,4 @@
-import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/route";
+import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST/generateReports";
 import axios from "axios";
 import { Dispatch } from "react";
 
