@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
-import { RelatorioFormData, RelatorioData } from "@/app/api/relatorios/route";
 import { useForm } from "react-hook-form";
 import { relatoriosEvents } from "../events";
 import { expensecategories } from "@prisma/client";
@@ -11,6 +10,7 @@ import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
 import moment from "moment";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
+import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST/generateReports";
 
 //#region Functions 
 
