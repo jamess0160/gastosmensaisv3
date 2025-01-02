@@ -1,8 +1,3 @@
-import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
-import { NextResponse } from "next/server";
+import { logOutController } from "./controller/controller";
 
-export function POST() {
-    serverUtilsUseCases.Cookies.clearSession()
-
-    return NextResponse.json({ success: true })
-}
+export const POST = logOutController.LogOut.run
