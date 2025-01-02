@@ -9,7 +9,7 @@ import ExpenseGroup from "./components/ExpenseGroup";
 export default function Page(props: PageProps) {
     let [type, id] = props.params.params
 
-    let { data, force } = usePooling<UtilTypes.CategoriasPageData>(`/api/pagesData/`, 2, {
+    let { data, force } = usePooling<UtilTypes.CategoriasPageData>(`/api/pagesData/`, 5, {
         params: {
             pageRoute: "categorias",
             type: type,
