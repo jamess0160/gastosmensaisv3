@@ -43,8 +43,16 @@ export namespace UtilTypes {
 
     export interface Session {
         IdUser: number
+        UserName: string
+        UserAuth: boolean | null
         AuthChallenge?: string
     }
 
     export type WebAuthOptionTypes = "login" | "register"
+
+    export interface LoginData {
+        username: string
+        password: string
+        remember: boolean
+    }
 }
