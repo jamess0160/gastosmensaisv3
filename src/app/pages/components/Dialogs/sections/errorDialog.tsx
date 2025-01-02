@@ -29,7 +29,7 @@ export class ErrorDialog {
         let buttonClass = "w-fit rounded-lg p-2 px-4"
 
         return (
-            <Dialog open={true} PaperProps={{ className: "w-1/5 border-2 border-solid border-red-600" }}>
+            <Dialog open={true} PaperProps={{ className: "w-1/5 max-md:w-4/5 border-2 border-solid border-red-600" }}>
                 <DialogTitle className="text-red-600">{props.title || "Ocorreu um erro!"}</DialogTitle>
                 <DialogContent>
                     {props.msg}

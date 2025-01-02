@@ -29,7 +29,7 @@ export class ConfirmDialog {
         let buttonClass = "w-fit rounded-lg p-2 px-4"
 
         return (
-            <Dialog open={true} PaperProps={{ className: "w-1/5" }}>
+            <Dialog open={true} PaperProps={{ className: "w-1/5 max-md:w-4/5" }}>
                 <DialogTitle>Confirmar</DialogTitle>
                 <DialogContent>
                     {props.msg}

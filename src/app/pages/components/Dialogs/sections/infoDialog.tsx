@@ -27,7 +27,7 @@ export class InfoDialog {
         let buttonClass = "w-fit rounded-lg p-2 px-4"
 
         return (
-            <Dialog open={true} PaperProps={{ className: "w-1/5 border-2 border-solid border-blue-500" }}>
+            <Dialog open={true} PaperProps={{ className: "w-1/5 max-md:w-4/5 border-2 border-solid border-blue-500" }}>
                 <DialogTitle className="text-blue-500">Informação</DialogTitle>
                 <DialogContent>
                     {props.msg}
