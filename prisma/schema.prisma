@@ -161,7 +161,7 @@ model usersauth {
   Token      String  @db.Text
   PublicKey  Bytes   @db.Blob
   Counter    BigInt
-  DeviceType String? @db.VarChar(255)
+  DeviceKey  String? @db.VarChar(255)
   users      users   @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "usersauth_ibfk_1")
 
   @@index([IdUser], map: "IdUser")
