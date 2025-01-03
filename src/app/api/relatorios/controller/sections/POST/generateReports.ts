@@ -19,7 +19,7 @@ export class GenerateReports {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
         }
 
-        let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body.description, body.IdExpenseCategory)
+        let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body)
 
         let chartData = this.generateChartData(expenseData, body.interval)
 
@@ -97,6 +97,7 @@ export interface RelatorioFormData {
     dateEnd: string
     description?: string
     IdExpenseCategory?: string
+    IdDestiny?: string
 }
 
 export interface RelatorioData {

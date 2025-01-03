@@ -1,4 +1,4 @@
-import { expensecategories } from "@prisma/client";
+import { destinys, expensecategories } from "@prisma/client";
 import { Input } from "../../components/fields/input";
 import { Select, SelectItem } from "../../components/fields/select";
 import { UseFormReturn } from "react-hook-form";
@@ -20,6 +20,13 @@ export function ReportForm(props: ReportFormProps) {
 
                 <Select
                     label="Destino"
+                    form={props.form}
+                    formProp="IdDestiny"
+                    selectItems={props.destinys.map((item) => ({ key: item.IdDestiny.toString(), text: item.Name }))}
+                />
+
+                <Select
+                    label="Tipo de gasto"
                     form={props.form}
                     formProp="IdExpenseCategory"
                     selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory.toString(), text: item.Description }))}
@@ -49,4 +56,5 @@ interface ReportFormProps {
     form: UseFormReturn<RelatorioFormData, any, RelatorioFormData>
     onSubmit: () => unknown
     expenseCategories: expensecategories[]
+    destinys: destinys[]
 }

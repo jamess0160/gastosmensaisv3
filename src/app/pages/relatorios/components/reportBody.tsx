@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { relatoriosEvents } from "../events";
-import { expensecategories } from "@prisma/client";
+import { destinys, expensecategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
@@ -34,6 +34,7 @@ export function ReportBody(props: ReportBodyProps) {
                     <CircularProgress /> :
                     <ReportForm
                         expenseCategories={props.expenseCategories}
+                        destinys={props.destinys}
                         form={form}
                         onSubmit={form.handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
                     />
@@ -53,6 +54,7 @@ export function ReportBody(props: ReportBodyProps) {
 
 interface ReportBodyProps {
     expenseCategories: expensecategories[]
+    destinys: destinys[]
     month: number
     year: number
 }

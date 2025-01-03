@@ -3,21 +3,22 @@ import { BaseSection } from "@/base/baseSection";
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import moment from 'moment';
 import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './generateFullBaseExpenseChild';
+import { RelatorioFormData } from '@/app/api/relatorios/controller/sections/POST/generateReports';
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
-    async run(start: moment.Moment, end: moment.Moment, IdUser: number, description?: string, IdExpenseCategory?: string) {
+    async run(start: moment.Moment, end: moment.Moment, IdUser: number, body: RelatorioFormData) {
 
         let monthYears = this.getMonthYears(start, end)
 
-        let options: GenerateFullBaseExpenseChildOptions = IdExpenseCategory ? { IdExpenseCategory: parseInt(IdExpenseCategory) } : {}
+        let options = this.generateOptions(body)
 
         let rawExpenseData = await Promise.all(monthYears.map((item) => this.instance.GenerateFullBaseExpenseChild.run(item.month, item.year, IdUser, options)))
 
         let expenseData = this.formatExpenseData(rawExpenseData, start, end)
 
-        if (description) {
-            let descriptions = description.split(",").map((item) => item.toLowerCase().trim())
+        if (body.description) {
+            let descriptions = body.description.split(",").map((item) => item.toLowerCase().trim())
 
             return expenseData.filter((item) => {
                 return descriptions.every((desc) => {
@@ -52,6 +53,21 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         }
 
         return monthYears
+    }
+
+    private generateOptions(body: RelatorioFormData): GenerateFullBaseExpenseChildOptions {
+
+        let options: Partial<GenerateFullBaseExpenseChildOptions> = {}
+
+        if (body.IdExpenseCategory) {
+            options.IdExpenseCategory = parseInt(body.IdExpenseCategory)
+        }
+
+        if (body.IdDestiny) {
+            options.IdDestiny = parseInt(body.IdDestiny)
+        }
+
+        return options
     }
 
     private formatExpenseData(rawExpenseData: Array<FullBaseExpenseChild[]>, start: moment.Moment, end: moment.Moment) {
