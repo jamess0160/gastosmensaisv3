@@ -27,7 +27,7 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
                 let likeResult = like.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
                 let notLikeResult = notLike.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
 
-                return notLikeResult === false || likeResult
+                return notLikeResult === false && likeResult
             })
         }
 
