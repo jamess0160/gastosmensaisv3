@@ -4,6 +4,7 @@ import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseC
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
+import { banksUseCases } from "@/useCases/Banks/BanksUseCases";
 
 export default async function Relatorios() {
     let session = await serverUtilsUseCases.Cookies.getSession()
@@ -13,17 +14,24 @@ export default async function Relatorios() {
         return <div>IdUser não encontrado!</div>
     }
 
-    let { expenseCategories, destinys } = await clientUtilsUseCases.resolvePromiseObj({
+    let { expenseCategories, destinys, banks } = await clientUtilsUseCases.resolvePromiseObj({
         expenseCategories: expenseCategoriesUseCases.getAllByUser(session.IdUser),
         destinys: destinysUseCases.getAllByUser(session.IdUser),
+        banks: banksUseCases.getAllByUser(session.IdUser),
     })
 
 
     return (
-        <Container maxWidth="xl" className="pt-20">
-            <h1 className="w-fit m-auto mb-32 max-md:mb-5 underline">Relatório de gastos</h1>
+        <Container maxWidth="xl" className="pt-10">
+            <h1 className="w-fit m-auto mb-10 max-md:mb-5 underline">Relatório de gastos</h1>
 
-            <ReportBody expenseCategories={expenseCategories} destinys={destinys} month={month} year={year} />
+            <ReportBody
+                expenseCategories={expenseCategories}
+                destinys={destinys}
+                banks={banks}
+                month={month}
+                year={year}
+            />
         </Container>
     )
 }

@@ -7,7 +7,7 @@ import { RelatorioFormData } from '@/app/api/relatorios/controller/sections/POST
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
-    async run(start: moment.Moment, end: moment.Moment, IdUser: number, body: RelatorioFormData) {
+    async run(start: moment.Moment, end: moment.Moment, IdUser: number, body: RelatorioFormData, useMonth: boolean) {
 
         let monthYears = this.getMonthYears(start, end)
 
@@ -15,7 +15,7 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
         let rawExpenseData = await Promise.all(monthYears.map((item) => this.instance.GenerateFullBaseExpenseChild.run(item.month, item.year, IdUser, options)))
 
-        let expenseData = this.formatExpenseData(rawExpenseData, start, end)
+        let expenseData = this.formatExpenseData(rawExpenseData, start, end, useMonth)
 
         if (body.description) {
             let descriptions = body.description.split(",").map((item) => item.toLowerCase().trim())
@@ -67,29 +67,39 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
             options.IdDestiny = parseInt(body.IdDestiny)
         }
 
+        if (body.IdBank) {
+            options.IdBank = parseInt(body.IdBank)
+        }
+
         return options
     }
 
-    private formatExpenseData(rawExpenseData: Array<FullBaseExpenseChild[]>, start: moment.Moment, end: moment.Moment) {
-        return rawExpenseData
+    private formatExpenseData(rawExpenseData: Array<FullBaseExpenseChild[]>, start: moment.Moment, end: moment.Moment, useMonth: boolean) {
+
+        let sortedData = rawExpenseData
             .flat()
-            .filter((item) => {
-                if (clientUtilsUseCases.GetExpenseDate(item).getTime() < start.toDate().getTime()) {
-                    return false
-                }
-
-                if (clientUtilsUseCases.GetExpenseDate(item).getTime() > end.toDate().getTime()) {
-                    return false
-                }
-
-                return true
-            })
             .sort((a, b) => {
                 let aDate = clientUtilsUseCases.GetExpenseDate(a).getTime()
                 let bDate = clientUtilsUseCases.GetExpenseDate(b).getTime()
 
                 return aDate - bDate
             })
+
+        if (useMonth) {
+            return sortedData
+        }
+
+        return sortedData.filter((item) => {
+            if (clientUtilsUseCases.GetExpenseDate(item).getTime() < start.toDate().getTime()) {
+                return false
+            }
+
+            if (clientUtilsUseCases.GetExpenseDate(item).getTime() > end.toDate().getTime()) {
+                return false
+            }
+
+            return true
+        })
     }
 }
 

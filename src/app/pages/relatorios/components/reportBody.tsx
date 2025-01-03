@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { relatoriosEvents } from "../events";
-import { destinys, expensecategories } from "@prisma/client";
+import { banks, destinys, expensecategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
@@ -14,12 +14,8 @@ import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/controlle
 //#region Functions 
 
 export function ReportBody(props: ReportBodyProps) {
-    let currMoment = clientUtilsUseCases.monthAndYearToMoment(props.month, props.year)
 
-    let start = currMoment.startOf("month").format("YYYY-MM-DD")
-    let end = currMoment.endOf("month").format("YYYY-MM-DD")
-
-    let form = useForm<RelatorioFormData>({ defaultValues: { interval: "semana", dateStart: start, dateEnd: end } })
+    let form = useForm<RelatorioFormData>({ defaultValues: { interval: "semana" } })
 
     let [chartConfig, setChartConfig] = useState<RelatorioData['chartData']>({ labels: [], data: [] })
     let [tableData, setTableData] = useState<RelatorioData['tableData']>([])
@@ -28,15 +24,24 @@ export function ReportBody(props: ReportBodyProps) {
     let sumExpenses = tableData.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { split: false }), 0)
 
     return (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 items-center">
             {
                 isLoading ?
                     <CircularProgress /> :
                     <ReportForm
                         expenseCategories={props.expenseCategories}
                         destinys={props.destinys}
+                        banks={props.banks}
                         form={form}
                         onSubmit={form.handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
+                        onClear={() => {
+                            form.reset()
+                            setTableData([])
+                            setChartConfig({
+                                data: [],
+                                labels: []
+                            })
+                        }}
                     />
             }
             <ReportChart chartConfig={chartConfig} />
@@ -55,6 +60,7 @@ export function ReportBody(props: ReportBodyProps) {
 interface ReportBodyProps {
     expenseCategories: expensecategories[]
     destinys: destinys[]
+    banks: banks[]
     month: number
     year: number
 }

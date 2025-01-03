@@ -10,20 +10,19 @@ export class GenerateReports {
     public async run(request: NextRequest) {
         let body = await request.json() as RelatorioFormData
 
-        let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
-        let end = moment(clientUtilsUseCases.handleClientDate(body.dateEnd)).endOf("day")
-        
+        let { start, end } = this.getStartEnd(body)
+
         let session = await serverUtilsUseCases.Cookies.getSession()
 
         if (!session) {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
         }
 
-        let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body)
+        let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body, Boolean(body.date))
 
         let chartData = this.generateChartData(expenseData, body.interval)
 
-        let dateArray = this.generateDateArray(start, end)
+        let dateArray = this.generateDateArray(expenseData)
 
         let labels = Array.from(new Set(dateArray.map((item) => this.getDateLabel(item, body.interval))))
 
@@ -37,6 +36,27 @@ export class GenerateReports {
             }, { labels: [], data: [] }),
             tableData: expenseData
         })
+    }
+
+    private getStartEnd(body: RelatorioFormData) {
+
+        if (body.dateStart && body.dateEnd) {
+            let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
+            let end = moment(clientUtilsUseCases.handleClientDate(body.dateEnd)).endOf("day")
+
+            return { start, end }
+        }
+
+        if (body.date) {
+            let monthMoment = moment(body.date, "YYYY-MM")
+
+            let start = monthMoment.startOf("month").startOf("day").clone()
+            let end = monthMoment.endOf("month").endOf("day").clone()
+
+            return { start, end }
+        }
+
+        throw new Error("Body sem (dateStart, dateEnd) ou date")
     }
 
     private generateChartData(expenseData: FullBaseExpenseChild[], interval: RelatorioFormData['interval']) {
@@ -54,7 +74,13 @@ export class GenerateReports {
         }, {})
     }
 
-    private generateDateArray(arrayStart: moment.Moment, arrayEnd: moment.Moment) {
+    private generateDateArray(expenseData: FullBaseExpenseChild[]) {
+
+        let dates = expenseData.map((item) => clientUtilsUseCases.GetExpenseDate(item).getTime())
+
+        let arrayStart = moment(Math.min(...dates))
+        let arrayEnd = moment(Math.max(...dates))
+
         let start = arrayStart.clone()
         let end = arrayEnd.clone()
 
@@ -93,11 +119,13 @@ export class GenerateReports {
 
 export interface RelatorioFormData {
     interval: "mes" | "semana" | "dia"
-    dateStart: string
-    dateEnd: string
+    date?: string
+    dateStart?: string
+    dateEnd?: string
     description?: string
     IdExpenseCategory?: string
     IdDestiny?: string
+    IdBank?: string
 }
 
 export interface RelatorioData {
