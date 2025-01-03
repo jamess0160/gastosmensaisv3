@@ -19,15 +19,18 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         if (description) {
             let descriptions = description.split(",").map((item) => item.toLowerCase().trim())
 
-            let like = descriptions.filter((item) => item.includes("<>") === false)
-            let notLike = descriptions.filter((item) => item.includes("<>") === true).map((item) => item.replace("<>", ""))
-
             return expenseData.filter((item) => {
+                return descriptions.every((desc) => {
 
-                let likeResult = like.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
-                let notLikeResult = notLike.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
+                    let itemDesc = item.Description.toLowerCase().trim()
 
-                return (like.length > 0 && likeResult) && notLikeResult === false
+                    if (desc.includes("<>")) {
+                        let newDesc = desc.replace("<>", "")
+                        return itemDesc.includes(newDesc) === false
+                    }
+
+                    return itemDesc.includes(desc)
+                })
             })
         }
 
