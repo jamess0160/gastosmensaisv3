@@ -24,15 +24,10 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
             return expenseData.filter((item) => {
 
-                if (notLike.includes(item.Description.toLowerCase().trim())) {
-                    return false
-                }
+                let likeResult = like.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
+                let notLikeResult = notLike.some((subItem) => item.Description.toLowerCase().trim().includes(subItem))
 
-                if (like.length === 0) {
-                    return true
-                }
-
-                return like.includes(item.Description.toLowerCase().trim())
+                return notLikeResult === false || likeResult
             })
         }
 
