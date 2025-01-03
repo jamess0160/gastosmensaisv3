@@ -8,15 +8,16 @@ import { expensecategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
 import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
-import moment from "moment";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST/generateReports";
 
 //#region Functions 
 
 export function ReportBody(props: ReportBodyProps) {
-    let start = moment().startOf("month").format("YYYY-MM-DD")
-    let end = moment().format("YYYY-MM-DD")
+    let currMoment = clientUtilsUseCases.monthAndYearToMoment(props.month, props.year)
+
+    let start = currMoment.startOf("month").format("YYYY-MM-DD")
+    let end = currMoment.endOf("month").format("YYYY-MM-DD")
 
     let form = useForm<RelatorioFormData>({ defaultValues: { interval: "semana", dateStart: start, dateEnd: end } })
 
@@ -52,6 +53,8 @@ export function ReportBody(props: ReportBodyProps) {
 
 interface ReportBodyProps {
     expenseCategories: expensecategories[]
+    month: number
+    year: number
 }
 
 //#endregion
