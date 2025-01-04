@@ -22,6 +22,7 @@ export class Update {
         await expenseCategoriesUseCases.update(body.IdExpenseCategory, {
             Description: body.Description,
             IdUser: Number(IdUser),
+            Position: Number(body.Position),
         })
     
         return NextResponse.json({ msg: "Sucesso" })

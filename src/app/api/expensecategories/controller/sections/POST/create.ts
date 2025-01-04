@@ -18,6 +18,7 @@ export class Create {
         await expenseCategoriesUseCases.create({
             Description: body.Description,
             IdUser: Number(IdUser),
+            Position: Number(body.Position),
         })
 
         return NextResponse.json({ msg: "Sucesso" })
