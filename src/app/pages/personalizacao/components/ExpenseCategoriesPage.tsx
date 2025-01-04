@@ -48,6 +48,8 @@ export function ExpenseCategoriesPage(props: ExpenseCategoriesPageProps) {
                         )}
 
                         <Input label="Nome" inputProps={{ ...register("Description", { required: true }), type: "text" }} />
+                        <Input label="Posição" inputProps={{ ...register("Position", { required: true }), type: "number" }} />
+
                         <Button className="w-10/12" variant="contained" type="submit" >{edit ? "Editar Tipo de gasto" : "Cadastrar Tipo de gasto"}</Button>
                     </form>
             }
@@ -87,10 +89,12 @@ function generateTableRows(tableData: (expensecategories | false)[], setEdit: Di
             setEdit(true)
             setValue("Description", item.Description)
             setValue("IdExpenseCategory", item.IdExpenseCategory)
+            setValue("Position", item.Position?.toString() || "0")
         }
 
         return (
             <TableRow key={index} >
+                <TableCell className={cellClass}> #{item.Position} </TableCell>
                 <TableCell className={cellClass}> {item.Description} </TableCell>
                 <TableCell className={cellClass}>
                     <div className="flex items-center justify-end lg:mr-10">
@@ -110,6 +114,7 @@ function generateTableRows(tableData: (expensecategories | false)[], setEdit: Di
 function EmptyRow() {
     return (
         <TableRow>
+            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
         </TableRow>

@@ -48,6 +48,7 @@ export function BanksPage(props: BanksPageProps) {
                         )}
 
                         <Input label="Nome" inputProps={{ ...register("Name", { required: true }), type: "text" }} />
+                        <Input label="Posição" inputProps={{ ...register("Position", { required: true }), type: "number" }} />
                         <div className="flex flex-col w-10/12">
                             Cor
                             <input className="h-10 w-full" type="color" {...register("Color", { required: true })} />
@@ -92,10 +93,12 @@ function generateTableRows(tableData: (banks | false)[], setEdit: Dispatch<boole
             setValue("Name", item.Name)
             setValue("Color", item.Color || "")
             setValue("IdBank", item.IdBank)
+            setValue("Position", item.Position?.toString() || "0")
         }
 
         return (
             <TableRow key={index} >
+                <TableCell className={cellClass}> #{item.Position} </TableCell>
                 <TableCell className={cellClass}> {item.Name} </TableCell>
                 <TableCell className={cellClass}> {item.Color} </TableCell>
                 <TableCell className={cellClass}>
@@ -116,6 +119,7 @@ function generateTableRows(tableData: (banks | false)[], setEdit: Dispatch<boole
 function EmptyRow() {
     return (
         <TableRow>
+            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>

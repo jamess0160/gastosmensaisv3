@@ -32,16 +32,19 @@ export namespace CreateTypes {
         IdDestiny?: number
         Name: string
         Color: string
+        Position: string
     }
 
     export interface CreateBank {
         IdBank?: number
         Name: string
         Color: string
+        Position: string
     }
 
     export interface CreateExpenseCategory {
         IdExpenseCategory?: number
         Description: string
+        Position: string
     }
 }
