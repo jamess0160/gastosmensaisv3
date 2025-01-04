@@ -13,6 +13,7 @@ model banks {
   IconPath     String?        @db.VarChar(255)
   IdUser       Int?
   Color        String?        @db.VarChar(255)
+  Position     Int?
   users        users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "banks_ibfk_1")
   baseexpenses baseexpenses[]
 
@@ -59,6 +60,7 @@ model destinys {
   Color              String?              @db.VarChar(255)
   SplitJointExpense  Boolean              @default(dbgenerated("b'0'")) @db.Bit(1)
   IdUser             Int?
+  Position           Int?
   cashinflowdestinys cashinflowdestinys[]
   users              users?               @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "destinys_ibfk_1")
   expensedestinys    expensedestinys[]
@@ -70,6 +72,7 @@ model expensecategories {
   IdExpenseCategory Int            @id @default(autoincrement())
   Description       String         @db.VarChar(255)
   IdUser            Int?
+  Position          Int?
   baseexpenses      baseexpenses[]
   users             users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "expensecategories_ibfk_1")
 
