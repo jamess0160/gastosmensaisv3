@@ -4,7 +4,8 @@ import { prisma } from "@/database/prisma";
 export class DestinysUseCases extends BaseUseCase {
     getAllByUser(IdUser: number) {
         return this.prisma.destinys.findMany({
-            where: { IdUser }
+            where: { IdUser },
+            orderBy: { Position: "asc" }
         })
     }
 

@@ -4,7 +4,8 @@ import { prisma } from "@/database/prisma";
 export class ExpenseCategoriesUseCases extends BaseUseCase {
     getAllByUser(IdUser: number) {
         return this.prisma.expensecategories.findMany({
-            where: { IdUser }
+            where: { IdUser },
+            orderBy: { Position: "asc" }
         })
     }
 

@@ -4,7 +4,8 @@ import type { prisma } from "@/database/prisma";
 export class BanksUseCases extends BaseUseCase {
     getAllByUser(IdUser: number) {
         return this.prisma.banks.findMany({
-            where: { IdUser }
+            where: { IdUser },
+            orderBy: { Position: "asc" }
         })
     }
 
