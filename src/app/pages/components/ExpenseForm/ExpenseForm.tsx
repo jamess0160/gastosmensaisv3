@@ -13,6 +13,7 @@ import { CreateTypes } from "@/database/CreateTypes"
 export default function ExpenseForm(props: FormProps) {
     let form = useForm<CreateTypes.CreateExpense>({
         defaultValues: {
+            Type: "Default",
             IdsDestinys: [],
             ...props.editItem
         }
@@ -28,6 +29,7 @@ export default function ExpenseForm(props: FormProps) {
         <div className={styles.dialog}>
             <DialogTitle color={"white"}>{props.editItem ? "Editar gasto" : "Novo gasto"}</DialogTitle>
             <form
+                autoComplete="off"
                 onSubmit={form.handleSubmit((data) => expenseFormEventsEvents.onSubmit(data, props.setFormState, form.reset, setIsLoading, Boolean(props.editItem), props.force))}
                 className={styles.form}
             >
