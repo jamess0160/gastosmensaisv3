@@ -4,7 +4,7 @@ CREATE TABLE `nfeexpenses` (
     `DanfeCode` varchar(255),
     `Company` varchar(255),
     `IdBaseExpense` INT NOT NULL UNIQUE,
-    FOREIGN KEY (`IdBaseExpense`) REFERENCES `BaseExpenses`(`IdBaseExpense`) ON DELETE CASCADE
+    FOREIGN KEY (`IdBaseExpense`) REFERENCES `baseexpenses`(`IdBaseExpense`) ON DELETE CASCADE
 );
 
 CREATE TABLE `nfeitems` (
