@@ -23,9 +23,9 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         return prisma.$transaction(async (tx) => {
             await this.clearExpenseDestinys(tx, BaseExpense.IdBaseExpense)
 
-            // if (createExpenseData.Type === "NFE") {
-            //     return new NfeExpensesUseCases(tx).UpdateNfeExpenses.run(IdUser, createExpenseData)
-            // }
+            if (createExpenseData.Type === "NFE") {
+                return new NfeExpensesUseCases(tx).UpdateNfeExpenses.run(BaseExpense, createExpenseData)
+            }
 
             await this.updateBaseExpense(tx, BaseExpense, createExpenseData)
 
@@ -47,7 +47,7 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         return new ExpenseDestinysUseCases(tx).deleteExpenseChilds(IdBaseExpense)
     }
 
-    private updateBaseExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
+    public updateBaseExpense(tx: UtilTypes.PrismaTransaction, BaseExpense: baseexpenses, createExpenseData: CreateTypes.CreateExpense) {
         return new BaseExpensesUseCases(tx).update(BaseExpense.IdBaseExpense, {
             Description: createExpenseData.Description,
             IdBank: parseInt(createExpenseData.IdBank),

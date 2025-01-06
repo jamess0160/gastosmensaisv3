@@ -1,16 +1,16 @@
 import type { prisma } from "@/database/prisma";
 import { BaseUseCase } from "../../base/baseUseCase";
 import { CreateNfeExpenses } from "./createNfeExpense/createNfeExpense";
+import { UpdateNfeExpenses } from "./UpdateNfeExpenses/UpdateNfeExpenses";
 
 export class NfeExpensesUseCases extends BaseUseCase {
 
     public readonly CreateNfeExpenses = new CreateNfeExpenses(this)
+    public readonly UpdateNfeExpenses = new UpdateNfeExpenses(this)
 
-    getFirstByBaseExpense(IdBaseExpenses: number[]) {
+    getFirstByBaseExpense(IdBaseExpense: number) {
         return this.prisma.nfeexpenses.findFirst({
-            where: {
-                IdBaseExpense: { in: IdBaseExpenses }
-            },
+            where: { IdBaseExpense },
             orderBy: {
                 IdNfeExpense: "desc"
             }

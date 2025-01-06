@@ -48,6 +48,7 @@ export class BaseExpensesUseCases extends BaseUseCase {
             this.prisma.defaultexpenses.deleteMany({ where: { IdBaseExpense } }),
             this.prisma.fixedexpenses.deleteMany({ where: { IdBaseExpense } }),
             this.prisma.installmentexpenses.deleteMany({ where: { IdBaseExpense } }),
+            this.prisma.nfeexpenses.deleteMany({ where: { IdBaseExpense } }),
         ])
     }
 }

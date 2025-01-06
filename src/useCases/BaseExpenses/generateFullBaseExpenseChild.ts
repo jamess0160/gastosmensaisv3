@@ -1,4 +1,4 @@
-import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses, nfeexpenses } from "@prisma/client"
+import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses, nfeexpenses, nfeitems } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases";
@@ -89,7 +89,11 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             },
             include: {
                 defaultexpenses: true,
-                nfeexpenses: true,
+                nfeexpenses: {
+                    include: {
+                        nfeitems: true
+                    }
+                },
                 banks: true,
                 expensedestinys: {
                     include: {
@@ -185,6 +189,10 @@ interface FullBaseExpense extends baseexpenses {
     installmentexpenses: installmentexpenses[]
 }
 
+interface NfeExpense extends nfeexpenses {
+    nfeitems: nfeitems[]
+}
+
 export interface FullBaseExpenseChild extends baseexpenses {
     expensedestinys: ExpenseDestinys[]
     banks: banks | null
@@ -208,7 +216,7 @@ export interface InstallmentExpenseChild extends FullBaseExpenseChild {
 }
 
 export interface NfeExpenseChild extends FullBaseExpenseChild {
-    child: nfeexpenses
+    child: NfeExpense
 }
 
 //#endregion
