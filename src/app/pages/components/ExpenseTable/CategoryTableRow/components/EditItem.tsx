@@ -39,6 +39,16 @@ function generateCreateExpense(item: EditItemProps['item']): Partial<CreateTypes
         Price: clientUtilsUseCases.GetExpensePrice(item, { split: false }).toString(),
     }
 
+    if (clientUtilsUseCases.GetExpenseType.isNfe(item)) {
+        let defaultData: Partial<CreateTypes.CreateExpense> = {
+            Type: "NFE",
+            ExpenseDate: item.child.ExpenseDate ? moment(item.child.ExpenseDate).format("YYYY-MM-DD") : undefined,
+            DanfeCode: item.child.DanfeCode || undefined,
+        }
+
+        return Object.assign(base, defaultData)
+    }
+
     if (clientUtilsUseCases.GetExpenseType.isDefault(item)) {
         let defaultData: Partial<CreateTypes.CreateExpense> = {
             Type: "Default",
