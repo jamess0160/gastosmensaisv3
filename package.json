@@ -19,6 +19,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "dom-parser": "^1.1.5",
     "dotenv": "^16.4.1",
     "jose": "^5.9.6",
     "md5": "^2.3.0",
