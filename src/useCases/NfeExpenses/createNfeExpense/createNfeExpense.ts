@@ -1,7 +1,7 @@
 import { BaseSection } from "@/base/baseSection";
 import { CreateTypes } from "@/database/CreateTypes";
 import { NfeExpensesUseCases } from "../NfeExpensesUseCases";
-import { ExtractNfeData } from "./ExtractNfeData/ExtractNfeData";
+import { ExtractNfeData } from "../ExtractNfeData/ExtractNfeData";
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
