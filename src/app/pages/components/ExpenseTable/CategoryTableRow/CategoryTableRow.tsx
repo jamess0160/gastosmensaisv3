@@ -2,29 +2,30 @@
 
 import { Checkbox, CircularProgress, IconButton, TableCell, TableRow } from "@mui/material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
-import { Delete } from "@mui/icons-material"
+import { Delete, ViewList } from "@mui/icons-material"
 import { useState } from "react";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
 import moment from "moment";
 import { Categories } from "@/useCases/Expenses/sections/GetCategoriesData";
-import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
+import { FullBaseExpenseChild, NfeExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
 import { categoriasEvents } from "../events";
 import { EmptyCell } from "./EmptyRow";
+import { NfePopUp } from "./components/NfePopUp";
 
 //#region Functions 
 
-const cellClass = "text-white text-nowrap text-clip w-1/5"
+export const defaultCellClass = "text-white text-nowrap text-clip w-1/5"
 
 export default function CategoryTableRow(props: TableRowProps) {
     let isSplit = props.type === "pessoal" && props.item.expensedestinys.length > 1
 
     return (
-        <TableRow className={isSplit ? "bg-default" : ""}>
-            <TableCell className={cellClass}> {getFirstCollumnData(props)} </TableCell>
-            <TableCell className={cellClass}> {props.item.Description} </TableCell>
-            <TableCell className={cellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item, { split: props.type === "pessoal" }).toFixed(2)}`} </TableCell>
-            <TableCell className={cellClass} title={getDestinyBankColumnData(props.item, props.type, { full: true })} > {getDestinyBankColumnData(props.item, props.type)} </TableCell>
+        <TableRow className={isSplit ? "bg-default bg-opacity-60" : ""}>
+            <TableCell className={defaultCellClass}> {getFirstCollumnData(props)} </TableCell>
+            <TableCell className={defaultCellClass}> {props.item.Description} </TableCell>
+            <TableCell className={defaultCellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item, { split: props.type === "pessoal" }).toFixed(2)}`} </TableCell>
+            <TableCell className={defaultCellClass} title={getDestinyBankColumnData(props.item, props.type, { full: true })} > {getDestinyBankColumnData(props.item, props.type)} </TableCell>
             <LastCell {...props} />
         </TableRow>
     )
@@ -40,7 +41,7 @@ function LastCell(props: TableRowProps) {
 
     if (props.type === "pessoal" && splitCount && splitCount > 1) {
         return (
-            <TableCell className={cellClass}>
+            <TableCell className={defaultCellClass}>
                 <div className="flex items-center justify-end leading-6 text-nowrap">
                     {formatDestinys(props.item)}
                 </div>
@@ -49,8 +50,9 @@ function LastCell(props: TableRowProps) {
     }
 
     return (
-        <TableCell className={cellClass}>
+        <TableCell className={defaultCellClass}>
             <div className="flex items-center justify-end">
+                {clientUtilsUseCases.GetExpenseType.isNfe(props.item) && <OpenNfePopUp item={props.item} />}
                 <ChangeActiveState item={props.item} force={props.force} />
                 <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
                 <DeleteItem item={props.item} force={props.force} />
@@ -110,6 +112,19 @@ function formatDestinys(item: FullBaseExpenseChild, options?: { full: boolean })
 //#endregion
 
 //#region Components
+
+function OpenNfePopUp({ item }: { item: NfeExpenseChild }) {
+    let [popUpOpen, setPopUpOpen] = useState(false)
+
+    return (
+        <>
+            <IconButton className="py-0" onClick={() => setPopUpOpen(true)}>
+                <ViewList color="primary" />
+            </IconButton>
+            <NfePopUp open={popUpOpen} item={item} setOpen={setPopUpOpen} />
+        </>
+    )
+}
 
 function ChangeActiveState({ item, force }: ComponentsProps) {
     let [loadingState, setLodingState] = useState(false)

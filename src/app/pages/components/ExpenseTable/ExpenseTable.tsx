@@ -1,6 +1,6 @@
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
-import CategoryTableRow from "./CategoryTableRow/CategoryTableRow"
-import { Table, TableBody, TableContainer } from "@mui/material"
+import CategoryTableRow, { defaultCellClass } from "./CategoryTableRow/CategoryTableRow"
+import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { EmptyRow } from "./CategoryTableRow/EmptyRow"
 import { FieldsData } from "../ExpenseForm/ExpenseForm"
@@ -28,7 +28,16 @@ export function ExpenseTable(props: ExpenseTableProps) {
     return (
         <TableContainer className="bg-default !bg-opacity-50">
             <Table>
-                <TableBody>{tableRows}</TableBody>
+                <TableBody>
+                    <TableRow>
+                        <TableCell className={defaultCellClass + " bg-default"}>Data</TableCell>
+                        <TableCell className={defaultCellClass + " bg-default"}>Descrição</TableCell>
+                        <TableCell className={defaultCellClass + " bg-default"}>Preço</TableCell>
+                        <TableCell className={defaultCellClass + " bg-default"}>{props.type ? props.type === "banco" ? "Destino" : "Banco" : "Destino / Banco"}</TableCell>
+                        <TableCell className={defaultCellClass + " bg-default"}></TableCell>
+                    </TableRow>
+                    {tableRows}
+                </TableBody>
             </Table>
         </TableContainer>
     )
