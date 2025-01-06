@@ -36,6 +36,7 @@ model baseexpenses {
   expensedestinys     expensedestinys[]
   fixedexpenses       fixedexpenses[]
   installmentexpenses installmentexpenses[]
+  nfeexpenses         nfeexpenses?
 
   @@index([IdBank], map: "IdBank")
   @@index([IdExpenseCategory], map: "IdExpenseCategory")
@@ -168,4 +169,27 @@ model usersauth {
   users      users   @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "usersauth_ibfk_1")
 
   @@index([IdUser], map: "IdUser")
+}
+
+model nfeexpenses {
+  IdNfeExpense  Int          @id @default(autoincrement())
+  ExpenseDate   DateTime     @default(dbgenerated("(curdate())")) @db.DateTime(0)
+  IdBaseExpense Int          @unique(map: "IdBaseExpense")
+  DanfeCode     String?      @db.VarChar(255)
+  Company       String?      @db.VarChar(255)
+  baseexpenses  baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "nfeexpenses_ibfk_1")
+  nfeitems      nfeitems[]
+}
+
+model nfeitems {
+  IdNfeItem    Int         @id @default(autoincrement())
+  IdNfeExpense Int
+  Description  String?     @db.VarChar(255)
+  Quantity     Float?      @db.Float
+  UN           String?     @db.VarChar(255)
+  UnityValue   Float?      @db.Float
+  TotalValue   Float?      @db.Float
+  nfeexpenses  nfeexpenses @relation(fields: [IdNfeExpense], references: [IdNfeExpense], onDelete: Cascade, onUpdate: NoAction, map: "nfeitems_ibfk_1")
+
+  @@index([IdNfeExpense], map: "IdNfeExpense")
 }
