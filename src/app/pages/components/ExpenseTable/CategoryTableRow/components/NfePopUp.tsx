@@ -54,9 +54,9 @@ export function NfePopUp(props: ComponentsProps) {
 }
 
 function generateTableRows(item: NfeExpenseChild) {
-    return item.child.nfeitems.map((item) => {
+    return item.child.nfeitems.map((item, index) => {
         return (
-            <TableRow>
+            <TableRow key={index}>
                 <TableCell className={defaultCellClass}> {item.Description} </TableCell>
                 <TableCell className={defaultCellClass}> {item.Quantity} </TableCell>
                 <TableCell className={defaultCellClass}> {item.UN} </TableCell>
