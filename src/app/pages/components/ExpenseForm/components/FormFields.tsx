@@ -12,7 +12,7 @@ import { CreateTypes } from "@/database/CreateTypes"
 
 export default function FormFields(props: FormFieldsProps) {
     let { form, fieldsData, editItem } = props
-    let [checkboxState, setCheckboxState] = useState<checkboxState>(editItem?.Type || null)
+    let [checkboxState, setCheckboxState] = useState<CreateTypes.CreateExpense['Type']>(editItem?.Type || "Default")
 
     function onCheckBoxChange(newValue: CreateTypes.CreateExpense['Type']) {
         form.setValue("Type", newValue)
@@ -38,12 +38,15 @@ export default function FormFields(props: FormFieldsProps) {
                         <input checked={checkboxState === "Fixed"} onChange={() => onCheckBoxChange("Fixed")} type="checkbox"></input>
                         Fixo
                     </div>
+                    <div>
+                        <input checked={checkboxState === "NFE"} onChange={() => onCheckBoxChange("NFE")} type="checkbox"></input>
+                        NFE
+                    </div>
                 </div>
             </div>
 
             {getCheckBoxStateField(checkboxState, form)}
 
-            <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
             <Select
                 label="Destino"
                 form={form}
@@ -67,9 +70,32 @@ export default function FormFields(props: FormFieldsProps) {
     )
 }
 
-function getCheckBoxStateField(checkboxState: checkboxState, form: FormFieldsProps['form']) {
+function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'], form: FormFieldsProps['form']) {
+
     if (checkboxState === "Default") {
-        return <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
+        return (
+            <>
+                <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+            </>
+        )
+    }
+
+    if (checkboxState === "Fixed") {
+        return (
+            <>
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+            </>
+        )
+    }
+
+    if (checkboxState === "NFE") {
+        return (
+            <>
+                <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
+                <Input label="DANFE" inputProps={{ ...form.register("DanfeCode", { required: true }) }} />
+            </>
+        )
     }
 
     if (checkboxState === "Installment") {
@@ -77,6 +103,7 @@ function getCheckBoxStateField(checkboxState: checkboxState, form: FormFieldsPro
             <>
                 <Input label="Parcela atual" inputProps={{ ...form.register("CurrentInstallment", { required: true }), type: "number" }} />
                 <Input label="Parcelas totais" inputProps={{ ...form.register("MaxInstallment", { required: true }), type: "number" }} />
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
             </>
         )
     }
@@ -91,7 +118,5 @@ interface FormFieldsProps {
     fieldsData: FieldsData
     editItem?: Partial<CreateTypes.CreateExpense>
 }
-
-type checkboxState = "Default" | "Installment" | "Fixed" | null
 
 //#endregion
