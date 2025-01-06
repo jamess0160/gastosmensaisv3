@@ -1,4 +1,5 @@
 import { CreateTypes } from "@/database/CreateTypes";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import axios from "axios";
 import { ChangeEvent, Dispatch } from "react";
 import { UseFormReset } from "react-hook-form";
@@ -7,17 +8,23 @@ class ExpenseFormEvents {
 
     async onSubmit(data: CreateTypes.CreateExpense, setFormState: Dispatch<boolean>, resetForm: UseFormReset<CreateTypes.CreateExpense>, setIsLoading: Dispatch<boolean>, edit: boolean, force: () => Promise<void>) {
         setIsLoading(true)
+        try {
 
-        if (edit) {
-            await this.editExpense(data)
+            if (edit) {
+                await this.editExpense(data)
+                setFormState(false)
+            } else {
+                await this.createExpense(data)
+            }
+
+            await force()
+            resetForm()
+        } catch (error) {
+            clientUtilsUseCases.HandleError.run(error, "Ocorreu um erro ao salvar o gasto")
             setFormState(false)
-        } else {
-            await this.createExpense(data)
+        } finally {
+            setIsLoading(false)
         }
-
-        await force()
-        setIsLoading(false)
-        resetForm()
     }
 
     private editExpense(data: CreateTypes.CreateExpense) {
