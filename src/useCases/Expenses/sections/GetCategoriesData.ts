@@ -1,12 +1,12 @@
 import { BaseSection } from "@/base/baseSection"
-import { ExpensesUseCase } from "./ExpensesUseCase"
-import { FullBaseExpenseChild } from "../BaseExpenses/generateFullBaseExpenseChild"
-import { expenseCategoriesUseCases } from "../ExpenseCategories/ExpenseCategoriesUseCases"
+import { ExpensesUseCase } from "../ExpensesUseCase"
+import { FullBaseExpenseChild } from "../../BaseExpenses/generateFullBaseExpenseChild"
+import { expenseCategoriesUseCases } from "../../ExpenseCategories/ExpenseCategoriesUseCases"
 import { expensecategories } from "@prisma/client"
-import { banksUseCases } from "../Banks/BanksUseCases"
-import { baseExpensesUseCases } from "../BaseExpenses/BaseExpensesUseCases"
-import { destinysUseCases } from "../Destinys/DestinysUseCases"
-import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases"
+import { banksUseCases } from "../../Banks/BanksUseCases"
+import { baseExpensesUseCases } from "../../BaseExpenses/BaseExpensesUseCases"
+import { destinysUseCases } from "../../Destinys/DestinysUseCases"
+import { clientUtilsUseCases } from "../../Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 
 export class GetCategoriesData extends BaseSection<ExpensesUseCase> {
 

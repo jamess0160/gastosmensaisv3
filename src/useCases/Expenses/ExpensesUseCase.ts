@@ -2,9 +2,9 @@ import { BaseUseCase } from "../../base/baseUseCase"
 import { baseExpensesUseCases } from "../BaseExpenses/BaseExpensesUseCases"
 import { fixedExpensesUseCases } from "../FixedExpenses/FixedExpensesUseCases"
 import { serverUtilsUseCases } from "../Utils/ServerUtilsUseCases/ServerUtilsUseCases"
-import { GetCategoriesData } from "./GetCategoriesData"
-import { CreateExpense } from "./createExpense"
-import { UpdateExpense } from "./updateExpense"
+import { GetCategoriesData } from "./sections/GetCategoriesData"
+import { CreateExpense } from "./sections/createExpense"
+import { UpdateExpense } from "./sections/updateExpense"
 
 export class ExpensesUseCase extends BaseUseCase {
     CreateExpense = new CreateExpense(this)

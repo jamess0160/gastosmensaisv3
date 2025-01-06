@@ -1,16 +1,17 @@
 import { prisma } from '@/database/prisma'
 import { BaseSection } from "@/base/baseSection";
-import { ExpensesUseCase } from './ExpensesUseCase';
+import { ExpensesUseCase } from '../ExpensesUseCase';
 import { BaseExpensesUseCases, baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import { DefaultExpensesUseCases, defaultExpensesUseCases } from "@/useCases/DefaultExpenses/DefaultExpensesUseCases";
 import { FixedExpensesUseCases, fixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUseCases";
 import { InstallmentExpensesUseCases, installmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
 import { baseexpenses } from '@prisma/client';
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
-import { serverUtilsUseCases } from '../Utils/ServerUtilsUseCases/ServerUtilsUseCases';
+import { clientUtilsUseCases } from '../../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
+import { serverUtilsUseCases } from '../../Utils/ServerUtilsUseCases/ServerUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
-import { ExpenseDestinysUseCases } from '../ExpenseDestinys/ExpenseDestinysUseCases';
+import { ExpenseDestinysUseCases } from '../../ExpenseDestinys/ExpenseDestinysUseCases';
+import { NfeExpensesUseCases } from '@/useCases/NfeExpenses/NfeExpensesUseCases';
 
 export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -21,6 +22,11 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
         return prisma.$transaction(async (tx) => {
             await this.clearExpenseDestinys(tx, BaseExpense.IdBaseExpense)
+
+            // if (createExpenseData.Type === "NFE") {
+            //     return new NfeExpensesUseCases(tx).UpdateNfeExpenses.run(IdUser, createExpenseData)
+            // }
+
             await this.updateBaseExpense(tx, BaseExpense, createExpenseData)
 
             if (createExpenseData.Type === "Default") {

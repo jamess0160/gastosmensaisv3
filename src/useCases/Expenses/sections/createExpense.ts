@@ -1,19 +1,25 @@
 import { prisma } from '@/database/prisma'
 import { BaseSection } from "@/base/baseSection";
-import { ExpensesUseCase } from './ExpensesUseCase';
+import { ExpensesUseCase } from '../ExpensesUseCase';
 import { BaseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
 import { DefaultExpensesUseCases } from "@/useCases/DefaultExpenses/DefaultExpensesUseCases";
 import { FixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUseCases";
 import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
 import moment from 'moment';
-import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
+import { clientUtilsUseCases } from '../../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
+import { NfeExpensesUseCases } from '../../NfeExpenses/NfeExpensesUseCases';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{
 
     async run(IdUser: number, createExpenseData: CreateTypes.CreateExpense) {
         return prisma.$transaction(async (tx) => {
+
+            if (createExpenseData.Type === "NFE") {
+                return new NfeExpensesUseCases(tx).CreateNfeExpenses.run(IdUser, createExpenseData)
+            }
+
             let { IdBaseExpense } = await this.createBaseExpense(tx, IdUser, createExpenseData)
 
             if (createExpenseData.Type === "Default") {
