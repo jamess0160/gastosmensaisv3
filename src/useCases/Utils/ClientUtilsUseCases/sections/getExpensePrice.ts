@@ -1,5 +1,5 @@
 import { ClientUtilsUseCases } from "../ClientUtilsUseCases";
-import type { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild } from "../../../BaseExpenses/generateFullBaseExpenseChild";
+import type { DefaultExpenseChild, FixedExpenseChild, FullBaseExpenseChild, InstallmentExpenseChild, NfeExpenseChild } from "../../../BaseExpenses/generateFullBaseExpenseChild";
 import { BaseSection } from "@/base/baseSection";
 
 export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{
@@ -10,6 +10,8 @@ export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{
         if (this.isFixed(expense)) return "fixed"
 
         if (this.isInstallment(expense)) return "installment"
+
+        if (this.isNfe(expense)) return "nfe"
 
         return "none"
     }
@@ -25,6 +27,10 @@ export class GetExpenseType extends BaseSection<ClientUtilsUseCases>{
     public isInstallment(expense: any): expense is InstallmentExpenseChild {
         return Boolean(expense?.child?.IdInstallmentExpense)
     }
+
+    public isNfe(expense: any): expense is NfeExpenseChild {
+        return Boolean(expense?.child?.IdNfeExpense)
+    }
 }
 
-export type AutoGetExpenseType = "default" | "fixed" | "installment" | "none"
+export type AutoGetExpenseType = "default" | "fixed" | "installment" | "nfe" | "none"

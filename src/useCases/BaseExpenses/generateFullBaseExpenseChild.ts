@@ -1,4 +1,4 @@
-import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses } from "@prisma/client"
+import { banks, baseexpenses, defaultexpenses, destinys, expensedestinys, fixedexpenses, installmentexpenses, nfeexpenses } from "@prisma/client"
 import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases";
@@ -14,8 +14,9 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             .map<FullBaseExpenseChild>((item) => {
                 return {
                     ...item,
-                    child: item.defaultexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
+                    child: item.defaultexpenses || item.nfeexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
                     defaultexpenses: undefined,
+                    nfeexpenses: undefined,
                     fixedexpenses: undefined,
                     installmentexpenses: undefined,
                 }
@@ -88,6 +89,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
             },
             include: {
                 defaultexpenses: true,
+                nfeexpenses: true,
                 banks: true,
                 expensedestinys: {
                     include: {
@@ -146,6 +148,7 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
         let values: Record<AutoGetExpenseType, number> = {
             none: 0,
             default: 1,
+            nfe: 1,
             installment: 2,
             fixed: 3,
         }
@@ -177,6 +180,7 @@ interface FullBaseExpense extends baseexpenses {
     expensedestinys: ExpenseDestinys[]
     banks: banks | null
     defaultexpenses: defaultexpenses | null
+    nfeexpenses: nfeexpenses | null
     fixedexpenses: fixedexpenses[]
     installmentexpenses: installmentexpenses[]
 }
@@ -184,7 +188,7 @@ interface FullBaseExpense extends baseexpenses {
 export interface FullBaseExpenseChild extends baseexpenses {
     expensedestinys: ExpenseDestinys[]
     banks: banks | null
-    child: defaultexpenses | fixedexpenses | installmentexpenses | undefined
+    child: defaultexpenses | fixedexpenses | installmentexpenses | nfeexpenses | undefined
 }
 
 interface ExpenseDestinys extends expensedestinys {
@@ -201,6 +205,10 @@ export interface FixedExpenseChild extends FullBaseExpenseChild {
 
 export interface InstallmentExpenseChild extends FullBaseExpenseChild {
     child: installmentexpenses
+}
+
+export interface NfeExpenseChild extends FullBaseExpenseChild {
+    child: nfeexpenses
 }
 
 //#endregion

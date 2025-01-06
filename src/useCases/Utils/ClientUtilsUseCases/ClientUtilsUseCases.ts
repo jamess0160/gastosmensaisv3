@@ -20,7 +20,7 @@ export class ClientUtilsUseCases {
             return 0
         }
 
-        if (this.GetExpenseType.isDefault(expense)) {
+        if (this.GetExpenseType.isDefault(expense) || this.GetExpenseType.isNfe(expense)) {
             return (expense.Price) / splitCount
         }
 
