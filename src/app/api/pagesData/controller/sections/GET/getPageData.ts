@@ -6,7 +6,7 @@ import { cashInflowsUseCases } from "@/useCases/CashInflows/CashInflowsUseCases"
 import { destinysUseCases } from "@/useCases/Destinys/DestinysUseCases";
 import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
-import { Categories } from "@/useCases/Expenses/GetCategoriesData";
+import { Categories } from "@/useCases/Expenses/sections/GetCategoriesData";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
 

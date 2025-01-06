@@ -2,7 +2,7 @@
 
 import { CircularProgress, Container } from "@mui/material";
 import { usePooling } from "@/app/utils/usePooling";
-import { Categories } from "@/useCases/Expenses/GetCategoriesData";
+import { Categories } from "@/useCases/Expenses/sections/GetCategoriesData";
 import { UtilTypes } from "@/database/UtilTypes";
 import ExpenseGroup from "./components/ExpenseGroup";
 

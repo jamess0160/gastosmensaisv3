@@ -1,4 +1,4 @@
-import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData";
+import { Categories, CategoryData } from "@/useCases/Expenses/sections/GetCategoriesData";
 import { Dispatch, useState } from "react";
 import ExpenseType from "./expenseType";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";

@@ -1,5 +1,5 @@
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
-import { Categories, CategoryData } from "@/useCases/Expenses/GetCategoriesData"
+import { Categories, CategoryData } from "@/useCases/Expenses/sections/GetCategoriesData"
 import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable"
 
 //#region Functions 

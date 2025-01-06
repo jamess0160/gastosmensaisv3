@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
 import moment from "moment";
-import { Categories } from "@/useCases/Expenses/GetCategoriesData";
+import { Categories } from "@/useCases/Expenses/sections/GetCategoriesData";
 import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
 import { categoriasEvents } from "../events";
 import { EmptyCell } from "./EmptyRow";
@@ -61,7 +61,7 @@ function LastCell(props: TableRowProps) {
 
 function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
-    if (clientUtilsUseCases.GetExpenseType.isDefault(item)) {
+    if (clientUtilsUseCases.GetExpenseType.isDefault(item) || clientUtilsUseCases.GetExpenseType.isNfe(item)) {
         return item.child.ExpenseDate ? new Date(item.child.ExpenseDate).toLocaleDateString("pt-br") : ""
     }
 
