@@ -1,14 +1,15 @@
-import { baseExpensesUseCases } from "@/useCases/BaseExpenses/BaseExpensesUseCases";
-import { FullBaseExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
+import { nfeitems } from "@prisma/client";
+import { nfeExpensesUseCases } from "@/useCases/NfeExpenses/NfeExpensesUseCases";
+import { NfeReportItem } from "@/useCases/NfeExpenses/GetReports/GetReports";
 
-export class GenerateReports {
+export class GenerateNfeReports {
 
     public async run(request: NextRequest) {
-        let body = await request.json() as RelatorioFormData
+        let body = await request.json() as NfeReportFormData
 
         let { start, end } = this.getStartEnd(body)
 
@@ -18,7 +19,7 @@ export class GenerateReports {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
         }
 
-        let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body, Boolean(body.date))
+        let expenseData = await nfeExpensesUseCases.GetReports.run(start, end, session.IdUser, body, Boolean(body.date))
 
         let chartData = this.generateChartData(expenseData, body.interval)
 
@@ -26,8 +27,8 @@ export class GenerateReports {
 
         let labels = Array.from(new Set(dateArray.map((item) => this.getDateLabel(item, body.interval))))
 
-        return NextResponse.json(<RelatorioData>{
-            chartData: labels.reduce<RelatorioChartData>((old, label) => {
+        return NextResponse.json(<NfeReportData>{
+            chartData: labels.reduce<NfeReportChartData>((old, label) => {
 
                 old.labels.push(label)
                 old.data.push(chartData[label] ? Number(chartData[label].toFixed(2)) : 0)
@@ -38,7 +39,7 @@ export class GenerateReports {
         })
     }
 
-    private getStartEnd(body: RelatorioFormData) {
+    private getStartEnd(body: NfeReportFormData) {
 
         if (body.dateStart && body.dateEnd) {
             let start = moment(clientUtilsUseCases.handleClientDate(body.dateStart)).startOf("day")
@@ -59,24 +60,24 @@ export class GenerateReports {
         throw new Error("Body sem (dateStart, dateEnd) ou date")
     }
 
-    private generateChartData(expenseData: FullBaseExpenseChild[], interval: RelatorioFormData['interval']) {
+    private generateChartData(expenseData: NfeReportItem[], interval: NfeReportFormData['interval']) {
         return expenseData.reduce<Record<string, number>>((old, item) => {
 
-            let label = this.getDateLabel(moment(clientUtilsUseCases.GetExpenseDate(item)), interval)
+            let label = this.getDateLabel(moment(item.ExpenseDate), interval)
 
             if (!old[label]) {
                 old[label] = 0
             }
 
-            old[label] += clientUtilsUseCases.GetExpensePrice(item, { split: false })
+            old[label] += item.TotalValue || 0
 
             return old
         }, {})
     }
 
-    private generateDateArray(expenseData: FullBaseExpenseChild[]) {
+    private generateDateArray(expenseData: NfeReportItem[]) {
 
-        let dates = expenseData.map((item) => clientUtilsUseCases.GetExpenseDate(item).getTime())
+        let dates = expenseData.map((item) => new Date(item.ExpenseDate).getTime())
 
         let arrayStart = moment(Math.min(...dates))
         let arrayEnd = moment(Math.max(...dates))
@@ -94,7 +95,7 @@ export class GenerateReports {
         return dateArray;
     }
 
-    private getDateLabel(expenseDate: moment.Moment, interval: RelatorioFormData['interval']) {
+    private getDateLabel(expenseDate: moment.Moment, interval: NfeReportFormData['interval']) {
         if (interval === 'mes') {
             return clientUtilsUseCases.months[expenseDate.get("month")]
         }
@@ -117,23 +118,22 @@ export class GenerateReports {
 
 //#region Interfaces / Types 
 
-export interface RelatorioFormData {
+export interface NfeReportFormData {
     interval: "mes" | "semana" | "dia"
     date?: string
     dateStart?: string
     dateEnd?: string
     description?: string
-    IdExpenseCategory?: string
-    IdDestiny?: string
+    IdNfeItemCategory?: string
     IdBank?: string
 }
 
-export interface RelatorioData {
-    tableData: FullBaseExpenseChild[]
-    chartData: RelatorioChartData
+export interface NfeReportData {
+    tableData: nfeitems[]
+    chartData: NfeReportChartData
 }
 
-interface RelatorioChartData {
+interface NfeReportChartData {
     labels: string[]
     data: number[]
 }

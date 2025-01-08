@@ -3,11 +3,11 @@ import { BaseSection } from "@/base/baseSection";
 import { clientUtilsUseCases } from '../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import moment from 'moment';
 import { FullBaseExpenseChild, GenerateFullBaseExpenseChildOptions } from './generateFullBaseExpenseChild';
-import { RelatorioFormData } from '@/app/api/relatorios/controller/sections/POST/generateReports';
+import { ExpenseReportFormData } from '@/app/api/relatorios/controller/sections/POST/generateExpenseReports';
 
 export class GetReports extends BaseSection<BaseExpensesUseCases> {
 
-    async run(start: moment.Moment, end: moment.Moment, IdUser: number, body: RelatorioFormData, useMonth: boolean) {
+    async run(start: moment.Moment, end: moment.Moment, IdUser: number, body: ExpenseReportFormData, useMonth: boolean) {
 
         let monthYears = this.getMonthYears(start, end)
 
@@ -55,7 +55,7 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         return monthYears
     }
 
-    private generateOptions(body: RelatorioFormData): GenerateFullBaseExpenseChildOptions {
+    private generateOptions(body: ExpenseReportFormData): GenerateFullBaseExpenseChildOptions {
 
         let options: Partial<GenerateFullBaseExpenseChildOptions> = {}
 

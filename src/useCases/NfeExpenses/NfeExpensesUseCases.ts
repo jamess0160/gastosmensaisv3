@@ -2,11 +2,13 @@ import type { prisma } from "@/database/prisma";
 import { BaseUseCase } from "../../base/baseUseCase";
 import { CreateNfeExpenses } from "./createNfeExpense/createNfeExpense";
 import { UpdateNfeExpenses } from "./UpdateNfeExpenses/UpdateNfeExpenses";
+import { GetReports } from "./GetReports/GetReports";
 
 export class NfeExpensesUseCases extends BaseUseCase {
 
     public readonly CreateNfeExpenses = new CreateNfeExpenses(this)
     public readonly UpdateNfeExpenses = new UpdateNfeExpenses(this)
+    public readonly GetReports = new GetReports(this)
 
     getFirstByBaseExpense(IdBaseExpense: number) {
         return this.prisma.nfeexpenses.findFirst({
