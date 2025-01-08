@@ -1,5 +1,5 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Assessment, Settings, Logout, DisplaySettings } from '@mui/icons-material'
+import { Settings, Logout, DisplaySettings, Receipt, AccountBalance } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
@@ -56,12 +56,20 @@ export default function Header({ month, year, userName }: HeaderProps) {
                         </ListItemIcon>
                         <ListItemText>LogOut</ListItemText>
                     </MenuItem>
-                    <Link href={"/pages/relatorios"} className="flex flex-row no-underline text-black">
+                    <Link href={"/pages/relatorios/gastos"} className="flex flex-row no-underline text-black">
                         <MenuItem>
                             <ListItemIcon>
-                                <Assessment fontSize="medium" />
+                                <AccountBalance fontSize="medium" />
                             </ListItemIcon>
-                            <ListItemText>Relatório</ListItemText>
+                            <ListItemText>Relatório de gastos</ListItemText>
+                        </MenuItem>
+                    </Link>
+                    <Link href={"/pages/relatorios/notas"} className="flex flex-row no-underline text-black">
+                        <MenuItem>
+                            <ListItemIcon>
+                                <Receipt fontSize="medium" />
+                            </ListItemIcon>
+                            <ListItemText>Relatório de notas</ListItemText>
                         </MenuItem>
                     </Link>
                     <Link href={"/pages/personalizacao"} className="flex flex-row no-underline text-black">

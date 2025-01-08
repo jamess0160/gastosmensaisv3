@@ -2,7 +2,7 @@
 
 import { Checkbox, CircularProgress, IconButton, TableCell, TableRow } from "@mui/material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
-import { Delete, ViewList } from "@mui/icons-material"
+import { Delete, Receipt } from "@mui/icons-material"
 import { useState } from "react";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
 import EditItem from "./components/EditItem";
@@ -119,7 +119,7 @@ function OpenNfePopUp({ item }: { item: NfeExpenseChild }) {
     return (
         <>
             <IconButton className="py-0" onClick={() => setPopUpOpen(true)}>
-                <ViewList color="primary" />
+                <Receipt color="primary" />
             </IconButton>
             <NfePopUp open={popUpOpen} item={item} setOpen={setPopUpOpen} />
         </>
