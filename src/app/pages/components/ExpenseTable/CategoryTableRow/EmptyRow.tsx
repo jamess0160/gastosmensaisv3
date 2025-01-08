@@ -14,5 +14,5 @@ export function EmptyRow() {
 }
 
 export function EmptyCell() {
-    return <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
+    return <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
 }

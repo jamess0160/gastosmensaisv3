@@ -119,10 +119,10 @@ function generateTableRows(tableData: (banks | false)[], setEdit: Dispatch<boole
 function EmptyRow() {
     return (
         <TableRow>
-            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
-            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
-            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
-            <TableCell className="text-slate-800 text-opacity-50 select-none">1</TableCell>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
         </TableRow>
     )
 }

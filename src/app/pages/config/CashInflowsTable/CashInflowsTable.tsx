@@ -22,7 +22,7 @@ export default async function CashInflowsTable(props: CashInflowsTableProps) {
 }
 
 function EmptyRow() {
-    let classes = "text-slate-800 text-opacity-50 select-none"
+    let classes = "text-default-light text-opacity-50 select-none"
 
     return (
         <TableRow>
