@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 8081",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prismaDev": "npx prisma db pull && npx prisma generate && npm run dev"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

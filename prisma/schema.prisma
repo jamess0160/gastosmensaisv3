@@ -133,6 +133,7 @@ model users {
   cashinflows       cashinflows[]
   destinys          destinys[]
   expensecategories expensecategories[]
+  nfeitemcategories nfeitemcategories[]
   sistemparams      sistemparams[]
   usersauth         usersauth[]
 }
@@ -174,22 +175,35 @@ model usersauth {
 model nfeexpenses {
   IdNfeExpense  Int          @id @default(autoincrement())
   ExpenseDate   DateTime     @default(dbgenerated("(curdate())")) @db.DateTime(0)
-  IdBaseExpense Int          @unique(map: "IdBaseExpense")
   DanfeCode     String?      @db.VarChar(255)
   Company       String?      @db.VarChar(255)
+  IdBaseExpense Int          @unique(map: "IdBaseExpense")
   baseexpenses  baseexpenses @relation(fields: [IdBaseExpense], references: [IdBaseExpense], onDelete: Cascade, onUpdate: NoAction, map: "nfeexpenses_ibfk_1")
   nfeitems      nfeitems[]
 }
 
 model nfeitems {
-  IdNfeItem    Int         @id @default(autoincrement())
-  IdNfeExpense Int
-  Description  String?     @db.VarChar(255)
-  Quantity     Float?      @db.Float
-  UN           String?     @db.VarChar(255)
-  UnityValue   Float?      @db.Float
-  TotalValue   Float?      @db.Float
-  nfeexpenses  nfeexpenses @relation(fields: [IdNfeExpense], references: [IdNfeExpense], onDelete: Cascade, onUpdate: NoAction, map: "nfeitems_ibfk_1")
+  IdNfeItem         Int                @id @default(autoincrement())
+  IdNfeExpense      Int
+  Description       String?            @db.VarChar(255)
+  Quantity          Float?             @db.Float
+  UN                String?            @db.VarChar(255)
+  UnityValue        Float?             @db.Float
+  TotalValue        Float?             @db.Float
+  IdNfeItemCategory Int?
+  nfeexpenses       nfeexpenses        @relation(fields: [IdNfeExpense], references: [IdNfeExpense], onDelete: Cascade, onUpdate: NoAction, map: "nfeitems_ibfk_1")
+  nfeitemcategories nfeitemcategories? @relation(fields: [IdNfeItemCategory], references: [IdNfeItemCategory], onUpdate: NoAction, map: "nfeitems_ibfk_2")
 
   @@index([IdNfeExpense], map: "IdNfeExpense")
+  @@index([IdNfeItemCategory], map: "IdNfeItemCategory")
+}
+
+model nfeitemcategories {
+  IdNfeItemCategory Int        @id @default(autoincrement())
+  IdUser            Int
+  Description       String     @db.VarChar(255)
+  users             users      @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "nfeitemcategories_ibfk_1")
+  nfeitems          nfeitems[]
+
+  @@index([IdUser], map: "IdUser")
 }
