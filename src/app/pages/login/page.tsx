@@ -22,6 +22,7 @@ export default function Page() {
         <div className="w-full h-screen flex flex-col justify-center max-md:justify-start max-md:pt-20 items-center">
             <h1>Gastos Mensais</h1>
             <form
+                autoComplete="off"
                 onSubmit={form.handleSubmit((data) => controller.login(data, setLoading))}
                 className="w-1/4 max-md:w-2/3 h-fit p-10 border rounded-lg flex flex-col gap-5"
                 style={{ backgroundColor: "#31464f" }}

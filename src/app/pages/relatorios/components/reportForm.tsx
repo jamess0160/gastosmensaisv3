@@ -7,7 +7,11 @@ import { RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST
 
 export function ReportForm(props: ReportFormProps) {
     return (
-        <form onSubmit={props.onSubmit} className="w-full">
+        <form
+            autoComplete="off"
+            className="w-full"
+            onSubmit={props.onSubmit}
+        >
 
             <div className="flex gap-10 max-md:flex-wrap justify-center mb-10">
                 <Select label="Intervalo" selectItems={intervalItems} form={props.form} formProp="interval" />

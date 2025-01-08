@@ -39,7 +39,11 @@ export function ExpenseCategoriesPage(props: ExpenseCategoriesPageProps) {
                     <div>
                         Carregando...
                     </div>
-                    : <form className="lg:w-1/3 flex flex-col max-md:items-center gap-5 p-5" onSubmit={handleSubmit(handleSubmitForm)}>
+                    : <form
+                        autoComplete="off"
+                        className="lg:w-1/3 flex flex-col max-md:items-center gap-5 p-5"
+                        onSubmit={handleSubmit(handleSubmitForm)}
+                    >
 
                         {Object.values(formState.errors).length !== 0 && (
                             <div className="mb-5 text-red-600">

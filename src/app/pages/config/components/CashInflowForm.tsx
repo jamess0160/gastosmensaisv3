@@ -21,7 +21,11 @@ export default function CashInflowForm(props: CashInflowFormProps) {
                     <DialogTitle align="center">{props.editItem ? "Editar entrada" : "Nova entrada"}</DialogTitle>
 
                     <DialogContent>
-                        <form className="flex flex-col gap-5 pt-5 items-center" onSubmit={form.handleSubmit((data) => configEvents.onSubmitForm(data, Boolean(props.editItem), props.setLoading))}>
+                        <form
+                            autoComplete="off"
+                            className="flex flex-col gap-5 pt-5 items-center"
+                            onSubmit={form.handleSubmit((data) => configEvents.onSubmitForm(data, Boolean(props.editItem), props.setLoading))}
+                        >
                             <Select
                                 form={form}
                                 formProp="IdsDestinys"

@@ -42,6 +42,7 @@ export default function CookieForm(props: CookieFormProps) {
     return (
         <div className="rounded-lg w-1/3 max-md:w-11/12 flex justify-center" style={{ backgroundColor: "#1E1F22" }} >
             <form
+                autoComplete="off"
                 className="w-10/12 flex flex-col gap-5 p-5 pt-10 items-center"
                 onSubmit={submitForm}
             >
