@@ -37,7 +37,7 @@ export class ClientUtilsUseCases {
 
     GetExpenseDate(expense: FullBaseExpenseChild) {
 
-        if (this.GetExpenseType.isDefault(expense)) {
+        if (this.GetExpenseType.isDefault(expense) || this.GetExpenseType.isNfe(expense)) {
             return expense.child.ExpenseDate
         }
 
