@@ -7,9 +7,9 @@ import { relatoriosEvents } from "../events";
 import { banks, destinys, expensecategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
-import { ExpenseTable } from "../../components/ExpenseTable/ExpenseTable";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { RelatorioData, RelatorioFormData } from "@/app/api/relatorios/controller/sections/POST/generateReports";
+import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable";
 
 //#region Functions 
 

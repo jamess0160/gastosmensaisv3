@@ -6,7 +6,7 @@ export class RelatoriosEvents {
     async search(params: searchParams) {
         params.setLoading(true)
 
-        let { data } = await axios.post<RelatorioData>("/api/relatorios", params.requestData)
+        let { data } = await axios.post<RelatorioData>("/api/relatorios/gastos", params.requestData)
 
         params.setTableData(data.tableData)
         params.setChartConfig(data.chartData)
