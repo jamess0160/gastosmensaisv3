@@ -63,7 +63,7 @@ export function ReportChart(props: ReportChartProps) {
                     labels: props.chartConfig.labels,
                     datasets: [
                         {
-                            label: "Gastos",
+                            label: "Notas",
                             data: props.chartConfig.data,
                             backgroundColor: "rgb(46, 90, 119)"
                         }

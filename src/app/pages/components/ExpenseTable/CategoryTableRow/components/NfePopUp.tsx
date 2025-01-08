@@ -1,13 +1,11 @@
 import { NfeExpenseChild } from "@/useCases/BaseExpenses/generateFullBaseExpenseChild"
-import { IconButton, Dialog, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material"
-import { defaultCellClass } from "../CategoryTableRow"
+import { IconButton, Dialog } from "@mui/material"
 import { Close } from "@mui/icons-material"
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { Dispatch, SetStateAction } from "react"
+import { NfeTable } from "../../../NfeTable/NfeTable"
 
 export function NfePopUp(props: ComponentsProps) {
-
-    const tableRows = generateTableRows(props.item)
 
     const closeClick = () => {
         props.setOpen(false)
@@ -33,54 +31,11 @@ export function NfePopUp(props: ComponentsProps) {
                 </div>
 
                 <div>
-                    <TableContainer>
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell className={defaultCellClass + " bg-default"}>Descrição</TableCell>
-                                    <TableCell className={defaultCellClass + " bg-default"}>Quantidade</TableCell>
-                                    <TableCell className={defaultCellClass + " bg-default"}>UN</TableCell>
-                                    <TableCell className={defaultCellClass + " bg-default"}>Valor Unitário</TableCell>
-                                    <TableCell className={defaultCellClass + " bg-default"}>Valor Total</TableCell>
-                                </TableRow>
-                                {tableRows}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <NfeTable nfeitems={props.item.child.nfeitems} />
                 </div>
             </div>
         </Dialog>
     )
-}
-
-function generateTableRows(item: NfeExpenseChild) {
-
-    let nfeitems = clientUtilsUseCases.handleTableData(item.child.nfeitems)
-
-    return nfeitems.map((item, index) => {
-
-        if (!item) {
-            return (
-                <TableRow key={index}>
-                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
-                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
-                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
-                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
-                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
-                </TableRow>
-            )
-        }
-
-        return (
-            <TableRow key={index}>
-                <TableCell className={defaultCellClass}> {item.Description} </TableCell>
-                <TableCell className={defaultCellClass}> {item.Quantity} </TableCell>
-                <TableCell className={defaultCellClass}> {item.UN} </TableCell>
-                <TableCell className={defaultCellClass}> {item.UnityValue} </TableCell>
-                <TableCell className={defaultCellClass}> {item.TotalValue} </TableCell>
-            </TableRow>
-        )
-    })
 }
 
 interface ComponentsProps {

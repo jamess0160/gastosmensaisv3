@@ -1,9 +1,10 @@
-import { banks, destinys, expensecategories } from "@prisma/client";
+import { banks, destinys, expensecategories, nfeitemcategories } from "@prisma/client";
 import { UseFormReturn } from "react-hook-form";
 import { Button } from "@mui/material";
 import { ExpenseReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateExpenseReports";
 import { Select, SelectItem } from "@/app/pages/components/fields/select";
 import { Input } from "@/app/pages/components/fields/input";
+import { NfeReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateNfeReports";
 
 export function ReportForm(props: ReportFormProps) {
     return (
@@ -52,19 +53,10 @@ export function ReportForm(props: ReportFormProps) {
 
                 <div className="w-1/5 max-md:w-full">
                     <Select
-                        label="Destino"
+                        label="Categoria"
                         form={props.form}
-                        formProp="IdDestiny"
-                        selectItems={props.destinys.map((item) => ({ key: item.IdDestiny.toString(), text: item.Name }))}
-                    />
-                </div>
-
-                <div className="w-1/5 max-md:w-full">
-                    <Select
-                        label="Tipo de gasto"
-                        form={props.form}
-                        formProp="IdExpenseCategory"
-                        selectItems={props.expenseCategories.map((item) => ({ key: item.IdExpenseCategory.toString(), text: item.Description }))}
+                        formProp="IdNfeItemCategory"
+                        selectItems={props.nfeItemCategories.map((item) => ({ key: item.IdNfeItemCategory.toString(), text: item.Description }))}
                     />
                 </div>
 
@@ -80,8 +72,8 @@ export function ReportForm(props: ReportFormProps) {
             </div>
 
             <div className="w-full flex justify-center mt-10 gap-5">
-                <Button className="w-1/4 max-md:w-full" variant="outlined" onClick={props.onClear}>Limpar</Button>
-                <Button type="submit" className="w-1/4 max-md:w-full" variant="contained">Pesquisar</Button>
+                <Button className="w-1/5 max-md:w-full" variant="outlined" onClick={props.onClear}>Limpar</Button>
+                <Button type="submit" className="w-1/5 max-md:w-full" variant="contained">Pesquisar</Button>
             </div>
 
         </form>
@@ -99,10 +91,10 @@ const intervalItems: SelectItem[] = [
 //#endregion
 
 interface ReportFormProps {
-    form: UseFormReturn<ExpenseReportFormData, any, ExpenseReportFormData>
+    form: UseFormReturn<NfeReportFormData, any, NfeReportFormData>
     onSubmit: () => unknown
     onClear: () => unknown
     expenseCategories: expensecategories[]
-    destinys: destinys[]
+    nfeItemCategories: nfeitemcategories[]
     banks: banks[]
 }

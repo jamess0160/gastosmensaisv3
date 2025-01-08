@@ -4,24 +4,23 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { relatoriosEvents } from "../events";
-import { banks, destinys, expensecategories } from "@prisma/client";
+import { banks, expensecategories, nfeitemcategories } from "@prisma/client";
 import { ReportForm } from "./reportForm";
 import { ReportChart } from "./reportChart";
-import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
-import { ExpenseReportData, ExpenseReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateExpenseReports";
-import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable";
+import { NfeTable } from "@/app/pages/components/NfeTable/NfeTable";
+import { NfeReportData, NfeReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateNfeReports";
 
 //#region Functions 
 
 export function ReportBody(props: ReportBodyProps) {
 
-    let form = useForm<ExpenseReportFormData>({ defaultValues: { interval: "semana" } })
+    let form = useForm<NfeReportFormData>({ defaultValues: { interval: "semana" } })
 
-    let [chartConfig, setChartConfig] = useState<ExpenseReportData['chartData']>({ labels: [], data: [] })
-    let [tableData, setTableData] = useState<ExpenseReportData['tableData']>([])
+    let [chartConfig, setChartConfig] = useState<NfeReportData['chartData']>({ labels: [], data: [] })
+    let [tableData, setTableData] = useState<NfeReportData['tableData']>([])
     let [isLoading, setLoading] = useState(false)
 
-    let sumExpenses = tableData.reduce((old, item) => old + clientUtilsUseCases.GetExpensePrice(item, { split: false }), 0)
+    let sumExpenses = tableData.reduce((old, item) => old + (item.TotalValue || 0), 0)
 
     return (
         <div className="flex flex-col gap-10 items-center">
@@ -30,7 +29,7 @@ export function ReportBody(props: ReportBodyProps) {
                     <CircularProgress /> :
                     <ReportForm
                         expenseCategories={props.expenseCategories}
-                        destinys={props.destinys}
+                        nfeItemCategories={props.nfeItemCategories}
                         banks={props.banks}
                         form={form}
                         onSubmit={form.handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
@@ -48,7 +47,8 @@ export function ReportBody(props: ReportBodyProps) {
 
             <h1 className="w-fit m-auto">Total: R$ {sumExpenses.toFixed(2)}</h1>
 
-            <ExpenseTable data={tableData} force={() => Promise.resolve()} />
+            <NfeTable nfeitems={tableData} />
+
         </div>
     )
 }
@@ -59,7 +59,7 @@ export function ReportBody(props: ReportBodyProps) {
 
 interface ReportBodyProps {
     expenseCategories: expensecategories[]
-    destinys: destinys[]
+    nfeItemCategories: nfeitemcategories[]
     banks: banks[]
     month: number
     year: number

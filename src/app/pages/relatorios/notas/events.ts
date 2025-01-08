@@ -1,4 +1,4 @@
-import { ExpenseReportData, ExpenseReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateExpenseReports";
+import { NfeReportData, NfeReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateNfeReports";
 import axios from "axios";
 import { Dispatch } from "react";
 
@@ -6,7 +6,7 @@ export class RelatoriosEvents {
     async search(params: searchParams) {
         params.setLoading(true)
 
-        let { data } = await axios.post<ExpenseReportData>("/api/relatorios/gastos", params.requestData)
+        let { data } = await axios.post<NfeReportData>("/api/relatorios/notas", params.requestData)
 
         params.setTableData(data.tableData)
         params.setChartConfig(data.chartData)
@@ -17,8 +17,8 @@ export class RelatoriosEvents {
 export const relatoriosEvents = new RelatoriosEvents()
 
 interface searchParams {
-    requestData: ExpenseReportFormData
-    setTableData: Dispatch<ExpenseReportData['tableData']>
-    setChartConfig: Dispatch<ExpenseReportData['chartData']>
+    requestData: NfeReportFormData
+    setTableData: Dispatch<NfeReportData['tableData']>
+    setChartConfig: Dispatch<NfeReportData['chartData']>
     setLoading: Dispatch<boolean>
 }
