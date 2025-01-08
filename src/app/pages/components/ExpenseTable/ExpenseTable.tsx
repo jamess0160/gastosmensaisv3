@@ -26,7 +26,7 @@ export function ExpenseTable(props: ExpenseTableProps) {
     })
 
     return (
-        <TableContainer className="bg-default !bg-opacity-50">
+        <TableContainer className="bg-default-light">
             <Table>
                 <TableBody>
                     <TableRow>

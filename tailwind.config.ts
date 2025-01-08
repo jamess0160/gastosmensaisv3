@@ -13,6 +13,8 @@ const config: Config = {
     extend: {
       colors: {
         default: "#1e1f22",
+        "default-mid": "#222326",
+        "default-light": "#27292d",
         fundoVerde: "#8ee2dd"
       },
       backgroundImage: {

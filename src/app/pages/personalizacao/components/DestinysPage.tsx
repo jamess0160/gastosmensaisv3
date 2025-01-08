@@ -57,7 +57,7 @@ export function DestinysPage(props: DestinysPageProps) {
                     </form>
             }
 
-            <TableContainer className="bg-default !bg-opacity-50">
+            <TableContainer className="bg-default-light">
                 <Table>
                     <TableBody>{generateTableRows(tableData, setEdit, setValue, props.forceReload)}</TableBody>
                 </Table>

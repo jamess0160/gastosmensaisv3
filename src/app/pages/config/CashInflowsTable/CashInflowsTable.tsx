@@ -13,7 +13,7 @@ export default async function CashInflowsTable(props: CashInflowsTableProps) {
     let rows = tableData.map((item, index) => item ? <Row key={item.IdCashInflow} item={item} destinys={props.destinys} /> : <EmptyRow key={index} />)
 
     return (
-        <TableContainer className="bg-default !bg-opacity-50">
+        <TableContainer className="bg-default-light">
             <Table>
                 <TableBody>{rows}</TableBody>
             </Table>

@@ -21,7 +21,7 @@ export default function CategoryTableRow(props: TableRowProps) {
     let isSplit = props.type === "pessoal" && props.item.expensedestinys.length > 1
 
     return (
-        <TableRow className={isSplit ? "bg-default bg-opacity-60" : ""}>
+        <TableRow className={isSplit ? "bg-default-mid" : ""}>
             <TableCell className={defaultCellClass}> {getFirstCollumnData(props)} </TableCell>
             <TableCell className={defaultCellClass}> {props.item.Description} </TableCell>
             <TableCell className={defaultCellClass}> {`R$ ${clientUtilsUseCases.GetExpensePrice(props.item, { split: props.type === "pessoal" }).toFixed(2)}`} </TableCell>
