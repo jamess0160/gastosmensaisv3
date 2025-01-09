@@ -14,11 +14,11 @@ export function NfeTable(props: Props) {
 
     let [loading, setLoading] = useState(false)
 
-    let { form, data } = getFormAndData(props.nfeitems)
+    let { form, data } = GetFormAndData(props.nfeitems)
 
     let tableRows = generateTableRows(tableNfeitems, props, form, data)
 
-    configFormEffect(form, setLoading)
+    ConfigFormEffect(form, setLoading)
 
     if (loading) {
         <CircularProgress />
@@ -43,7 +43,7 @@ export function NfeTable(props: Props) {
     )
 }
 
-function getFormAndData(nfeitems: nfeitems[]) {
+function GetFormAndData(nfeitems: nfeitems[]) {
 
     let form = useForm<Record<string, string>>({
         defaultValues: nfeitems.reduce((old, item) => {
@@ -100,7 +100,7 @@ function generateTableRows(nfeitems: Array<UtilTypes.FullNfeItem | false>, props
     })
 }
 
-function configFormEffect(form: Form, setLoading: Dispatch<boolean>) {
+function ConfigFormEffect(form: Form, setLoading: Dispatch<boolean>) {
     let previousValues = useRef(form.getValues());
 
     let fields = form.watch()
