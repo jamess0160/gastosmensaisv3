@@ -9,6 +9,7 @@ import { expensesUseCase } from "@/useCases/Expenses/ExpensesUseCase";
 import { Categories } from "@/useCases/Expenses/sections/GetCategoriesData";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
+import { nfeItemCategoriesUseCases } from "@/useCases/NfeItemCategories/NfeItemCategoriesUseCases";
 
 export class GetPageData {
     public async run(request: NextRequest) {
@@ -94,6 +95,7 @@ export class GetPageData {
             Banks: banksUseCases.getAllByUser(IdUser),
             Destinys: destinysUseCases.getAllByUser(IdUser),
             ExpenseCategories: expenseCategoriesUseCases.getAllByUser(IdUser),
+            NfeItemCategories: nfeItemCategoriesUseCases.getAllByUser(IdUser)
         })
     }
 }

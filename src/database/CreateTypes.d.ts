@@ -48,4 +48,9 @@ export namespace CreateTypes {
         Description: string
         Position: string
     }
+
+    export interface CreateNfeItemCategory {
+        IdNfeItemCategory?: number
+        Description: string
+    }
 }

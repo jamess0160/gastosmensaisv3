@@ -39,6 +39,7 @@ export namespace UtilTypes {
         Banks: banks[],
         Destinys: destinys[],
         ExpenseCategories: expensecategories[]
+        NfeItemCategories: nfeitemcategories[]
     }
 
     export interface Session {

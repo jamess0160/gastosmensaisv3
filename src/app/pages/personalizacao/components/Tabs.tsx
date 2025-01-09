@@ -2,7 +2,7 @@ import { Dispatch } from "react"
 
 export function Tabs({ setSelectedCategory, selectedCategory }: TabsProps) {
 
-    let tabs = ["Destinos", "Bancos", "Tipos de gastos"]
+    let tabs = ["Destinos", "Bancos", "Tipos de gastos", "Categorias de notas"]
 
     return (
         <div className="flex flex-row w-fit max-md:w-full max-md:flex-col max-md:items-center max-md:!bg-none rounded-t-xl" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>

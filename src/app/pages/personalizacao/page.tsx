@@ -7,6 +7,7 @@ import { DestinysPage } from "./components/DestinysPage";
 import { BanksPage } from "./components/BanksPage";
 import { usePooling } from "@/app/utils/usePooling";
 import { UtilTypes } from "@/database/UtilTypes";
+import { NfeItemCategoriesPage } from "./components/NfeItemCategoriesPage";
 
 export default function Page() {
     let [selectedCategory, setSelectedCategory] = useState(0)
@@ -37,6 +38,10 @@ export default function Page() {
 
             <div hidden={selectedCategory !== 2} className="p-3 rounded-lg" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
                 <ExpenseCategoriesPage expensecategories={data.ExpenseCategories} forceReload={force} />
+            </div>
+
+            <div hidden={selectedCategory !== 3} className="p-3 rounded-lg" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+                <NfeItemCategoriesPage nfeItemCategories={data.NfeItemCategories} forceReload={force} />
             </div>
 
         </Container>
