@@ -87,7 +87,7 @@ export class ClientUtilsUseCases {
 
     handleTableData<T = any>(data: T[], minRowCount = 10): Array<T | false> {
 
-        let tableData = data as Array<T | false>
+        let tableData = structuredClone(data) as Array<T | false>
 
         if (data.length < minRowCount) {
             let count = minRowCount - data.length
