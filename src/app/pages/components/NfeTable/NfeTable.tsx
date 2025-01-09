@@ -93,8 +93,8 @@ function generateTableRows(nfeitems: Array<UtilTypes.FullNfeItem | false>, props
                 ) : (
                     <TableCell className={defaultCellClass}> {item.nfeitemcategories?.Description || "Sem Categoria"} </TableCell>
                 )}
-                <TableCell className={defaultCellClass}> {item.UnityValue} </TableCell>
-                <TableCell className={defaultCellClass}> {item.TotalValue} </TableCell>
+                <TableCell className={defaultCellClass}> R$ {item.UnityValue} </TableCell>
+                <TableCell className={defaultCellClass}> R$ {item.TotalValue} </TableCell>
             </TableRow>
         )
     })
