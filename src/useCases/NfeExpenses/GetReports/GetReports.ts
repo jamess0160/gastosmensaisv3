@@ -20,7 +20,7 @@ export class GetReports extends BaseSection<NfeExpensesUseCases> {
             return item.nfeitems.map((subItem) => {
                 return {
                     ...subItem,
-                    ExpenseDate: item.baseexpenses.EntryDate
+                    ExpenseDate: item.ExpenseDate
                 }
             })
         })
