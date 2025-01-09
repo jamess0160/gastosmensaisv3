@@ -2,9 +2,9 @@ import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/Client
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
-import { nfeitems } from "@prisma/client";
 import { nfeExpensesUseCases } from "@/useCases/NfeExpenses/NfeExpensesUseCases";
 import { NfeReportItem } from "@/useCases/NfeExpenses/GetReports/GetReports";
+import { UtilTypes } from "@/database/UtilTypes";
 
 export class GenerateNfeReports {
 
@@ -129,7 +129,7 @@ export interface NfeReportFormData {
 }
 
 export interface NfeReportData {
-    tableData: nfeitems[]
+    tableData: UtilTypes.FullNfeItem[]
     chartData: NfeReportChartData
 }
 

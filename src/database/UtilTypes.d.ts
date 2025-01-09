@@ -4,7 +4,7 @@ import { DestinyResume } from "@/useCases/BaseExpenses/getMonthlyDestinyResume"
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm"
 import { ExpenseTypeData } from "@/useCases/Expenses/sections/GetCategoriesData"
 import { ResumeContainerData } from "@/app/pages/inicio/components/ResumeContainer/ResumeContainer"
-import { banks, destinys, expensecategories } from "@prisma/client"
+import { banks, destinys, expensecategories, nfeitemcategories, nfeitems } from "@prisma/client"
 
 export namespace UtilTypes {
 
@@ -54,5 +54,9 @@ export namespace UtilTypes {
         username: string
         password: string
         isMobile: boolean
+    }
+
+    export interface FullNfeItem extends nfeitems {
+        nfeitemcategories: nfeitemcategories | null
     }
 }

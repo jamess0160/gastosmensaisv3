@@ -31,7 +31,7 @@ export function NfePopUp(props: ComponentsProps) {
                 </div>
 
                 <div>
-                    <NfeTable nfeitems={props.item.child.nfeitems} />
+                    <NfeTable nfeitems={props.item.child.nfeitems} enableEdit={true} />
                 </div>
             </div>
         </Dialog>

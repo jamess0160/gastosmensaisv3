@@ -3,7 +3,8 @@ import moment from 'moment';
 import { NfeExpensesUseCases } from "../NfeExpensesUseCases";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { NfeReportFormData } from "@/app/api/relatorios/controller/sections/POST/generateNfeReports";
-import { baseexpenses, nfeexpenses, nfeitems } from "@prisma/client";
+import { baseexpenses, nfeexpenses } from "@prisma/client";
+import { UtilTypes } from "@/database/UtilTypes";
 
 export class GetReports extends BaseSection<NfeExpensesUseCases> {
 
@@ -68,7 +69,11 @@ export class GetReports extends BaseSection<NfeExpensesUseCases> {
     private getRawData(monthYears: MonthYear[], IdUser: number, body: NfeReportFormData) {
         return this.instance.prisma.nfeexpenses.findMany({
             include: {
-                nfeitems: true,
+                nfeitems: {
+                    include: {
+                        nfeitemcategories: true
+                    }
+                },
                 baseexpenses: true
             },
             where: {
@@ -116,12 +121,12 @@ export class GetReports extends BaseSection<NfeExpensesUseCases> {
     }
 }
 
-export interface NfeReportItem extends nfeitems {
+export interface NfeReportItem extends UtilTypes.FullNfeItem {
     ExpenseDate: Date
 }
 
 interface NfeExpense extends nfeexpenses {
-    nfeitems: nfeitems[]
+    nfeitems: UtilTypes.FullNfeItem[]
     baseexpenses: baseexpenses
 }
 

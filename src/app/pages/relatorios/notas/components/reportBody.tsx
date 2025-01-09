@@ -47,7 +47,7 @@ export function ReportBody(props: ReportBodyProps) {
 
             <h1 className="w-fit m-auto">Total: R$ {sumExpenses.toFixed(2)}</h1>
 
-            <NfeTable nfeitems={tableData} />
+            <NfeTable nfeitems={tableData} enableEdit={false} />
 
         </div>
     )

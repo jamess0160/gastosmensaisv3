@@ -3,6 +3,7 @@ import { BaseSection } from "@/base/baseSection";
 import { BaseExpensesUseCases } from "./BaseExpensesUseCases"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import { AutoGetExpenseType } from "../Utils/ClientUtilsUseCases/sections/getExpensePrice";
+import { UtilTypes } from "@/database/UtilTypes";
 
 export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCases> {
 
@@ -91,7 +92,11 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
                 defaultexpenses: true,
                 nfeexpenses: {
                     include: {
-                        nfeitems: true
+                        nfeitems: {
+                            include: {
+                                nfeitemcategories: true
+                            }
+                        }
                     }
                 },
                 banks: true,
@@ -190,7 +195,7 @@ interface FullBaseExpense extends baseexpenses {
 }
 
 interface NfeExpense extends nfeexpenses {
-    nfeitems: nfeitems[]
+    nfeitems: UtilTypes.FullNfeItem[]
 }
 
 export interface FullBaseExpenseChild extends baseexpenses {
