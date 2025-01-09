@@ -26,6 +26,7 @@ export function NfePopUp(props: ComponentsProps) {
                     <div className="flex flex-col gap-5 mb-5">
                         <div className="text-white">Empresa: {props.item.child.Company}</div>
                         <div className="text-white" style={{ overflowWrap: 'break-word', }}>DANFE: {props.item.child.DanfeCode}</div>
+                        <div className="text-white">Data: {clientUtilsUseCases.GetExpenseDate(props.item).toLocaleString("pt-br")}</div>
                         <div className="text-white">Valor total: {clientUtilsUseCases.GetExpensePrice(props.item, { split: false })}</div>
                     </div>
                 </div>
