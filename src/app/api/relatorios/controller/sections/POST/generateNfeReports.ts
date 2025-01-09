@@ -129,7 +129,7 @@ export interface NfeReportFormData {
 }
 
 export interface NfeReportData {
-    tableData: UtilTypes.FullNfeItem[]
+    tableData: NfeReportItem[]
     chartData: NfeReportChartData
 }
 

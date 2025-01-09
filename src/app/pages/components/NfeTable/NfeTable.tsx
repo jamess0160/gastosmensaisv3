@@ -29,6 +29,7 @@ export function NfeTable(props: Props) {
             <Table>
                 <TableBody>
                     <TableRow>
+                        <TableCell className={defaultCellClass + " bg-default"}>Data</TableCell>
                         <TableCell className={defaultCellClass + " bg-default"}>Descrição</TableCell>
                         <TableCell className={defaultCellClass + " bg-default"}>Quantidade</TableCell>
                         <TableCell className={defaultCellClass + " bg-default"}>UN</TableCell>
@@ -59,7 +60,7 @@ function GetFormAndData(nfeitems: nfeitems[]) {
     return { form, data }
 }
 
-function generateTableRows(nfeitems: Array<UtilTypes.FullNfeItem | false>, props: Props, form: Form, data: undefined | nfeitemcategories[]) {
+function generateTableRows(nfeitems: Array<Props['nfeitems'][0] | false>, props: Props, form: Form, data: undefined | nfeitemcategories[]) {
 
     return nfeitems.map((item, index) => {
 
@@ -72,12 +73,14 @@ function generateTableRows(nfeitems: Array<UtilTypes.FullNfeItem | false>, props
                     <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
                     <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
                     <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
+                    <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
                 </TableRow>
             )
         }
 
         return (
             <TableRow key={index}>
+                <TableCell className={defaultCellClass}> {new Date(item.ExpenseDate).toLocaleDateString("pt-br")} </TableCell>
                 <TableCell className={defaultCellClass}> {item.Description} </TableCell>
                 <TableCell className={defaultCellClass}> {item.Quantity} </TableCell>
                 <TableCell className={defaultCellClass}> {item.UN} </TableCell>
@@ -121,7 +124,11 @@ function ConfigFormEffect(form: Form, setLoading: Dispatch<boolean>) {
 
 type Form = UseFormReturn<Record<string, string>, any, Record<string, string>>
 
+interface NfeItem extends UtilTypes.FullNfeItem {
+    ExpenseDate: string
+}
+
 interface Props {
-    nfeitems: UtilTypes.FullNfeItem[]
+    nfeitems: NfeItem[]
     enableEdit: boolean
 }

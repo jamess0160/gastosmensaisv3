@@ -11,6 +11,13 @@ export function NfePopUp(props: ComponentsProps) {
         props.setOpen(false)
     }
 
+    let items = props.item.child.nfeitems.map((item) => {
+        return {
+            ...item,
+            ExpenseDate: props.item.child.ExpenseDate.toString()
+        }
+    })
+
     return (
         <Dialog open={props.open} PaperProps={{ className: "w-screen max-w-none max-md:max-h-screen max-md:max-h-screen max-md:m-0" }}>
             <div className="bg-default-light h-full">
@@ -32,7 +39,7 @@ export function NfePopUp(props: ComponentsProps) {
                 </div>
 
                 <div>
-                    <NfeTable nfeitems={props.item.child.nfeitems} enableEdit={true} />
+                    <NfeTable nfeitems={items} enableEdit={true} />
                 </div>
             </div>
         </Dialog>
