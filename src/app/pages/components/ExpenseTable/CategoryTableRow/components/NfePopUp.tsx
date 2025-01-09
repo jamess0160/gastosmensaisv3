@@ -15,7 +15,7 @@ export function NfePopUp(props: ComponentsProps) {
         <Dialog open={props.open} PaperProps={{ className: "w-screen max-w-none max-md:max-h-screen max-md:max-h-screen max-md:m-0" }}>
             <div className="bg-default-light h-full">
 
-                <div className="pl-2 pr-2 pt-2 pb-2 sticky top-0 bg-default-light">
+                <div className="pl-2 pr-2 pt-2 pb-2 sticky z-50 top-0 bg-default-light">
                     <div className="flex flex-row justify-between h-fit">
                         <h2 className="text-white m-0">Items da nota fiscal</h2>
                         <IconButton className="rounded-full outline outline-1 outline-white" color="primary" onClick={closeClick}>
