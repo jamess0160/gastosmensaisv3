@@ -79,8 +79,8 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         let sortedData = rawExpenseData
             .flat()
             .sort((a, b) => {
-                let aDate = clientUtilsUseCases.GetExpenseDate(a).getTime()
-                let bDate = clientUtilsUseCases.GetExpenseDate(b).getTime()
+                let aDate = new Date(clientUtilsUseCases.GetExpenseDate(a)).getTime()
+                let bDate = new Date(clientUtilsUseCases.GetExpenseDate(b)).getTime()
 
                 return aDate - bDate
             })
@@ -90,11 +90,11 @@ export class GetReports extends BaseSection<BaseExpensesUseCases> {
         }
 
         return sortedData.filter((item) => {
-            if (clientUtilsUseCases.GetExpenseDate(item).getTime() < start.toDate().getTime()) {
+            if (new Date(clientUtilsUseCases.GetExpenseDate(item)).getTime() < start.toDate().getTime()) {
                 return false
             }
 
-            if (clientUtilsUseCases.GetExpenseDate(item).getTime() > end.toDate().getTime()) {
+            if (new Date(clientUtilsUseCases.GetExpenseDate(item)).getTime() > end.toDate().getTime()) {
                 return false
             }
 

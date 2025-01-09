@@ -38,10 +38,10 @@ export class ClientUtilsUseCases {
     GetExpenseDate(expense: FullBaseExpenseChild) {
 
         if (this.GetExpenseType.isDefault(expense) || this.GetExpenseType.isNfe(expense)) {
-            return expense.child.ExpenseDate
+            return expense.child.ExpenseDate.toString()
         }
 
-        return expense.EntryDate
+        return expense.EntryDate.toString()
     }
 
     async resolvePromiseObj<T extends Record<string, Promise<any>>>(promises: T): Promise<{ [K in keyof T]: Awaited<T[K]> }> {

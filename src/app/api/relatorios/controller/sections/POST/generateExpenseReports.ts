@@ -76,7 +76,7 @@ export class GenerateExpenseReports {
 
     private generateDateArray(expenseData: FullBaseExpenseChild[]) {
 
-        let dates = expenseData.map((item) => clientUtilsUseCases.GetExpenseDate(item).getTime())
+        let dates = expenseData.map((item) => new Date(clientUtilsUseCases.GetExpenseDate(item)).getTime())
 
         let arrayStart = moment(Math.min(...dates))
         let arrayEnd = moment(Math.max(...dates))
