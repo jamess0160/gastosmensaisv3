@@ -9,7 +9,7 @@ export class GenerateNfeChartData extends BaseSection<GenerateNfeReports> {
 
         let nfeItemCategories = this.getChartGroup(expenseData)
 
-        if (nfeItemCategories.length > 1) {
+        if (nfeItemCategories.length > 1 && interval !== "soma") {
             nfeItemCategories.unshift({
                 Color: "#2e5a77",
                 Description: "Total"

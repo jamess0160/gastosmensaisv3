@@ -11,7 +11,7 @@ export class GenerateExpenseChartData extends BaseSection<GenerateExpenseReports
 
         let groups = this.getChartGroup(expenseData, expenseCategories)
 
-        if (groups.length > 1) {
+        if (groups.length > 1 && interval !== "soma") {
             groups.unshift({
                 Color: "#2e5a77",
                 Description: "Total"
