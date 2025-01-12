@@ -4,8 +4,12 @@ import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/Client
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
+import { GenerateExpenseChartData } from "./generateExpenseReports/GenerateExpenseChartData";
+import { expenseCategoriesUseCases } from "@/useCases/ExpenseCategories/ExpenseCategoriesUseCases";
 
 export class GenerateExpenseReports {
+
+    private readonly GenerateExpenseChartData = new GenerateExpenseChartData(this)
 
     public async run(request: NextRequest) {
         let body = await request.json() as ExpenseReportFormData
@@ -20,20 +24,14 @@ export class GenerateExpenseReports {
 
         let expenseData = await baseExpensesUseCases.GetReports.run(start, end, session.IdUser, body, Boolean(body.date))
 
-        let chartData = this.generateChartData(expenseData, body.interval)
+        let expenseCategories = await expenseCategoriesUseCases.getAllByUser(session.IdUser)
 
         let dateArray = this.generateDateArray(expenseData)
 
         let labels = Array.from(new Set(dateArray.map((item) => this.getDateLabel(item, body.interval))))
 
         return NextResponse.json(<ExpenseReportData>{
-            chartData: labels.reduce<ExpenseReportChartData>((old, label) => {
-
-                old.labels.push(label)
-                old.data.push(chartData[label] ? Number(chartData[label].toFixed(2)) : 0)
-
-                return old
-            }, { labels: [], data: [] }),
+            chartData: this.GenerateExpenseChartData.run(expenseData, body.interval, labels, expenseCategories),
             tableData: expenseData
         })
     }
@@ -59,24 +57,16 @@ export class GenerateExpenseReports {
         throw new Error("Body sem (dateStart, dateEnd) ou date")
     }
 
-    private generateChartData(expenseData: FullBaseExpenseChild[], interval: ExpenseReportFormData['interval']) {
-        return expenseData.reduce<Record<string, number>>((old, item) => {
-
-            let label = this.getDateLabel(moment(clientUtilsUseCases.GetExpenseDate(item)), interval)
-
-            if (!old[label]) {
-                old[label] = 0
-            }
-
-            old[label] += clientUtilsUseCases.GetExpensePrice(item, { split: false })
-
-            return old
-        }, {})
-    }
-
     private generateDateArray(expenseData: FullBaseExpenseChild[]) {
 
-        let dates = expenseData.map((item) => new Date(clientUtilsUseCases.GetExpenseDate(item)).getTime())
+        let dates = expenseData.reduce<number[]>((old, item) => {
+
+            if (clientUtilsUseCases.GetExpenseType.isDefault(item) || clientUtilsUseCases.GetExpenseType.isNfe(item)) {
+                old.push(new Date(clientUtilsUseCases.GetExpenseDate(item)).getTime())
+            }
+
+            return old
+        }, [])
 
         let arrayStart = moment(Math.min(...dates))
         let arrayEnd = moment(Math.max(...dates))
@@ -94,7 +84,7 @@ export class GenerateExpenseReports {
         return dateArray;
     }
 
-    private getDateLabel(expenseDate: moment.Moment, interval: ExpenseReportFormData['interval']) {
+    public getDateLabel(expenseDate: moment.Moment, interval: ExpenseReportFormData['interval']) {
         if (interval === 'mes') {
             return clientUtilsUseCases.months[expenseDate.get("month")]
         }
@@ -135,6 +125,12 @@ export interface ExpenseReportData {
 
 interface ExpenseReportChartData {
     labels: string[]
+    data: ChartDataSets[]
+}
+
+interface ChartDataSets {
+    label: string
+    color: string
     data: number[]
 }
 

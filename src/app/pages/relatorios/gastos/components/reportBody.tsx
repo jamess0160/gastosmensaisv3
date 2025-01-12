@@ -13,11 +13,13 @@ import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable";
 
 //#region Functions 
 
+const defaultChart = { labels: [""], data: [{ label: "Notas", color: "#2e5a77", data: [] }] }
+
 export function ReportBody(props: ReportBodyProps) {
 
     let form = useForm<ExpenseReportFormData>({ defaultValues: { interval: "semana" } })
 
-    let [chartConfig, setChartConfig] = useState<ExpenseReportData['chartData']>({ labels: [], data: [] })
+    let [chartConfig, setChartConfig] = useState<ExpenseReportData['chartData']>(defaultChart)
     let [tableData, setTableData] = useState<ExpenseReportData['tableData']>([])
     let [isLoading, setLoading] = useState(false)
 
@@ -37,10 +39,7 @@ export function ReportBody(props: ReportBodyProps) {
                         onClear={() => {
                             form.reset()
                             setTableData([])
-                            setChartConfig({
-                                data: [],
-                                labels: []
-                            })
+                            setChartConfig(defaultChart)
                         }}
                     />
             }
