@@ -13,7 +13,7 @@ import { ExpenseTable } from "@/app/pages/components/ExpenseTable/ExpenseTable";
 
 //#region Functions 
 
-const defaultChart = { labels: [""], data: [{ label: "Notas", color: "#2e5a77", data: [] }] }
+const defaultChart = { labels: [""], data: [] }
 
 export function ReportBody(props: ReportBodyProps) {
 

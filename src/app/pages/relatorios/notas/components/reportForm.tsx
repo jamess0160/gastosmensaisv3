@@ -86,6 +86,7 @@ const intervalItems: SelectItem[] = [
     { key: "mes", text: "Mês" },
     { key: "semana", text: "Semana" },
     { key: "dia", text: "Dia" },
+    { key: "soma", text: "Soma" },
 ]
 
 //#endregion

@@ -12,13 +12,14 @@ export function ReportChart(props: ReportChartProps) {
 
     let maxValue = Math.max(...props.chartConfig.data.flatMap((item) => item.data))
 
-    let qtdeSets = Math.max(props.chartConfig.data.length, 2)
+    let qtdeLabels = props.chartConfig.data.length ? Math.max(props.chartConfig.labels.length, 1) : 4
+    let qtdeSets = Math.max(props.chartConfig.data.length, 1.8)
 
     return (
         <div className="p-5 rounded w-1/2 overflow-x-auto m-auto aspect-video flex items-center border border-solid border-white max-md:w-full max-md:m-0 max-md:px-0" >
             <div
                 style={{
-                    minWidth: `${qtdeSets / 2 * 100}%`,
+                    minWidth: `${(qtdeSets / 1.8) * (qtdeLabels / 4) * 100}%`,
                     height: "100%"
                 }}
             >
@@ -42,8 +43,10 @@ export function ReportChart(props: ReportChartProps) {
                             },
                             datalabels: {
                                 anchor: "end",
-                                align: "top",
+                                align: "start",
                                 color: "white",
+                                textStrokeWidth: 0.5,
+                                textStrokeColor: "black",
                                 font: {
                                     weight: 'bold',
                                     size: 15,

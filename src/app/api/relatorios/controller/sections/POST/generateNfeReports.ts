@@ -92,6 +92,10 @@ export class GenerateNfeReports {
             return expenseDate.toDate().toLocaleDateString("pt-br")
         }
 
+        if (interval === "soma") {
+            return "Total"
+        }
+
         return ""
     }
 
@@ -100,7 +104,7 @@ export class GenerateNfeReports {
 //#region Interfaces / Types 
 
 export interface NfeReportFormData {
-    interval: "mes" | "semana" | "dia"
+    interval: "mes" | "semana" | "dia" | "soma"
     date?: string
     dateStart?: string
     dateEnd?: string
