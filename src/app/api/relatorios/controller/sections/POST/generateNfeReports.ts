@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
 import { nfeExpensesUseCases } from "@/useCases/NfeExpenses/NfeExpensesUseCases";
 import { NfeReportItem } from "@/useCases/NfeExpenses/GetReports/GetReports";
-import { GenerateChartData } from "./generateNfeReports/generateChartData";
+import { GenerateNfeChartData } from "./generateNfeReports/GenerateNfeChartData";
 
 export class GenerateNfeReports {
 
-    private readonly GenerateChartData = new GenerateChartData(this)
+    private readonly GenerateNfeChartData = new GenerateNfeChartData(this)
 
     public async run(request: NextRequest) {
         let body = await request.json() as NfeReportFormData
@@ -27,7 +27,7 @@ export class GenerateNfeReports {
 
         let labels = Array.from(new Set(dateArray.map((item) => this.getDateLabel(item, body.interval))))
 
-        let chartData = this.GenerateChartData.run(expenseData, body.interval, labels)
+        let chartData = this.GenerateNfeChartData.run(expenseData, body.interval, labels)
 
         return NextResponse.json(<NfeReportData>{
             chartData: chartData,

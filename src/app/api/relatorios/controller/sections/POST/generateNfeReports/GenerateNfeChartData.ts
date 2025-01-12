@@ -3,7 +3,7 @@ import { GenerateNfeReports, NfeReportData, NfeReportFormData } from "../generat
 import moment from "moment"
 import { BaseSection } from "@/base/baseSection"
 
-export class GenerateChartData extends BaseSection<GenerateNfeReports> {
+export class GenerateNfeChartData extends BaseSection<GenerateNfeReports> {
 
     public run(expenseData: NfeReportItem[], interval: NfeReportFormData['interval'], labels: string[]): NfeReportChartData {
 
