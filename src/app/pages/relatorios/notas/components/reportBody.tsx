@@ -12,11 +12,13 @@ import { NfeReportData, NfeReportFormData } from "@/app/api/relatorios/controlle
 
 //#region Functions 
 
+const defaultChart = { labels: [""], data: [{ label: "Notas", color: "#2e5a77", data: [] }] }
+
 export function ReportBody(props: ReportBodyProps) {
 
     let form = useForm<NfeReportFormData>({ defaultValues: { interval: "semana" } })
 
-    let [chartConfig, setChartConfig] = useState<NfeReportData['chartData']>({ labels: [], data: [] })
+    let [chartConfig, setChartConfig] = useState<NfeReportData['chartData']>(defaultChart)
     let [tableData, setTableData] = useState<NfeReportData['tableData']>([])
     let [isLoading, setLoading] = useState(false)
 
@@ -36,10 +38,7 @@ export function ReportBody(props: ReportBodyProps) {
                         onClear={() => {
                             form.reset()
                             setTableData([])
-                            setChartConfig({
-                                data: [],
-                                labels: []
-                            })
+                            setChartConfig(defaultChart)
                         }}
                     />
             }

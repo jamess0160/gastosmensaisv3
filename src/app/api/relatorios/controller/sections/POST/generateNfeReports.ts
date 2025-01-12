@@ -4,8 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
 import { nfeExpensesUseCases } from "@/useCases/NfeExpenses/NfeExpensesUseCases";
 import { NfeReportItem } from "@/useCases/NfeExpenses/GetReports/GetReports";
+import { GenerateChartData } from "./generateNfeReports/generateChartData";
 
 export class GenerateNfeReports {
+
+    private readonly GenerateChartData = new GenerateChartData(this)
 
     public async run(request: NextRequest) {
         let body = await request.json() as NfeReportFormData
@@ -20,20 +23,14 @@ export class GenerateNfeReports {
 
         let expenseData = await nfeExpensesUseCases.GetReports.run(start, end, session.IdUser, body, Boolean(body.date))
 
-        let chartData = this.generateChartData(expenseData, body.interval)
-
         let dateArray = this.generateDateArray(expenseData)
 
         let labels = Array.from(new Set(dateArray.map((item) => this.getDateLabel(item, body.interval))))
 
+        let chartData = this.GenerateChartData.run(expenseData, body.interval, labels)
+
         return NextResponse.json(<NfeReportData>{
-            chartData: labels.reduce<NfeReportChartData>((old, label) => {
-
-                old.labels.push(label)
-                old.data.push(chartData[label] ? Number(chartData[label].toFixed(2)) : 0)
-
-                return old
-            }, { labels: [], data: [] }),
+            chartData: chartData,
             tableData: expenseData
         })
     }
@@ -59,21 +56,6 @@ export class GenerateNfeReports {
         throw new Error("Body sem (dateStart, dateEnd) ou date")
     }
 
-    private generateChartData(expenseData: NfeReportItem[], interval: NfeReportFormData['interval']) {
-        return expenseData.reduce<Record<string, number>>((old, item) => {
-
-            let label = this.getDateLabel(moment(item.ExpenseDate), interval)
-
-            if (!old[label]) {
-                old[label] = 0
-            }
-
-            old[label] += item.TotalValue || 0
-
-            return old
-        }, {})
-    }
-
     private generateDateArray(expenseData: NfeReportItem[]) {
 
         let dates = expenseData.map((item) => new Date(item.ExpenseDate).getTime())
@@ -94,7 +76,7 @@ export class GenerateNfeReports {
         return dateArray;
     }
 
-    private getDateLabel(expenseDate: moment.Moment, interval: NfeReportFormData['interval']) {
+    public getDateLabel(expenseDate: moment.Moment, interval: NfeReportFormData['interval']) {
         if (interval === 'mes') {
             return clientUtilsUseCases.months[expenseDate.get("month")]
         }
@@ -134,6 +116,12 @@ export interface NfeReportData {
 
 interface NfeReportChartData {
     labels: string[]
+    data: ChartDataSets[]
+}
+
+interface ChartDataSets {
+    label: string
+    color: string
     data: number[]
 }
 

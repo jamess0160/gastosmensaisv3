@@ -1,79 +1,98 @@
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, } from 'chart.js';
+'use client';
+
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataset, } from 'chart.js';
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { ExpenseReportData } from '@/app/api/relatorios/controller/sections/POST/generateExpenseReports';
+import { NfeReportData } from '@/app/api/relatorios/controller/sections/POST/generateNfeReports';
+import { clientUtilsUseCases } from '@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 export function ReportChart(props: ReportChartProps) {
+
+    let maxValue = Math.max(...props.chartConfig.data.flatMap((item) => item.data))
+
+    let qtdeSets = Math.max(props.chartConfig.data.length, 2)
+
     return (
-        <div className="p-5 rounded w-1/2 m-auto aspect-video flex items-center border border-solid border-white max-md:w-full max-md:m-0 max-md:px-0" >
-            <Bar
-                className="h-1/2"
-                options={{
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: "white"
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label(tooltipItem) {
-                                    tooltipItem.formattedValue = `R$ ${(tooltipItem.raw as number).toFixed(2)}`
+        <div className="p-5 rounded w-1/2 overflow-x-auto m-auto aspect-video flex items-center border border-solid border-white max-md:w-full max-md:m-0 max-md:px-0" >
+            <div
+                style={{
+                    minWidth: `${qtdeSets / 2 * 100}%`,
+                    height: "100%"
+                }}
+            >
+                <Bar
+                    options={{
+                        aspectRatio: 0.5,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "left",
+                                labels: {
+                                    color: "white",
                                 },
-                            }
-                        },
-                        datalabels: {
-                            anchor: "end",
-                            align: "top",
-                            color: "white",
-                            font: {
-                                weight: 'bold',
-                                size: 15,
                             },
-                            formatter(value: number) {
-                                return value ? `R$ ${value}` : ""
+                            tooltip: {
+                                callbacks: {
+                                    label(tooltipItem) {
+                                        tooltipItem.formattedValue = `R$ ${(tooltipItem.raw as number).toFixed(2)}`
+                                    },
+                                }
                             },
-                        }
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                color: "white"
-                            },
-                            ticks: {
+                            datalabels: {
+                                anchor: "end",
+                                align: "top",
                                 color: "white",
-                                callback(tickValue) {
-                                    return `R$ ${tickValue}`
+                                font: {
+                                    weight: 'bold',
+                                    size: 15,
+                                },
+                                formatter(value: number) {
+                                    return value ? `R$ ${value}` : ""
+                                },
+                            },
+                        },
+                        scales: {
+                            y: {
+                                grid: {
+                                    color: "white",
+                                },
+                                ticks: {
+                                    color: "white",
+                                    callback(tickValue) {
+                                        return `R$ ${tickValue}`
+                                    },
+                                },
+                                max: Math.max(1, clientUtilsUseCases.roundTo(maxValue * 1.10, 10))
+                            },
+                            x: {
+                                grid: {
+                                    color: "white",
+                                },
+                                ticks: {
+                                    color: "white",
                                 },
                             }
-                        },
-                        x: {
-                            grid: {
-                                color: "white"
-                            },
-                            ticks: {
-                                color: "white"
+                        }
+                    }}
+                    data={{
+                        labels: props.chartConfig.labels,
+                        datasets: props.chartConfig.data.map<ChartDataset<"bar", number[]>>((item) => {
+                            return {
+                                label: item.label,
+                                data: item.data,
+                                backgroundColor: item.color,
+                                categoryPercentage: 0.9,
                             }
-                        }
-                    }
-                }}
-                data={{
-                    labels: props.chartConfig.labels,
-                    datasets: [
-                        {
-                            label: "Notas",
-                            data: props.chartConfig.data,
-                            backgroundColor: "rgb(46, 90, 119)"
-                        }
-                    ]
-                }}
-            />
+                        })
+                    }}
+                />
+            </div>
         </div>
     )
 }
 
 interface ReportChartProps {
-    chartConfig: ExpenseReportData['chartData']
+    chartConfig: NfeReportData['chartData']
 }
