@@ -22,6 +22,7 @@ export class Update {
         await nfeItemCategoriesUseCases.update(body.IdNfeItemCategory, {
             Description: body.Description,
             IdUser: Number(IdUser),
+            Color: body.Color,
         })
 
         return NextResponse.json({ msg: "Sucesso" })

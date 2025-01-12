@@ -17,7 +17,8 @@ export class Create {
 
         await nfeItemCategoriesUseCases.create({
             Description: body.Description,
-            IdUser: Number(IdUser)
+            IdUser: Number(IdUser),
+            Color: body.Color,
         })
 
         return NextResponse.json({ msg: "Sucesso" })

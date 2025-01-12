@@ -52,6 +52,10 @@ export function NfeItemCategoriesPage(props: NfeItemCategoriesPageProps) {
                         )}
 
                         <Input label="Nome" inputProps={{ ...register("Description", { required: true }), type: "text" }} />
+                        <div className="flex flex-col w-10/12">
+                            Cor
+                            <input className="h-10 w-full" type="color" {...register("Color", { required: true })} />
+                        </div>
 
                         <Button className="w-10/12" variant="contained" type="submit" >{edit ? "Editar Categoria de nota" : "Cadastrar Categoria de nota"}</Button>
                     </form>
@@ -103,6 +107,7 @@ function generateTableRows(tableData: (nfeitemcategories | false)[], setEdit: Di
         return (
             <TableRow key={index} >
                 <TableCell className={cellClass}> {item.Description} </TableCell>
+                <TableCell className={cellClass}> {item.Color} </TableCell>
                 <TableCell className={cellClass}>
                     <div className="flex items-center justify-end lg:mr-10">
                         <IconButton className="py-0" onClick={eventEdit}>
@@ -121,6 +126,7 @@ function generateTableRows(tableData: (nfeitemcategories | false)[], setEdit: Di
 function EmptyRow() {
     return (
         <TableRow>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
         </TableRow>

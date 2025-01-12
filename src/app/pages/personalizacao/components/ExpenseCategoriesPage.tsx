@@ -54,6 +54,11 @@ export function ExpenseCategoriesPage(props: ExpenseCategoriesPageProps) {
                         <Input label="Nome" inputProps={{ ...register("Description", { required: true }), type: "text" }} />
                         <Input label="Posição" inputProps={{ ...register("Position", { required: true }), type: "number" }} />
 
+                        <div className="flex flex-col w-10/12">
+                            Cor
+                            <input className="h-10 w-full" type="color" {...register("Color", { required: true })} />
+                        </div>
+
                         <Button className="w-10/12" variant="contained" type="submit" >{edit ? "Editar Tipo de gasto" : "Cadastrar Tipo de gasto"}</Button>
                     </form>
             }
@@ -100,6 +105,7 @@ function generateTableRows(tableData: (expensecategories | false)[], setEdit: Di
             <TableRow key={index} >
                 <TableCell className={cellClass}> #{item.Position} </TableCell>
                 <TableCell className={cellClass}> {item.Description} </TableCell>
+                <TableCell className={cellClass}> {item.Color} </TableCell>
                 <TableCell className={cellClass}>
                     <div className="flex items-center justify-end lg:mr-10">
                         <IconButton className="py-0" onClick={eventEdit}>
@@ -118,6 +124,7 @@ function generateTableRows(tableData: (expensecategories | false)[], setEdit: Di
 function EmptyRow() {
     return (
         <TableRow>
+            <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>
             <TableCell className="text-default-light text-opacity-50 select-none">1</TableCell>

@@ -19,6 +19,7 @@ export class Create {
             Description: body.Description,
             IdUser: Number(IdUser),
             Position: Number(body.Position),
+            Color: body.Color,
         })
 
         return NextResponse.json({ msg: "Sucesso" })

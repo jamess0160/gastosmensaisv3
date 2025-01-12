@@ -8,23 +8,24 @@ export class Update {
 
         let body = await request.json() as CreateTypes.CreateExpenseCategory
         let session = await serverUtilsUseCases.Cookies.getSession()
-    
+
         if (!session) {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
         }
-    
+
         let { IdUser } = session
-    
+
         if (!body.IdExpenseCategory) {
             return NextResponse.json({ msg: "body.IdExpenseCategory não encontrado!" }, { status: 500 })
         }
-    
+
         await expenseCategoriesUseCases.update(body.IdExpenseCategory, {
             Description: body.Description,
             IdUser: Number(IdUser),
             Position: Number(body.Position),
+            Color: body.Color,
         })
-    
+
         return NextResponse.json({ msg: "Sucesso" })
     }
 }
