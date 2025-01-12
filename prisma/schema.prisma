@@ -74,6 +74,7 @@ model expensecategories {
   Description       String         @db.VarChar(255)
   IdUser            Int?
   Position          Int?
+  Color             String?        @db.VarChar(255)
   baseexpenses      baseexpenses[]
   users             users?         @relation(fields: [IdUser], references: [IdUser], onDelete: NoAction, onUpdate: NoAction, map: "expensecategories_ibfk_1")
 
@@ -202,6 +203,7 @@ model nfeitemcategories {
   IdNfeItemCategory Int        @id @default(autoincrement())
   IdUser            Int
   Description       String     @db.VarChar(255)
+  Color             String?    @db.VarChar(255)
   users             users      @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "nfeitemcategories_ibfk_1")
   nfeitems          nfeitems[]
 

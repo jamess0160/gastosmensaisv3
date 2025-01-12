@@ -47,10 +47,12 @@ export namespace CreateTypes {
         IdExpenseCategory?: number
         Description: string
         Position: string
+        Color: string
     }
 
     export interface CreateNfeItemCategory {
         IdNfeItemCategory?: number
         Description: string
+        Color: string
     }
 }
