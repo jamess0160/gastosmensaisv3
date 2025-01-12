@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import moment from "moment";
 import { nfeExpensesUseCases } from "@/useCases/NfeExpenses/NfeExpensesUseCases";
 import { NfeReportItem } from "@/useCases/NfeExpenses/GetReports/GetReports";
-import { UtilTypes } from "@/database/UtilTypes";
 
 export class GenerateNfeReports {
 

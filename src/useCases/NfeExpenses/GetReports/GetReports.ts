@@ -97,8 +97,8 @@ export class GetReports extends BaseSection<NfeExpensesUseCases> {
 
         let sortedData = rawExpenseData
             .sort((a, b) => {
-                let aDate = new Date(a.baseexpenses.EntryDate).getTime()
-                let bDate = new Date(b.baseexpenses.EntryDate).getTime()
+                let aDate = new Date(a.ExpenseDate).getTime()
+                let bDate = new Date(b.ExpenseDate).getTime()
 
                 return aDate - bDate
             })
@@ -108,11 +108,11 @@ export class GetReports extends BaseSection<NfeExpensesUseCases> {
         }
 
         return sortedData.filter((item) => {
-            if (new Date(item.baseexpenses.EntryDate).getTime() < start.toDate().getTime()) {
+            if (new Date(item.ExpenseDate).getTime() < start.toDate().getTime()) {
                 return false
             }
 
-            if (new Date(item.baseexpenses.EntryDate).getTime() > end.toDate().getTime()) {
+            if (new Date(item.ExpenseDate).getTime() > end.toDate().getTime()) {
                 return false
             }
 
