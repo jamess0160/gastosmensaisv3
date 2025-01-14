@@ -41,6 +41,13 @@ class ExpenseFormEvents {
 
         input.value = value.match(/[\d\.,]*/)?.at(0) || ""
     }
+
+    validateDanfeInput(event: ChangeEvent) {
+        let input = event.target as HTMLInputElement
+        let value = input.value
+
+        input.value = value.replace(/\s/g, "")
+    }
 }
 
 export const expenseFormEventsEvents = new ExpenseFormEvents()

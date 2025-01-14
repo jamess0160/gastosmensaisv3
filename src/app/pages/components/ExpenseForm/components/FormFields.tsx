@@ -93,7 +93,7 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
         return (
             <>
                 <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
-                <Input label="DANFE" inputProps={{ ...form.register("DanfeCode", { required: true }) }} />
+                <Input label="DANFE" inputProps={{ ...form.register("DanfeCode", { required: true }), onChange: expenseFormEventsEvents.validateDanfeInput }} />
             </>
         )
     }
