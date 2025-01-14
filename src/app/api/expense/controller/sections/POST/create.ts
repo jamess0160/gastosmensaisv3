@@ -12,6 +12,12 @@ export class Create {
 
         let { IdUser } = session
 
-        return NextResponse.json(await expensesUseCase.CreateExpense.run(Number(IdUser), await request.json()))
+        let result = await expensesUseCase.CreateExpense.run(Number(IdUser), await request.json())
+
+        if (result instanceof NextResponse) {
+            return result
+        }
+
+        return NextResponse.json(result)
     }
 }
