@@ -146,11 +146,15 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
 
     private sortExpensesDates(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
 
-        if (!clientUtilsUseCases.GetExpenseType.isDefault(a) || !clientUtilsUseCases.GetExpenseType.isDefault(b)) {
-            return 0
+        if (clientUtilsUseCases.GetExpenseType.isDefault(a) && clientUtilsUseCases.GetExpenseType.isDefault(b)) {
+            return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
         }
 
-        return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
+        if (clientUtilsUseCases.GetExpenseType.isNfe(a) && clientUtilsUseCases.GetExpenseType.isNfe(b)) {
+            return new Date(a.child.ExpenseDate).getTime() - new Date(b.child.ExpenseDate).getTime()
+        }
+
+        return 0
     }
 
     private sortExpensesTypes(a: FullBaseExpenseChild, b: FullBaseExpenseChild) {
