@@ -6,10 +6,10 @@ import { DefaultExpensesUseCases } from "@/useCases/DefaultExpenses/DefaultExpen
 import { FixedExpensesUseCases } from "@/useCases/FixedExpenses/FixedExpensesUseCases";
 import { InstallmentExpensesUseCases } from "@/useCases/InstallmentExpenses/InstallmentExpensesUseCases";
 import { UtilTypes } from "@/database/UtilTypes";
-import moment from 'moment';
 import { clientUtilsUseCases } from '../../Utils/ClientUtilsUseCases/ClientUtilsUseCases';
 import { CreateTypes } from '@/database/CreateTypes';
 import { NfeExpensesUseCases } from '../../NfeExpenses/NfeExpensesUseCases';
+import { serverUtilsUseCases } from '@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases';
 
 export class CreateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -71,14 +71,16 @@ export class CreateExpense extends BaseSection<ExpensesUseCase>{
         })
     }
 
-    createInstallmentExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: CreateTypes.CreateExpense) {
+    createInstallmentExpense(tx: UtilTypes.PrismaTransaction, IdBaseExpense: number, createExpenseData: CreateTypes.CreateExpense, currMoment = serverUtilsUseCases.getCurrMoment()) {
         let CurrentInstallment = parseInt(createExpenseData.CurrentInstallment)
         let MaxInstallment = parseInt(createExpenseData.MaxInstallment)
+
         return new InstallmentExpensesUseCases(tx).create({
             IdBaseExpense: IdBaseExpense,
             CurrentInstallment: CurrentInstallment,
             MaxInstallment: MaxInstallment,
-            ExpectedDate: moment().add((MaxInstallment - CurrentInstallment), "month").startOf("month").toDate(),
+            StartDate: currMoment.startOf("month").toDate(),
+            ExpectedDate: currMoment.add((MaxInstallment - CurrentInstallment), "month").startOf("month").toDate(),
             Price: parseFloat(createExpenseData.Price.replace(",", ".")),
         })
     }

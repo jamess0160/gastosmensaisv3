@@ -12,6 +12,7 @@ import { serverUtilsUseCases } from '../../Utils/ServerUtilsUseCases/ServerUtils
 import { CreateTypes } from '@/database/CreateTypes';
 import { ExpenseDestinysUseCases } from '../../ExpenseDestinys/ExpenseDestinysUseCases';
 import { NfeExpensesUseCases } from '@/useCases/NfeExpenses/NfeExpensesUseCases';
+import moment from 'moment';
 
 export class UpdateExpense extends BaseSection<ExpensesUseCase>{
 
@@ -116,17 +117,23 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
         }
 
         if (serverUtilsUseCases.compareDates(BaseExpense.EntryDate)) {
+
+            let CurrentInstallment = parseInt(createExpenseData.CurrentInstallment)
+            let MaxInstallment = parseInt(createExpenseData.MaxInstallment)
+
+            let currMoment = serverUtilsUseCases.getCurrMoment()
+
             return new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
-                CurrentInstallment: parseInt(createExpenseData.CurrentInstallment),
-                MaxInstallment: parseInt(createExpenseData.MaxInstallment),
+                CurrentInstallment: CurrentInstallment,
+                MaxInstallment: MaxInstallment,
+                StartDate: currMoment.startOf("month").toDate(),
+                ExpectedDate: currMoment.add((MaxInstallment - CurrentInstallment), "month").startOf("month").toDate(),
                 Price: parseFloat(createExpenseData.Price.replace(",", "."))
             })
         }
 
-        await new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
-            ExpectedDate: serverUtilsUseCases.getCurrMoment().subtract(1, "month").toDate()
-        })
+        await new InstallmentExpensesUseCases(tx).remove(installmentExpense.IdInstallmentExpense)
 
-        return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData)
+        return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData, moment(installmentExpense.StartDate))
     }
 }
