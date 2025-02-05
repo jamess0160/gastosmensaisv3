@@ -38,7 +38,7 @@ export default function ExpenseForm(props: FormProps) {
                         Por favor, preencha todos os campos para continuar!
                     </div>
                 )}
-                <FormFields form={form} fieldsData={props.fieldsData} editItem={props.editItem} />
+                <FormFields form={form} fieldsData={props.fieldsData} editItem={props.editItem} month={props.month} year={props.year} />
                 <FormButtons setFormState={props.setFormState} edit={Boolean(props.editItem)} />
             </form>
         </div>
@@ -96,6 +96,8 @@ export interface FormProps {
     formState: boolean
     setFormState: Dispatch<boolean>
     fieldsData: FieldsData
+    month: number
+    year: number
     editItem?: Partial<CreateTypes.CreateExpense>
     force: () => Promise<void>
 }

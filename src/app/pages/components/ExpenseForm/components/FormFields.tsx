@@ -5,8 +5,8 @@ import { FieldsData } from "../ExpenseForm"
 import { expenseFormEventsEvents } from "../events/events"
 import { Input } from "../../fields/input"
 import { Select } from "../../fields/select"
-import moment from "moment"
 import { CreateTypes } from "@/database/CreateTypes"
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 
 //#region Functions 
 
@@ -19,9 +19,11 @@ export default function FormFields(props: FormFieldsProps) {
         setCheckboxState(newValue)
     }
 
+    let currentMoment = clientUtilsUseCases.monthAndYearToMoment(props.month, props.year)
+
     return (
         <div className={`${styles.form} !w-10/12`}>
-            <Input label="Data de Registro" inputProps={{ ...form.register("EntryDate", { required: true }), type: "month", defaultValue: moment().format("YYYY-MM") }} />
+            <Input label="Data de Registro" inputProps={{ ...form.register("EntryDate", { required: true }), type: "month", defaultValue: currentMoment.format("YYYY-MM") }} />
             <Input label="Descrição" inputProps={{ ...form.register("Description", { required: true }), type: "text" }} />
 
             <div className={`${styles.campo} ${styles.checkParent}`}>
@@ -116,6 +118,8 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
 interface FormFieldsProps {
     form: UseFormReturn<CreateTypes.CreateExpense, any, CreateTypes.CreateExpense>
     fieldsData: FieldsData
+    month: number
+    year: number
     editItem?: Partial<CreateTypes.CreateExpense>
 }
 

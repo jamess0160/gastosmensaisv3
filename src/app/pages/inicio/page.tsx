@@ -27,7 +27,12 @@ export default function Page() {
                 <ResumeContainer ResumeContainerData={data.Resumes.container} />
                 <DestinyResumeContainer DestinysResume={data?.Resumes.destinysResume} />
                 {banksResume}
-                <AddExpense ExpenseFormData={data.ExpenseFormData} force={force} />
+                <AddExpense
+                    month={data.month}
+                    year={data.year}
+                    ExpenseFormData={data.ExpenseFormData}
+                    force={force}
+                />
                 <WebAuth />
             </Container>
         </>

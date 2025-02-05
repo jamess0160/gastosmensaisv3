@@ -49,12 +49,22 @@ function LastCell(props: TableRowProps) {
         )
     }
 
+    if (props.month === undefined || props.year === undefined) {
+        return
+    }
+
     return (
         <TableCell className={defaultCellClass}>
             <div className="flex items-center justify-end">
                 {clientUtilsUseCases.GetExpenseType.isNfe(props.item) && <OpenNfePopUp item={props.item} />}
                 <ChangeActiveState item={props.item} force={props.force} />
-                <EditItem item={props.item} ExpenseFormData={props.ExpenseFormData} force={props.force} />
+                <EditItem
+                    item={props.item}
+                    ExpenseFormData={props.ExpenseFormData}
+                    month={props.month}
+                    year={props.year}
+                    force={props.force}
+                />
                 <DeleteItem item={props.item} force={props.force} />
             </div>
         </TableCell>
@@ -73,9 +83,9 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
     if (clientUtilsUseCases.GetExpenseType.isInstallment(item) && month !== undefined && year !== undefined) {
 
-        let monthsDiff = Math.floor(moment(item.child.ExpectedDate).diff(clientUtilsUseCases.monthAndYearToMoment(month, year), "month", true))
+        let monthsDiff = clientUtilsUseCases.monthAndYearToMoment(month, year).diff(moment(item.child.StartDate), "month")
 
-        let current = clientUtilsUseCases.parseLeftZero(item.child.MaxInstallment - (monthsDiff))
+        let current = clientUtilsUseCases.parseLeftZero(item.child.CurrentInstallment + monthsDiff)
         let max = clientUtilsUseCases.parseLeftZero(item.child.MaxInstallment)
         return `${current}/${max}`
     }
