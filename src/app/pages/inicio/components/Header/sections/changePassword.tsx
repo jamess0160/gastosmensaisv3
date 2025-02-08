@@ -11,13 +11,15 @@ export function ChangePassword(props: ComponentParams) {
     let [loading, setLoading] = useState(false)
 
     return (
-        <Dialog open={props.open} className="debug" >
-            <div className={"w-96 p-5 pt-0 bg-default"}>
+        <Dialog open={props.open} PaperProps={{
+            className: "max-md:m-0 max-md:w-full"
+        }} >
+            <div className={"w-96 max-md:w-full p-5 pt-0 bg-default box-border"}>
 
                 <DialogTitle color={"white"}>{"Trocar senha"}</DialogTitle>
 
                 <form
-                    className={"flex flex-col gap-5"}
+                    className={"flex flex-col gap-5 max-w-full"}
                     onSubmit={form.handleSubmit((data) => {
                         return changePasswordEvents.submit(data, {
                             setLoading,
