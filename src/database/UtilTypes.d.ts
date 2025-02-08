@@ -60,4 +60,10 @@ export namespace UtilTypes {
     export interface FullNfeItem extends nfeitems {
         nfeitemcategories: nfeitemcategories | null
     }
+
+    export interface UserChangePassword {
+        current: string
+        new: string
+        confirmNew: string
+    }
 }
