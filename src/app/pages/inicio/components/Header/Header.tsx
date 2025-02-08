@@ -1,9 +1,10 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import { Settings, Logout, DisplaySettings, Receipt, AccountBalance } from '@mui/icons-material'
+import { Settings, Logout, DisplaySettings, Receipt, AccountBalance, Key } from '@mui/icons-material'
 import styles from './Header.module.css'
 import Link from "next/link";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
-import React from "react";
+import React, { useState } from "react";
+import { ChangePassword } from "./sections/changePassword";
 
 interface HeaderProps {
     month: number
@@ -14,6 +15,7 @@ interface HeaderProps {
 export default function Header({ month, year, userName }: HeaderProps) {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [passOpen, setPassOpen] = useState(false)
 
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,6 +52,12 @@ export default function Header({ month, year, userName }: HeaderProps) {
                             <ListItemText>Configurações</ListItemText>
                         </MenuItem>
                     </Link>
+                    <MenuItem className="flex flex-row no-underline text-black" onClick={() => setPassOpen(true)}>
+                        <ListItemIcon>
+                            <Key />
+                        </ListItemIcon>
+                        <ListItemText>Trocar senha</ListItemText>
+                    </MenuItem>
                     <MenuItem onClick={logOut}>
                         <ListItemIcon>
                             <Logout fontSize="medium" />
@@ -90,6 +98,8 @@ export default function Header({ month, year, userName }: HeaderProps) {
                     {`Olá ${userName}`}
                 </div>
             </div>
+
+            <ChangePassword open={passOpen} setOpen={setPassOpen} />
         </div>
     )
 }
