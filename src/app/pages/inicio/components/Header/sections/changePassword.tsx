@@ -14,7 +14,7 @@ export function ChangePassword(props: ComponentParams) {
         <Dialog open={props.open} PaperProps={{
             className: "max-md:m-0 max-md:w-full"
         }} >
-            <div className={"w-96 max-md:w-full p-5 pt-0 bg-default box-border"}>
+            <div className={"w-96 max-md:w-full p-5 pt-0 bg-default max-md:box-border"}>
 
                 <DialogTitle color={"white"}>{"Trocar senha"}</DialogTitle>
 
