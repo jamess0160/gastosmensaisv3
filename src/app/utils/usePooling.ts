@@ -18,6 +18,12 @@ export function usePooling<T>(url: string, secondsInterval: number, options?: Po
                 return
             }
 
+            if (document.hidden) {
+                await clientUtilsUseCases.sleep(moment.duration(secondsInterval, "seconds").asMilliseconds())
+                recursive()
+                return
+            }
+
             await pooling(url, setData, setLoading, options)
 
             await clientUtilsUseCases.sleep(moment.duration(secondsInterval, "seconds").asMilliseconds())
