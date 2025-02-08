@@ -52,7 +52,7 @@ export default function Header({ month, year, userName }: HeaderProps) {
                             <ListItemText>Configurações</ListItemText>
                         </MenuItem>
                     </Link>
-                    <MenuItem className="flex flex-row no-underline text-black" onClick={() => setPassOpen(true)}>
+                    <MenuItem className="flex flex-row no-underline text-black" onClick={() => { setPassOpen(true); setAnchorEl(null) }}>
                         <ListItemIcon>
                             <Key />
                         </ListItemIcon>
