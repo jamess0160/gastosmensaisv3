@@ -33,7 +33,7 @@ export function Input(props: InputProps) {
             >
             </input>
             <div hidden={iconVisible ? false : true} className="absolute -top-1 right-2">
-                <IconButton color="primary" onClick={() => changeVisibility(setInputType, isVisible, setIsVisible)} >
+                <IconButton tabIndex={-1} color="primary" onClick={() => changeVisibility(setInputType, isVisible, setIsVisible)} >
                     {isVisible ?
                         <VisibilityOff />
                         : <Visibility />
