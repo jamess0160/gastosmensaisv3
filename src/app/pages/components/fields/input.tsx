@@ -5,6 +5,7 @@ import { Dispatch, HTMLAttributes, InputHTMLAttributes, useState } from "react";
 export function Input(props: InputProps) {
 
     let [isVisible, setIsVisible] = useState(false)
+    let [isFocused, setIsFocused] = useState(false)
     let [inputType, setInputType] = useState(props.inputProps?.type)
 
     let label = props.label ? (
@@ -16,10 +17,12 @@ export function Input(props: InputProps) {
         </legend>
     ) : null
 
-    let iconVisible = props.inputProps?.type === "password"
+    let iconVisible = props.inputProps?.type === "password" && isFocused
 
     return (
-        <div className="relative w-full h-8 text-white mix-blend-lighten">
+        <div
+            className="relative w-full h-8 text-white mix-blend-lighten"
+        >
             {label}
             <input
                 {...props.inputProps}
@@ -28,12 +31,21 @@ export function Input(props: InputProps) {
                     w-full box-border pl-4 outline-none
                     bg-default text-xs h-full rounded-xl
                     border border-solid border-white text-white
-                    focus:border-gray-500 ${props.inputProps?.className || ""}
+                    focus:border-gray-500 peer ${props.inputProps?.className || ""}
                 `}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
             >
             </input>
-            <div hidden={iconVisible ? false : true} className="absolute -top-1 right-2">
-                <IconButton tabIndex={-1} color="primary" onClick={() => changeVisibility(setInputType, isVisible, setIsVisible)} >
+            <div hidden={iconVisible ? false : true} className="absolute -top-1 right-2 invisible peer-focus:visible focus-within:visible">
+                <IconButton
+                    tabIndex={-1}
+                    color="primary"
+                    onMouseDown={(e) => {
+                        e.preventDefault()
+                        changeVisibility(setInputType, isVisible, setIsVisible)
+                    }}
+                >
                     {isVisible ?
                         <VisibilityOff />
                         : <Visibility />
@@ -45,11 +57,7 @@ export function Input(props: InputProps) {
 }
 
 function changeVisibility(setInputType: Dispatch<string>, currentVisibility: boolean, setIsVisible: Dispatch<boolean>) {
-
     setInputType(currentVisibility ? "password" : "text")
-
-    console.log("new", !currentVisibility)
-
     setIsVisible(!currentVisibility)
 }
 
