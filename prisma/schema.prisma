@@ -128,12 +128,12 @@ model users {
   Name              String?             @db.VarChar(255)
   Login             String?             @db.VarChar(255)
   Password          String?             @db.VarChar(255)
-  UseAuth           Boolean?
   banks             banks[]
   baseexpenses      baseexpenses[]
   cashinflows       cashinflows[]
   destinys          destinys[]
   expensecategories expensecategories[]
+  ignoreauth        ignoreauth[]
   nfeitemcategories nfeitemcategories[]
   sistemparams      sistemparams[]
   usersauth         usersauth[]
@@ -206,6 +206,15 @@ model nfeitemcategories {
   Color             String?    @db.VarChar(255)
   users             users      @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "nfeitemcategories_ibfk_1")
   nfeitems          nfeitems[]
+
+  @@index([IdUser], map: "IdUser")
+}
+
+model ignoreauth {
+  IdIgnoreAuth Int    @id @default(autoincrement())
+  IdUser       Int
+  DeviceKey    String @db.VarChar(255)
+  users        users  @relation(fields: [IdUser], references: [IdUser], onDelete: Cascade, onUpdate: NoAction, map: "ignoreauth_ibfk_1")
 
   @@index([IdUser], map: "IdUser")
 }
