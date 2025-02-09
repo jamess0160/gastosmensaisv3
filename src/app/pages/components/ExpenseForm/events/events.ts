@@ -1,7 +1,7 @@
 import { CreateTypes } from "@/database/CreateTypes";
 import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 import axios from "axios";
-import { ChangeEvent, Dispatch } from "react";
+import { Dispatch, FormEvent } from "react";
 import { UseFormReset } from "react-hook-form";
 
 class ExpenseFormEvents {
@@ -35,14 +35,16 @@ class ExpenseFormEvents {
         return axios.post("/api/expense", data)
     }
 
-    validatePriceInput(event: ChangeEvent) {
+    async validatePriceInput(event: FormEvent<HTMLInputElement>) {
+        console.log("oi")
+
         let input = event.target as HTMLInputElement
         let value = input.value
 
         input.value = value.match(/[\d\.,]*/)?.at(0) || ""
     }
 
-    validateDanfeInput(event: ChangeEvent) {
+    validateDanfeInput(event: FormEvent<HTMLInputElement>) {
         let input = event.target as HTMLInputElement
         let value = input.value
 

@@ -78,7 +78,7 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
         return (
             <>
                 <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
-                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onInput: expenseFormEventsEvents.validatePriceInput }} />
             </>
         )
     }
@@ -86,7 +86,7 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
     if (checkboxState === "Fixed") {
         return (
             <>
-                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onInput: expenseFormEventsEvents.validatePriceInput }} />
             </>
         )
     }
@@ -95,7 +95,7 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
         return (
             <>
                 <Input label="Data do Gasto" inputProps={{ ...form.register("ExpenseDate"), type: "date" }} />
-                <Input label="DANFE" inputProps={{ ...form.register("DanfeCode", { required: true }), onChange: expenseFormEventsEvents.validateDanfeInput }} />
+                <Input label="DANFE" inputProps={{ ...form.register("DanfeCode", { required: true }), onInput: expenseFormEventsEvents.validateDanfeInput }} />
             </>
         )
     }
@@ -105,7 +105,7 @@ function getCheckBoxStateField(checkboxState: CreateTypes.CreateExpense['Type'],
             <>
                 <Input label="Parcela atual" inputProps={{ ...form.register("CurrentInstallment", { required: true }), type: "number" }} />
                 <Input label="Parcelas totais" inputProps={{ ...form.register("MaxInstallment", { required: true }), type: "number" }} />
-                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onChange: expenseFormEventsEvents.validatePriceInput }} />
+                <Input label="Valor" inputProps={{ ...form.register("Price", { required: true }), onInput: expenseFormEventsEvents.validatePriceInput }} />
             </>
         )
     }
