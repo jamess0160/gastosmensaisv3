@@ -1,6 +1,4 @@
-import { prisma } from "@/database/prisma";
-import { UsersUseCases } from "@/useCases/Users/UsersUseCases";
-import { UsersAuthUseCases } from "@/useCases/UsersAuth/UsersAuthUseCases";
+import { usersAuthUseCases } from "@/useCases/UsersAuth/UsersAuthUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { RegistrationResponseJSON } from "@simplewebauthn/browser";
 import { WebAuthnCredential, verifyRegistrationResponse } from "@simplewebauthn/server";
@@ -25,7 +23,7 @@ export class Register {
             return NextResponse.json({ verified: verification.verified })
         }
 
-        return NextResponse.json(this.handleRegister(verification.registrationInfo.credential, session))
+        return NextResponse.json(await this.handleRegister(verification.registrationInfo.credential, session))
     }
 
     private generateOptions(data: RegistrationResponseJSON, session: UtilTypes.Session) {
@@ -48,23 +46,16 @@ export class Register {
     private async handleRegister(credential: WebAuthnCredential, session: UtilTypes.Session) {
         let DeviceKey = crypto.randomBytes(40).toString("base64")
 
-        await prisma.$transaction(async (tx) => {
-            const usersAuthUseCases = new UsersAuthUseCases(tx)
-            const usersUseCases = new UsersUseCases(tx)
+        if (!session) {
+            return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
+        }
 
-            if (!session) {
-                return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
-            }
-
-            await usersAuthUseCases.create({
-                Token: credential.id,
-                Counter: credential.counter,
-                IdUser: session.IdUser,
-                PublicKey: Buffer.from(credential.publicKey),
-                DeviceKey: DeviceKey
-            })
-
-            await usersUseCases.update(session.IdUser, { UseAuth: true })
+        await usersAuthUseCases.create({
+            Token: credential.id,
+            Counter: credential.counter,
+            IdUser: session.IdUser,
+            PublicKey: Buffer.from(credential.publicKey),
+            DeviceKey: DeviceKey
         })
 
         return { verified: true, DeviceKey }

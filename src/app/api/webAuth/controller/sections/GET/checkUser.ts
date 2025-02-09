@@ -1,4 +1,4 @@
-import { usersUseCases } from "@/useCases/Users/UsersUseCases";
+import { ignoreAuthUseCases } from "@/useCases/IgnoreAuth/IgnoreAuthUseCases";
 import { usersAuthUseCases } from "@/useCases/UsersAuth/UsersAuthUseCases";
 import { serverUtilsUseCases } from "@/useCases/Utils/ServerUtilsUseCases/ServerUtilsUseCases";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,17 +14,32 @@ export class CheckUser {
             return NextResponse.json({})
         }
 
-        let userData = await this.getUserData(IdUser)
+        let userAuths = await usersAuthUseCases.getByUser(IdUser)
+        let ignoreAuths = await ignoreAuthUseCases.getByUser(IdUser)
 
-        if (userData.UseAuth !== true) {
-            return NextResponse.json({ UseAuth: userData?.UseAuth })
+        let useAuth = userAuths.some((item) => item.DeviceKey === DeviceKey)
+
+        let ignoreAuth = ignoreAuths.some((item) => item.DeviceKey === DeviceKey)
+
+        if (useAuth && !ignoreAuth) {
+            return NextResponse.json({
+                UseAuth: true
+            })
         }
 
-        let userAuths = await usersAuthUseCases.getByUser(IdUser)
+        if (!useAuth && ignoreAuth) {
+            return NextResponse.json({
+                UseAuth: false
+            })
+        }
 
-        return NextResponse.json({
-            UseAuth: userAuths.some((item) => item.DeviceKey === DeviceKey) || null
-        })
+        if (!useAuth && !ignoreAuth) {
+            return NextResponse.json({
+                UseAuth: null
+            })
+        }
+
+        throw new Error("useAuth e ignoreAuth encontrados para o mesmo dispositivo!")
     }
 
     private async getUserId() {
@@ -36,15 +51,5 @@ export class CheckUser {
         }
 
         return lastUser
-    }
-
-    private async getUserData(IdUser: number) {
-        let userData = await usersUseCases.getById(IdUser)
-
-        if (!userData) {
-            throw new Error("Usuário não encontrado!")
-        }
-
-        return userData
     }
 }

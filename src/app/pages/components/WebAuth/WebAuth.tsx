@@ -16,7 +16,7 @@ export function WebAuth() {
         debouncer = setTimeout(() => {
             new HandleWebAuth().run({ postLogin: true })
         }, 300);
-    }, [debouncer])
+    }, [])
 
     return <div />
 }

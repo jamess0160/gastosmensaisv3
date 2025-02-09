@@ -7,13 +7,6 @@ import axios from "axios"
 export class RegisterUser {
     public async run() {
         try {
-            let result = await dialogs.Confirm.show("Você deseja cadastrar a biometria para futuros acessos?")
-
-            if (result === false) {
-                await this.negateAuth()
-                return
-            }
-
             let options = await this.getOptions("register")
 
             let authResult = await startRegistration({ optionsJSON: options })
@@ -23,6 +16,8 @@ export class RegisterUser {
             if (response.verified) {
                 dialogs.Info.show("Biometria registrada com sucesso!")
                 clientUtilsUseCases.LocalStorage.setDeviceKey(response.DeviceKey)
+            } else {
+                clientUtilsUseCases.HandleError.run({}, "Ocorreu um erro ao cadastrar a biometria")
             }
 
         } catch (error) {
@@ -40,10 +35,6 @@ export class RegisterUser {
     private async createAuth(authResult: RegistrationResponseJSON) {
         let { data } = await axios.post<CreateAuthResponse>("/api/webAuth/register", authResult)
         return data
-    }
-
-    private negateAuth() {
-        return axios.post("/api/webAuth/checkUser")
     }
 }
 
