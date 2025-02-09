@@ -10,7 +10,7 @@ export function Input(props: InputProps) {
 
     useEffect(() => {
         setInputType(props.inputProps?.type)
-    })
+    }, [])
 
     let label = props.label ? (
         <legend
