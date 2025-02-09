@@ -1,12 +1,16 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { Dispatch, HTMLAttributes, InputHTMLAttributes, useState } from "react";
+import { Dispatch, HTMLAttributes, InputHTMLAttributes, useEffect, useState } from "react";
 
 export function Input(props: InputProps) {
 
     let [isVisible, setIsVisible] = useState(false)
     let [isFocused, setIsFocused] = useState(false)
-    let [inputType, setInputType] = useState(props.inputProps?.type)
+    let [inputType, setInputType] = useState<string | undefined>(undefined)
+
+    useEffect(() => {
+        setInputType(props.inputProps?.type)
+    })
 
     let label = props.label ? (
         <legend
