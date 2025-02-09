@@ -132,7 +132,9 @@ export class UpdateExpense extends BaseSection<ExpensesUseCase>{
             })
         }
 
-        await new InstallmentExpensesUseCases(tx).remove(installmentExpense.IdInstallmentExpense)
+        await new InstallmentExpensesUseCases(tx).update(installmentExpense.IdInstallmentExpense, {
+            ExpectedDate: serverUtilsUseCases.getCurrMoment().subtract(1, "month").toDate()
+        })
 
         return this.instance.CreateExpense.createInstallmentExpense(tx, BaseExpense.IdBaseExpense, createExpenseData, moment(installmentExpense.StartDate))
     }

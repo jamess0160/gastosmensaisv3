@@ -83,10 +83,11 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
 
     if (clientUtilsUseCases.GetExpenseType.isInstallment(item) && month !== undefined && year !== undefined) {
 
-        let monthsDiff = clientUtilsUseCases.monthAndYearToMoment(month, year).diff(moment(item.child.StartDate), "month")
+        let monthsDiff = Math.ceil(clientUtilsUseCases.monthAndYearToMoment(month, year).diff(moment(item.child.StartDate), "month", true))
 
         let current = clientUtilsUseCases.parseLeftZero(item.child.CurrentInstallment + monthsDiff)
         let max = clientUtilsUseCases.parseLeftZero(item.child.MaxInstallment)
+
         return `${current}/${max}`
     }
 
