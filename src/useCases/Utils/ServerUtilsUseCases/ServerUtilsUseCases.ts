@@ -3,12 +3,14 @@ import { clientUtilsUseCases } from "../ClientUtilsUseCases/ClientUtilsUseCases"
 import { CriptManager } from "./sections/criptManager"
 import { SendClientMessage } from "./sections/sendClientMessage"
 import { Cookies } from "./sections/cookies"
+import { SseEngine } from "./sections/sse"
 
 export class ServerUtilsUseCases {
 
     public readonly CriptManager = new CriptManager()
     public readonly SendClientMessage = new SendClientMessage()
     public readonly Cookies = new Cookies(this)
+    public readonly SseEngine = new SseEngine()
 
     getMonthYear() {
         let month = parseInt(cookies().get("month")?.value || new Date().getMonth().toString())
