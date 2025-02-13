@@ -1,6 +1,6 @@
 'use client';
 import { Container } from "@mui/material";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs } from "./components/Tabs";
 import { ExpenseCategoriesPage } from "./components/ExpenseCategoriesPage";
 import { DestinysPage } from "./components/DestinysPage";
@@ -8,6 +8,7 @@ import { BanksPage } from "./components/BanksPage";
 import { usePooling } from "@/app/utils/usePooling";
 import { UtilTypes } from "@/database/UtilTypes";
 import { NfeItemCategoriesPage } from "./components/NfeItemCategoriesPage";
+import { personalizacaoController } from "./controller/controller";
 
 export default function Page() {
     let [selectedCategory, setSelectedCategory] = useState(0)
@@ -17,6 +18,15 @@ export default function Page() {
             pageRoute: "personalizacao",
         },
     })
+
+    useEffect(() => {
+
+        if (!data) {
+            return
+        }
+
+        personalizacaoController.init(data)
+    }, [data])
 
     if (!data) {
         return (

@@ -18,6 +18,20 @@ export class ExpenseDestinysUseCases extends BaseUseCase {
         })
     }
 
+    updateDestinys(IdsBaseExpenses: number[], oldDestiny: number, newDestiny: number) {
+        return this.prisma.expensedestinys.updateMany({
+            where: {
+                IdBaseExpense: {
+                    in: IdsBaseExpenses
+                },
+                IdDestiny: oldDestiny
+            },
+            data: {
+                IdDestiny: newDestiny
+            }
+        })
+    }
+
     delete(IdExpenseDestiny: number) {
         return this.prisma.expensedestinys.delete({
             where: { IdExpenseDestiny }

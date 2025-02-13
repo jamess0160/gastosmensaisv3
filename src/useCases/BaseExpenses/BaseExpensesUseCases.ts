@@ -5,6 +5,7 @@ import { GetMonthlyBanksResume } from "./getMonthlyBanksResume"
 import { GetMonthlyDestinyResume } from "./getMonthlyDestinyResume"
 import { clientUtilsUseCases } from "../Utils/ClientUtilsUseCases/ClientUtilsUseCases"
 import { GetReports } from "./getReports"
+import { Prisma } from "@prisma/client"
 
 export class BaseExpensesUseCases extends BaseUseCase {
 
@@ -26,6 +27,20 @@ export class BaseExpensesUseCases extends BaseUseCase {
         return this.GenerateFullBaseExpenseChild.run(month, year, IdUser, { IdBank, IdExpenseCategory })
     }
 
+    getAllFromDestiny(IdDestiny: number) {
+        return this.prisma.baseexpenses.findMany({
+            where: {
+                expensedestinys: {
+                    some: { IdDestiny }
+                }
+            }
+        })
+    }
+
+    getAllWhere(where: Prisma.baseexpensesWhereInput) {
+        return this.prisma.baseexpenses.findMany({ where })
+    }
+
     create(data: CreateBaseExpense) {
         return this.prisma.baseexpenses.create({ data })
     }
@@ -37,9 +52,30 @@ export class BaseExpensesUseCases extends BaseUseCase {
         })
     }
 
+    updateMany(IdsBaseExpenses: number[], data: UpdateBaseExpense) {
+        return this.prisma.baseexpenses.updateMany({
+            where: {
+                IdBaseExpense: {
+                    in: IdsBaseExpenses
+                }
+            },
+            data: data
+        })
+    }
+
     delete(IdBaseExpense: number) {
         return this.prisma.baseexpenses.delete({
             where: { IdBaseExpense }
+        })
+    }
+
+    deleteMany(IdsBaseExpenses: number[]) {
+        return this.prisma.baseexpenses.deleteMany({
+            where: {
+                IdBaseExpense: {
+                    in: IdsBaseExpenses
+                }
+            }
         })
     }
 
