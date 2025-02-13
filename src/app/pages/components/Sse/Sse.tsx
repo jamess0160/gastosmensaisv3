@@ -12,7 +12,7 @@ export function Sse() {
         clearTimeout(debouncer)
 
         debouncer = setTimeout(() => {
-            serverEventsClient.run()
+            serverEventsClient.startSse()
         }, 300);
     }, [])
 
