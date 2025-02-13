@@ -53,4 +53,4 @@ function formatDataType(data: Record<string, any>) {
 
 export const prisma = globalThis.singleTon_Prisma ?? prismaClientSingleton()
 
-// globalThis.singleTon_Prisma = prisma
+globalThis.singleTon_Prisma = prisma

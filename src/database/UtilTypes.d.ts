@@ -9,7 +9,10 @@ import { banks, destinys, expensecategories, nfeitemcategories, nfeitems } from 
 export namespace UtilTypes {
 
     export type PrismaTransaction = Parameters<Parameters<typeof prisma.$transaction>[0]>[0]
+
     export type Promissed<T> = { [K in keyof T]: Promise<T[K]> }
+
+    export type MaybePromise<T> = T | Promise<T>
 
     export interface CookiesPostBody {
         month: string
