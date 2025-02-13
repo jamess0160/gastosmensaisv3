@@ -3,7 +3,7 @@ import { clientUtilsUseCases } from "../ClientUtilsUseCases/ClientUtilsUseCases"
 import { CriptManager } from "./sections/criptManager"
 import { SendClientMessage } from "./sections/sendClientMessage"
 import { Cookies } from "./sections/cookies"
-import { SseEngine } from "./sections/sse"
+import { SseEngine } from "./sections/sse/sse"
 
 export class ServerUtilsUseCases {
 
