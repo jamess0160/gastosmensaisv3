@@ -5,13 +5,19 @@ import { WebAuthnCredential, verifyRegistrationResponse } from "@simplewebauthn/
 import { NextRequest, NextResponse } from "next/server";
 import crypto from 'crypto'
 import { UtilTypes } from "@/database/UtilTypes";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 
 export class Register {
 
     public async run(request: NextRequest) {
-        let data = await request.json() as RegistrationResponseJSON
 
-        let session = await serverUtilsUseCases.Cookies.getSession()
+        let { searchParams } = new URL(request.url)
+        let DeviceKey = searchParams.get('DeviceKey') as string
+
+        let { data, session } = await clientUtilsUseCases.resolvePromiseObj({
+            data: (request.json() as Promise<RegistrationResponseJSON>),
+            session: serverUtilsUseCases.Cookies.getSession(),
+        })
 
         if (!session) {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
@@ -23,7 +29,7 @@ export class Register {
             return NextResponse.json({ verified: verification.verified })
         }
 
-        return NextResponse.json(await this.handleRegister(verification.registrationInfo.credential, session))
+        return NextResponse.json(await this.handleRegister(verification.registrationInfo.credential, session, DeviceKey))
     }
 
     private generateOptions(data: RegistrationResponseJSON, session: UtilTypes.Session) {
@@ -43,8 +49,8 @@ export class Register {
         }
     }
 
-    private async handleRegister(credential: WebAuthnCredential, session: UtilTypes.Session) {
-        let DeviceKey = crypto.randomBytes(40).toString("base64")
+    private async handleRegister(credential: WebAuthnCredential, session: UtilTypes.Session, currentDevice?: string) {
+        let DeviceKey = currentDevice || crypto.randomBytes(40).toString("base64")
 
         if (!session) {
             return serverUtilsUseCases.SendClientMessage.run("redirect", { url: "/pages/login" })
