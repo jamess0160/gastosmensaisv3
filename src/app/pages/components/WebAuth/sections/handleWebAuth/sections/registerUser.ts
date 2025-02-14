@@ -33,7 +33,12 @@ export class RegisterUser {
     }
 
     private async createAuth(authResult: RegistrationResponseJSON) {
-        let { data } = await axios.post<CreateAuthResponse>("/api/webAuth/register", authResult)
+
+        let DeviceKey = clientUtilsUseCases.LocalStorage.getDeviceKey()
+
+        let { data } = await axios.post<CreateAuthResponse>("/api/webAuth/register", authResult, {
+            params: { DeviceKey }
+        })
         return data
     }
 }
