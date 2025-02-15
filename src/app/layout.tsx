@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import { Lexend } from "next/font/google";
 import BotaoVoltar from "./pages/components/BotaoVoltar";
+import { Sse } from "./pages/components/Sse/Sse";
 
 const font = Lexend({
 	weight: ['300', '400', '500', '700'],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: RootLayoutParams) {
 					<div className="colorBackground">
 						<ThemeProvider theme={theme}>
 							<BotaoVoltar />
+							<Sse />
 							<AppRouterCacheProvider options={{ enableCssLayer: true }}>
 								{children}
 							</AppRouterCacheProvider>

@@ -1,25 +1,17 @@
 'use client';
+import { renderComponent } from "@/useCases/Utils/ClientUtilsUseCases/sections/renderComponent";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material"
-import { createRoot } from "react-dom/client"
 
 export class ErrorDialog {
 
     public async show(msg: string, title?: string): Promise<boolean> {
-        let body = document.querySelector("body")
-
-        if (!body) throw new Error("Body não encontrado!")
-
-        let container = document.createElement("div")
-
-        body.appendChild(container)
-
-        let root = createRoot(container)
+        let unmount = () => { }
 
         let result = await new Promise<boolean>((resolve) => {
-            root.render(<this.Dialog msg={msg} resolve={resolve} title={title} />)
+            unmount = renderComponent(<this.Dialog msg={msg} resolve={resolve} title={title} />)
         })
 
-        root.unmount()
+        unmount()
 
         return result
     }
@@ -29,7 +21,7 @@ export class ErrorDialog {
         let buttonClass = "w-fit rounded-lg p-2 px-4"
 
         return (
-            <Dialog open={true} PaperProps={{ className: "w-1/5 max-md:w-4/5 border-2 border-solid border-red-600" }}>
+            <Dialog open={true} PaperProps={{ className: "w-1/5 max-md:w-4/5 border-2 border-solid border-red-600 bg-default text-white" }}>
                 <DialogTitle className="text-red-600">{props.title || "Ocorreu um erro!"}</DialogTitle>
                 <DialogContent>
                     {props.msg}

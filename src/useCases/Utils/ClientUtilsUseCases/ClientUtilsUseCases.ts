@@ -6,6 +6,8 @@ import { LocalStorage } from "./sections/localStorage"
 
 export class ClientUtilsUseCases {
 
+    private readonly debouncers: Record<string, NodeJS.Timeout> = {}
+
     public readonly GetExpenseType = new GetExpenseType(this)
     public readonly HandleError = new HandleError()
     public readonly LocalStorage = new LocalStorage()
@@ -55,6 +57,14 @@ export class ClientUtilsUseCases {
 
             return old
         }, {})
+    }
+
+    debouncer(key: string, fn: () => void, duration = 300) {
+        clearTimeout(this.debouncers[key])
+
+        this.debouncers[key] = setTimeout(() => {
+            fn()
+        }, duration);
     }
 
     monthAndYearToMoment(month: number, year: number) {
