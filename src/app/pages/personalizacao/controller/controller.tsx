@@ -2,16 +2,16 @@ import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/Client
 import { serverEventsClient } from "../../components/Sse/ServerEventsClient"
 import { ConfirmDestinyDialog } from "./sections/ConfirmDestinyDialog"
 import { renderComponent } from "@/useCases/Utils/ClientUtilsUseCases/sections/renderComponent"
-import { banks, destinys, expensecategories, nfeitemcategories } from "@prisma/client"
+import { banks, destinys, expensecategories } from "@prisma/client"
 import { UtilTypes } from "@/database/UtilTypes"
 import { ConfirmBankDialog } from "./sections/ConfirmBankDialog"
 import { ConfirmExpenseCategorieDialog } from "./sections/ConfirmExpenseCategorieDialog"
 
 class PersonalizacaoController {
 
-    private readonly ConfirmDestinyDialog = new ConfirmDestinyDialog()
-    private readonly ConfirmBankDialog = new ConfirmBankDialog()
-    private readonly ConfirmExpenseCategorieDialog = new ConfirmExpenseCategorieDialog()
+    private readonly ConfirmDestinyDialog = ConfirmDestinyDialog
+    private readonly ConfirmBankDialog = ConfirmBankDialog
+    private readonly ConfirmExpenseCategorieDialog = ConfirmExpenseCategorieDialog
 
     public init(data: UtilTypes.PersonalizacaoPageData) {
         clientUtilsUseCases.debouncer("PersonalizacaoInit", () => {
@@ -27,7 +27,7 @@ class PersonalizacaoController {
             let unmount = () => { }
 
             let result = await new Promise((resolve) => {
-                unmount = renderComponent(<this.ConfirmDestinyDialog.component
+                unmount = renderComponent(<this.ConfirmDestinyDialog
                     IdDelete={data.IdDelete}
                     ExpensesQuantity={data.ExpensesQuantity}
                     destinys={destinyList}
@@ -47,7 +47,7 @@ class PersonalizacaoController {
             let unmount = () => { }
 
             let result = await new Promise((resolve) => {
-                unmount = renderComponent(<this.ConfirmBankDialog.component
+                unmount = renderComponent(<this.ConfirmBankDialog
                     IdDelete={data.IdDelete}
                     ExpensesQuantity={data.ExpensesQuantity}
                     banks={bankList}
@@ -67,7 +67,7 @@ class PersonalizacaoController {
             let unmount = () => { }
 
             let result = await new Promise((resolve) => {
-                unmount = renderComponent(<this.ConfirmExpenseCategorieDialog.component
+                unmount = renderComponent(<this.ConfirmExpenseCategorieDialog
                     IdDelete={data.IdDelete}
                     ExpensesQuantity={data.ExpensesQuantity}
                     expensecategories={categoryList}
