@@ -91,7 +91,7 @@ function getFirstCollumnData({ item, month, year }: TableRowProps) {
         return `${current}/${max}`
     }
 
-    return moment(item.EntryDate).toDate().toLocaleDateString("pt-br")
+    return "ERRO"
 }
 
 function getDestinyBankColumnData(item: FullBaseExpenseChild, type?: Categories, options?: { full: boolean }) {
