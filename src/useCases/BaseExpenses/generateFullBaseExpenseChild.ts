@@ -11,20 +11,16 @@ export class GenerateFullBaseExpenseChild extends BaseSection<BaseExpensesUseCas
 
         let baseExpenses = await this.getFullBaseExpense(month, year, IdUser, options)
 
-        let result = baseExpenses
-            .map<FullBaseExpenseChild>((item) => {
-                return {
-                    ...item,
-                    child: item.defaultexpenses || item.nfeexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
-                    defaultexpenses: undefined,
-                    nfeexpenses: undefined,
-                    fixedexpenses: undefined,
-                    installmentexpenses: undefined,
-                }
-            })
-            .sort(this.sortExpensesDescription)
-            .sort(this.sortExpensesDates)
-            .sort(this.sortExpensesTypes)
+        let result = clientUtilsUseCases.SortExpenses.run(baseExpenses.map<FullBaseExpenseChild>((item) => {
+            return {
+                ...item,
+                child: item.defaultexpenses || item.nfeexpenses || item.fixedexpenses.at(0) || item.installmentexpenses.at(0),
+                defaultexpenses: undefined,
+                nfeexpenses: undefined,
+                fixedexpenses: undefined,
+                installmentexpenses: undefined,
+            }
+        }))
 
         if (options?.sortDestinys) {
             return result.sort(this.sortDestinysQuantity)

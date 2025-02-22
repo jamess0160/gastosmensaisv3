@@ -3,6 +3,7 @@ import { GetExpenseType } from "./sections/getExpensePrice"
 import type { FullBaseExpenseChild } from "../../BaseExpenses/generateFullBaseExpenseChild"
 import { HandleError } from "./sections/handleError"
 import { LocalStorage } from "./sections/localStorage"
+import { SortExpenses } from "./sections/sortExpenses"
 
 export class ClientUtilsUseCases {
 
@@ -11,6 +12,7 @@ export class ClientUtilsUseCases {
     public readonly GetExpenseType = new GetExpenseType(this)
     public readonly HandleError = new HandleError()
     public readonly LocalStorage = new LocalStorage()
+    public readonly SortExpenses = new SortExpenses()
 
     public readonly months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
@@ -44,8 +46,7 @@ export class ClientUtilsUseCases {
             return date instanceof Date ? date.toJSON() : date
         }
 
-        let date = expense.EntryDate
-        return date instanceof Date ? date.toJSON() : date
+        return ""
     }
 
     async resolvePromiseObj<T extends Record<string, Promise<any>>>(promises: T): Promise<{ [K in keyof T]: Awaited<T[K]> }> {
@@ -135,6 +136,7 @@ export class ClientUtilsUseCases {
 
         return (Math.floor(value / round) * round) || value
     }
+
 }
 
 export const clientUtilsUseCases = new ClientUtilsUseCases()
