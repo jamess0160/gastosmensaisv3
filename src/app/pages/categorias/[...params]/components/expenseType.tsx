@@ -9,7 +9,7 @@ export default function ExpenseType(props: PageProps) {
     return (
         <div hidden={!props.selected}>
             <ExpenseTable
-                data={props.CategorieData.tableData}
+                data={props.tableData}
                 ExpenseFormData={props.ExpenseFormData}
                 month={props.month}
                 year={props.year}
@@ -17,7 +17,7 @@ export default function ExpenseType(props: PageProps) {
                 force={props.force}
             />
 
-            <h1 className="w-fit m-auto mt-5 underline max-md:mb-24">R$ {props.CategorieData.total}</h1>
+            <h1 className="w-fit m-auto mt-5 underline max-md:mb-24">R$ {props.total}</h1>
         </div>
     )
 }
@@ -27,7 +27,8 @@ export default function ExpenseType(props: PageProps) {
 //#region Interfaces / Types 
 
 interface PageProps {
-    CategorieData: CategoryData
+    tableData: CategoryTableData[]
+    total: number
     ExpenseFormData: FieldsData
     month: number
     year: number
@@ -36,6 +37,6 @@ interface PageProps {
     force: () => Promise<void>
 }
 
-export type CategoryTableData = PageProps['CategorieData']['tableData'][0]
+export type CategoryTableData = CategoryData['tableData'][0]
 
 //#endregion

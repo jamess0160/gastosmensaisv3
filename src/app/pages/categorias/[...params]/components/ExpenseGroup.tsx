@@ -2,6 +2,7 @@ import { Categories, CategoryData } from "@/useCases/Expenses/sections/GetCatego
 import { Dispatch, useState } from "react";
 import ExpenseType from "./expenseType";
 import { FieldsData } from "@/app/pages/components/ExpenseForm/ExpenseForm";
+import { clientUtilsUseCases } from "@/useCases/Utils/ClientUtilsUseCases/ClientUtilsUseCases";
 
 export default function ExpenseGroup(props: ExpenseGroupProps) {
 
@@ -9,15 +10,32 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
 
     if (!firstCategorie) throw new Error("Sem categorias")
 
-    let defaultExpenseType = location.hash ? parseInt(location.hash.replace("#Category", "")) : firstCategorie.IdExpenseCategory
+    let defaultExpenseType = location.hash ? parseInt(location.hash.replace("#Category", "")) : 0
 
     let [selectedCategory, setSelectedCategory] = useState(defaultExpenseType)
+
+    let isFirstSelected = selectedCategory === 0
+
+    let allCategorysData = clientUtilsUseCases.SortExpenses.run(props.CategoryData.flatMap((item) => item.tableData))
+    let allCategorysTotal = props.CategoryData.reduce((old, item) => old + item.total, 0)
 
     return (
         <div>
             <div className="flex flex-col">
 
                 <Tabs CategoryData={props.CategoryData} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+
+                <div hidden={!isFirstSelected} className="p-3" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+                    <ExpenseType
+                        tableData={allCategorysData}
+                        total={parseFloat(allCategorysTotal.toFixed(2))}
+                        ExpenseFormData={props.ExpenseFormData}
+                        month={props.month} year={props.year}
+                        selected={isFirstSelected}
+                        type={props.type}
+                        force={props.force}
+                    />
+                </div>
 
                 {props.CategoryData.map((item, index) => {
 
@@ -26,7 +44,8 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
                     return (
                         <div hidden={!isSelected} className="p-3" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }} key={index}>
                             <ExpenseType
-                                CategorieData={item}
+                                tableData={item.tableData}
+                                total={item.total}
                                 ExpenseFormData={props.ExpenseFormData}
                                 month={props.month} year={props.year}
                                 selected={isSelected}
@@ -42,35 +61,48 @@ export default function ExpenseGroup(props: ExpenseGroupProps) {
 }
 
 function Tabs({ CategoryData, setSelectedCategory, selectedCategory }: TabsProps) {
+
+    function onInteract(IdExpenseCategory: number) {
+        setSelectedCategory(IdExpenseCategory)
+    }
+
+    let classes = "m-0 px-3 hover:bg-default p-2 max-md:!bg-transparent"
+
     return (
         <div className="flex flex-row w-fit max-md:w-full max-md:flex-col max-md:items-center max-md:!bg-none rounded-t-xl" style={{ background: "linear-gradient(0deg, rgba(49, 51, 56, 0.9) 66.87%, rgba(49, 51, 56, 0.9) 100%)" }}>
+
+            <h1
+                onClick={onInteract.bind(null, 0)}
+                onFocus={onInteract.bind(null, 0)}
+                id={`Category0`}
+                className={classes + (selectedCategory === 0 ? " bg-default max-md:underline max-md:text-fundoVerde" : "")}
+            >
+                Total
+            </h1>
+
             {CategoryData.map((item, index) => {
 
-                function onInteract() {
-                    setSelectedCategory(item.IdExpenseCategory)
-                }
-
-                let classes = "m-0 px-3 hover:bg-default p-2 max-md:!bg-transparent"
+                let cloneClass = structuredClone(classes)
 
                 if (index === 0) {
-                    classes += " rounded-tl-xl"
+                    cloneClass += " rounded-tl-xl"
                 }
 
                 if (index == CategoryData.length - 1) {
-                    classes += " rounded-tr-xl"
+                    cloneClass += " rounded-tr-xl"
                 }
 
                 if (selectedCategory === item.IdExpenseCategory) {
-                    classes += " bg-default max-md:underline max-md:text-fundoVerde"
+                    cloneClass += " bg-default max-md:underline max-md:text-fundoVerde"
                 }
 
                 return (
                     <h1
                         key={index}
-                        onClick={onInteract}
-                        onFocus={onInteract}
+                        onClick={onInteract.bind(null, item.IdExpenseCategory)}
+                        onFocus={onInteract.bind(null, item.IdExpenseCategory)}
                         id={`Category${item.IdExpenseCategory.toString()}`}
-                        className={classes}
+                        className={cloneClass}
                     >
                         {item.name}
                     </h1>
