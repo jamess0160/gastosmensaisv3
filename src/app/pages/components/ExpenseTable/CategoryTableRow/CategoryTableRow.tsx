@@ -127,10 +127,12 @@ function formatDestinys(item: FullBaseExpenseChild, options?: { full: boolean })
 function OpenNfePopUp({ item }: { item: NfeExpenseChild }) {
     let [popUpOpen, setPopUpOpen] = useState(false)
 
+    let nfeStatus: "success" | "error" = item.child.nfeitems.every((item) => item.IdNfeItemCategory) ? "success" : "error"
+
     return (
         <>
             <IconButton className="py-0" onClick={() => setPopUpOpen(true)}>
-                <Receipt color="primary" />
+                <Receipt color={nfeStatus} />
             </IconButton>
             <NfePopUp open={popUpOpen} item={item} setOpen={setPopUpOpen} />
         </>
