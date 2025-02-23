@@ -1,8 +1,10 @@
-import { Select as MuiSelect, MenuItem, SelectProps as MuiSelectProps, Checkbox, SelectChangeEvent } from '@mui/material';
-import { HTMLAttributes } from "react";
+import { Clear } from '@mui/icons-material';
+import { Select as MuiSelect, MenuItem, SelectProps as MuiSelectProps, Checkbox, SelectChangeEvent, InputAdornment, IconButton } from '@mui/material';
+import { HTMLAttributes, useState } from "react";
 import { UseFormReturn } from 'react-hook-form';
 
 export function Select(props: SelectProps) {
+    let [open, setOpen] = useState(false);
 
     let defaultValue = props.form.getValues()[props.formProp] ?? ""
 
@@ -29,6 +31,15 @@ export function Select(props: SelectProps) {
         }
     }
 
+    const handleMenuItemClick = (event: React.MouseEvent, itemKey: string) => {
+        if (event.target instanceof HTMLInputElement) {
+            return;
+        }
+
+        setOpen(false);
+        props.form.setValue(props.formProp, itemKey);
+    };
+
     const renderValue = () => {
 
         if (Array.isArray(value) === false) {
@@ -54,11 +65,27 @@ export function Select(props: SelectProps) {
 
             </legend>
             <MuiSelect
+                open={open}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
                 value={value}
                 onChange={onChange}
                 className={selectClasses}
                 MenuProps={MenuProps}
                 renderValue={renderValue}
+                endAdornment={
+                    (Boolean(value) && value.length) ? (
+                        <InputAdornment sx={{ position: "absolute", right: 27 }} position="end">
+                            <IconButton
+                                onClick={() => {
+                                    props.form.setValue(props.formProp, props.selectProps?.multiple ? [] : undefined)
+                                }}
+                            >
+                                <Clear color='primary' />
+                            </IconButton>
+                        </InputAdornment>
+                    ) : null
+                }
                 {...props.selectProps}
             >
                 {
@@ -66,7 +93,12 @@ export function Select(props: SelectProps) {
 
                         if (props.selectProps?.multiple && Array.isArray(value)) {
                             return (
-                                <MenuItem value={item.key} key={item.key} className='text-white' >
+                                <MenuItem
+                                    value={item.key}
+                                    key={item.key}
+                                    className='text-white'
+                                    onClick={(event) => handleMenuItemClick(event, item.key)}
+                                >
                                     <Checkbox checked={value.includes(item.key)} />
                                     {item.text}
                                 </MenuItem>
