@@ -13,11 +13,17 @@ export function ReportChart(props: ReportChartProps) {
     let qtdeLabels = props.chartConfig.data.length ? Math.max(props.chartConfig.labels.length, 1) : 4
     let qtdeSets = Math.max(props.chartConfig.data.length, 1.8)
 
+    let minWidth = (qtdeSets / 1.8) * (qtdeLabels / 4) * 100
+
+    if (minWidth < 100) {
+        minWidth = 100
+    }
+
     return (
         <div className="p-5 rounded w-1/2 overflow-x-auto m-auto aspect-video flex items-center border border-solid border-white max-md:w-full max-md:m-0 max-md:px-0" >
             <div
                 style={{
-                    minWidth: `${(qtdeSets / 1.8) * (qtdeLabels / 4) * 100}%`,
+                    minWidth: `${minWidth}%`,
                     height: "100%"
                 }}
             >

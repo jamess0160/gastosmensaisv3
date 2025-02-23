@@ -36,7 +36,12 @@ export function ReportBody(props: ReportBodyProps) {
                         form={form}
                         onSubmit={form.handleSubmit((requestData) => relatoriosEvents.search({ requestData, setChartConfig, setLoading, setTableData }))}
                         onClear={() => {
-                            form.reset()
+                            form.setValue("date", undefined)
+                            form.setValue("dateStart", undefined)
+                            form.setValue("dateEnd", undefined)
+                            form.setValue("description", undefined)
+                            form.setValue("IdNfeItemCategory", undefined)
+                            form.setValue("IdBank", undefined)
                             setTableData([])
                             setChartConfig(defaultChart)
                         }}
